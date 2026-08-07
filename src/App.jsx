@@ -1,54 +1,92 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowBendUpRight,
   ArrowsClockwise,
   BellRinging,
   Brain,
   CalendarCheck,
-  CaretLeft,
   CaretRight,
   ChatCenteredText,
   ChatCircleDots,
   CheckCircle,
   Crown,
+  Pause,
   PencilSimpleLine,
+  Play,
   PlugsConnected,
   ShieldCheck,
-  Star,
   SunHorizon,
   UserCircle,
 } from "@phosphor-icons/react";
 
-const INTERACTION_SPRING = { type: "spring", bounce: 0.2, delay: 0, duration: 0.4 };
-const FAQ_ITEM_SPRING = { type: "spring", bounce: 0, delay: 0, duration: 0.4 };
-const FEATURE_REVEAL_SPRING = { type: "spring", bounce: 0, delay: 0.1, duration: 0.6 };
-const FLOW_REVEAL_SPRING = { type: "spring", bounce: 0.4, delay: 0.1, duration: 0.8 };
-const FAQ_REVEAL_SPRING = { type: "spring", damping: 50, delay: 0.1, mass: 1, stiffness: 250 };
+const LUXURY_EASE = [0.16, 1, 0.3, 1];
+const INTERACTION_SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.75 };
+const LAYOUT_SPRING = { type: "spring", stiffness: 300, damping: 32, mass: 0.85 };
+const FAQ_ITEM_SPRING = { type: "spring", stiffness: 360, damping: 34, mass: 0.8 };
+const FEATURE_REVEAL_SPRING = { duration: 0.56, ease: LUXURY_EASE, delay: 0.04 };
+const FLOW_REVEAL_SPRING = { duration: 0.68, ease: LUXURY_EASE, delay: 0.05 };
+const FAQ_REVEAL_SPRING = { duration: 0.5, ease: LUXURY_EASE, delay: 0.04 };
+const REDUCED_FADE = { duration: 0.15, ease: "linear" };
 
 function motionTransition(reduced, transition) {
-  return reduced ? { duration: 0 } : transition;
+  return reduced ? REDUCED_FADE : transition;
 }
 
 function revealProps(preset, reduced) {
   const config = preset === "flow"
-    ? { y: 20, transition: FLOW_REVEAL_SPRING }
+    ? { y: 18, blur: 6, transition: FLOW_REVEAL_SPRING }
     : preset === "faq"
-      ? { y: 24, transition: FAQ_REVEAL_SPRING }
-      : { y: 16, transition: FEATURE_REVEAL_SPRING };
+      ? { y: 16, blur: 5, transition: FAQ_REVEAL_SPRING }
+      : { y: 14, blur: 4, transition: FEATURE_REVEAL_SPRING };
 
   return {
-    initial: { opacity: 0, y: config.y },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.5 },
+    initial: { opacity: 0, y: reduced ? 0 : config.y, filter: reduced ? "blur(0px)" : `blur(${config.blur}px)` },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, amount: 0.25, margin: "0px 0px -8% 0px" },
     transition: motionTransition(reduced, config.transition),
   };
 }
 
+function groupRevealProps(reduced, stagger = 0.07) {
+  return {
+    initial: "hidden",
+    whileInView: "visible",
+    viewport: { once: true, amount: 0.24, margin: "0px 0px -8% 0px" },
+    variants: {
+      hidden: {},
+      visible: { transition: { staggerChildren: reduced ? 0.02 : stagger, delayChildren: reduced ? 0 : 0.04 } },
+    },
+  };
+}
+
+function revealVariants(reduced, y = 14) {
+  return {
+    hidden: { opacity: 0, y: reduced ? 0 : y, filter: reduced ? "blur(0px)" : "blur(4px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: motionTransition(reduced, FEATURE_REVEAL_SPRING) },
+  };
+}
+
+const workflowStateVariants = {
+  enter: ({ direction, mobile, reduced }) => ({
+    opacity: 0,
+    x: reduced || mobile ? 0 : direction * 12,
+    y: reduced ? 0 : mobile ? 8 : 0,
+    filter: reduced ? "blur(0px)" : "blur(6px)",
+  }),
+  center: { opacity: 1, x: 0, y: 0, filter: "blur(0px)" },
+  exit: ({ direction, mobile, reduced }) => ({
+    opacity: 0,
+    x: reduced || mobile ? 0 : direction * -8,
+    y: reduced ? 0 : mobile ? -5 : 0,
+    filter: reduced ? "blur(0px)" : "blur(4px)",
+  }),
+};
+
 function Brand() {
   return (
     <a className="brand" href="#top" aria-label="Rachel home">
-      <span className="brand-mark" aria-hidden="true"><img src="/assets/rachel-mark.png" alt="" width="22" height="22" /></span>
+      <span className="brand-mark" aria-hidden="true"><img src="/assets/rachel-mark-v2.png" alt="" width="22" height="22" /></span>
       <span>Rachel</span>
     </a>
   );
@@ -57,7 +95,7 @@ function Brand() {
 function RachelIdentityMark({ className = "" }) {
   return (
     <span className={`asset-mark ${className}`} aria-hidden="true">
-      <img src="/assets/rachel-mark.png" alt="" width="64" height="64" />
+      <img src="/assets/rachel-mark-v2.png" alt="" width="64" height="64" />
     </span>
   );
 }
@@ -75,11 +113,15 @@ function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "",
       animate="rest"
       whileHover="hover"
       whileTap="pressed"
-      variants={{ rest: { opacity: 1 }, hover: { opacity: 0.8 }, pressed: { opacity: 0.8 } }}
+      variants={{
+        rest: { opacity: 1, y: 0 },
+        hover: { opacity: 1, y: reducedMotion ? 0 : -1 },
+        pressed: { opacity: 1, y: 0 },
+      }}
       transition={transition}
     >
       <motion.span
-        variants={{ rest: { scale: 1 }, hover: { scale: 0.98 }, pressed: { scale: 0.96 } }}
+        variants={{ rest: { scale: 1 }, hover: { scale: reducedMotion ? 1 : 0.995 }, pressed: { scale: reducedMotion ? 1 : 0.975 } }}
         transition={transition}
       >
         {children}
@@ -90,6 +132,7 @@ function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "",
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, INTERACTION_SPRING);
 
@@ -100,15 +143,25 @@ function Header() {
     };
     window.addEventListener("resize", close);
     window.addEventListener("keydown", closeOnEscape);
+    const updateScrolled = () => setScrolled(window.scrollY > 16);
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
     return () => {
       window.removeEventListener("resize", close);
       window.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("scroll", updateScrolled);
     };
   }, []);
 
+  const menuItemVariants = {
+    hidden: { opacity: 0, y: reducedMotion ? 0 : 8 },
+    visible: (index) => ({ opacity: 1, y: 0, transition: { ...motionTransition(reducedMotion, { duration: 0.32, ease: LUXURY_EASE }), delay: reducedMotion ? 0 : 0.08 + index * 0.04 } }),
+    exit: { opacity: 0, y: reducedMotion ? 0 : -4, transition: motionTransition(reducedMotion, { duration: 0.18, ease: LUXURY_EASE }) },
+  };
+
   return (
     <>
-      <header className={`site-header ${open ? "menu-open" : ""}`}>
+      <header className={`site-header ${open ? "menu-open" : ""} ${scrolled ? "is-scrolled" : ""}`}>
         <div className="header-inner">
           <Brand />
           <nav className="desktop-nav" aria-label="Main navigation">
@@ -126,16 +179,17 @@ function Header() {
           </button>
         </div>
       </header>
-      <motion.div className={`mobile-menu ${open ? "is-open" : ""}`} style={{ backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} initial={false} animate={{ height: open ? "100dvh" : 62 }} transition={transition} aria-hidden={!open}>
-        {open && (
-          <nav id="mobile-navigation" aria-label="Mobile navigation">
-            <a href="#features" onClick={() => setOpen(false)}>Features</a>
-            <a href="#pricing" onClick={() => setOpen(false)}>Pricing</a>
-            <a href="#faq" onClick={() => setOpen(false)}>FAQ</a>
-            <a href="#steps" onClick={() => setOpen(false)}>Setup</a>
-            <BlackButton onClick={() => setOpen(false)}>Text Rachel</BlackButton>
-          </nav>
-        )}
+      <motion.div className={`mobile-menu ${open ? "is-open" : ""}`} style={{ backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} initial={false} animate={{ height: open ? "100dvh" : 62 }} transition={motionTransition(reducedMotion, LAYOUT_SPRING)} aria-hidden={!open}>
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.nav id="mobile-navigation" aria-label="Mobile navigation" initial="hidden" animate="visible" exit="exit">
+              {[['#features', 'Features'], ['#pricing', 'Pricing'], ['#faq', 'FAQ'], ['#steps', 'Setup']].map(([href, label], index) => (
+                <motion.a custom={index} variants={menuItemVariants} href={href} onClick={() => setOpen(false)} key={href}>{label}</motion.a>
+              ))}
+              <motion.div custom={4} variants={menuItemVariants}><BlackButton onClick={() => setOpen(false)}>Text Rachel</BlackButton></motion.div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
@@ -212,27 +266,28 @@ const comparisonRows = [
   ["Support", "Standard", "Priority"],
 ];
 
-const testimonials = [
-  { name: "Sara Jones", role: "Creative Director", avatar: "/assets/testimonial-avatar.avif", quote: "By the end of week one, Rachel knew which client needed a nudge and had my Monday brief waiting before I asked. It feels like getting a piece of my attention back." },
-  { name: "Nick", role: "Founder", avatar: "/assets/testimonial-james.jpeg", quote: "I send Rachel a half-formed thought in iMessage and get back a clean plan, the draft, and the one decision I actually need to make. That is real leverage." },
-  { name: "James Park", role: "Product Lead", avatar: "/assets/testimonial-sara.jpeg", quote: "Rachel catches the promises buried in meetings and follows up before they become loose ends. My team thinks I suddenly became much more organised." },
-  { name: "Marcus Taylor", role: "Independent Consultant", avatar: "/assets/testimonial-marcus.jpeg", quote: "There was no new system to learn. I just started texting. Rachel quietly connected the details across my calendar, inbox, and client work." },
+const communityStories = [
+  { title: "Founder workflow", label: "Monday, 8:02 AM", icon: SunHorizon, copy: "A clear morning brief, the three decisions that need you, and every follow-up already lined up." },
+  { title: "Operator workflow", label: "Before the next meeting", icon: CalendarCheck, copy: "The calendar change is held, the attendees are updated, and the context is ready before you join." },
+  { title: "Creative lead workflow", label: "From a half-formed thought", icon: PencilSimpleLine, copy: "A polished client note in your voice, prepared in iMessage and waiting for your approval." },
+  { title: "Consultant workflow", label: "After the call", icon: ArrowBendUpRight, copy: "Commitments are captured, owners are clear, and the next nudge is scheduled before anything slips." },
 ];
 
 const faqs = [
   ["Does Rachel really work inside iMessage?", "Yes. Rachel lives in a private iMessage thread, so asking for help feels as natural as texting a person you trust."],
-  ["Can Rachel connect to my existing work tools?", "Rachel can connect to your calendar, email, messages, documents, and the tools where your work already lives. You choose each connection."],
+  ["Can Rachel connect to my existing work tools?", "Rachel is designed to connect to your calendar, email, messages, documents, and the tools where your work already lives. You choose each connection."],
   ["Will Rachel ask first?", "Yes. Rachel can prepare drafts, reminders, meetings, and follow-ups, but asks for your approval before any important external action."],
-  ["How does Rachel keep my personal data protected?", "Your information is encrypted in transit and at rest. Rachel only uses the access you grant, and never sells your personal data."],
-  ["Can I export or delete all my Rachel data?", "Always. Disconnect a tool, delete your memory, or export your information whenever you choose. Your data remains yours."],
+  ["How is Rachel approaching privacy and security?", "Rachel is being designed around permissioned connections and approval-first actions. Detailed security, retention, and data-handling terms will be published before accounts are activated."],
+  ["Will I be able to export or delete my Rachel data?", "Data controls are part of the product plan. The exact export, deletion, and retention controls will be documented before accounts are activated."],
 ];
 
 function SectionIntro({ title, copy, align = "center" }) {
+  const reducedMotion = useReducedMotion();
   return (
-    <div className={`section-intro ${align === "left" ? "is-left" : ""}`}>
-      <h2>{title}</h2>
-      <p>{copy}</p>
-    </div>
+    <motion.div className={`section-intro ${align === "left" ? "is-left" : ""}`} {...groupRevealProps(reducedMotion, 0.08)}>
+      <motion.h2 variants={revealVariants(reducedMotion, 16)}>{title}</motion.h2>
+      <motion.p variants={revealVariants(reducedMotion, 10)}>{copy}</motion.p>
+    </motion.div>
   );
 }
 
@@ -275,57 +330,18 @@ function PricingCard({ pro = false }) {
 
 export function App() {
   const [workflow, setWorkflow] = useState(0);
+  const [workflowDirection, setWorkflowDirection] = useState(1);
   const [openFaqs, setOpenFaqs] = useState(() => new Set());
-  const [testimonial, setTestimonial] = useState(0);
+  const [communityPaused, setCommunityPaused] = useState(false);
   const [viewportTier, setViewportTier] = useState(null);
   const [heroMotionReady, setHeroMotionReady] = useState(false);
-  const [testimonialVisible, setTestimonialVisible] = useState(false);
-  const [pageVisible, setPageVisible] = useState(true);
-  const [testimonialQueued, setTestimonialQueued] = useState(false);
-  const testimonialRef = useRef(null);
-  const testimonialVisibleRef = useRef(false);
-  const pageVisibleRef = useRef(true);
+  const heroRef = useRef(null);
   const reducedMotion = useReducedMotion();
+  const { scrollYProgress: heroScrollProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroBackgroundY = useTransform(heroScrollProgress, [0, 0.68], [0, 16]);
+  const heroPhoneY = useTransform(heroScrollProgress, [0, 0.68], [0, -18]);
 
   useEffect(() => setHeroMotionReady(true), []);
-
-  useEffect(() => {
-    const onVisibilityChange = () => {
-      const visible = document.visibilityState === "visible";
-      pageVisibleRef.current = visible;
-      setPageVisible(visible);
-    };
-    onVisibilityChange();
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
-  }, []);
-
-  useEffect(() => {
-    if (!testimonialRef.current) return undefined;
-    const observer = new IntersectionObserver(([entry]) => {
-      testimonialVisibleRef.current = entry.isIntersecting;
-      setTestimonialVisible(entry.isIntersecting);
-    }, { threshold: 0.25 });
-    observer.observe(testimonialRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (testimonialVisibleRef.current && pageVisibleRef.current) {
-        setTestimonial((value) => (value + 1) % testimonials.length);
-      } else {
-        setTestimonialQueued(true);
-      }
-    }, 3000);
-    return () => window.clearTimeout(timer);
-  }, [testimonial]);
-
-  useEffect(() => {
-    if (!testimonialQueued || !testimonialVisible || !pageVisible) return;
-    setTestimonialQueued(false);
-    setTestimonial((value) => (value + 1) % testimonials.length);
-  }, [testimonialQueued, testimonialVisible, pageVisible]);
 
   useEffect(() => {
     const updateViewportTier = () => setViewportTier(window.innerWidth >= 1200 ? "desktop" : window.innerWidth >= 810 ? "tablet" : "mobile");
@@ -347,8 +363,13 @@ export function App() {
       return next;
     });
   };
-  const moveWorkflowFocus = (index) => {
+  const selectWorkflow = (index) => {
+    if (index === workflow) return;
+    setWorkflowDirection(index > workflow ? 1 : -1);
     setWorkflow(index);
+  };
+  const moveWorkflowFocus = (index) => {
+    selectWorkflow(index);
     window.requestAnimationFrame(() => document.getElementById(`workflow-tab-${index}`)?.focus());
   };
 
@@ -357,63 +378,65 @@ export function App() {
       <main id="top">
         <Header />
 
-        <section className="hero">
+        <section className="hero" ref={heroRef}>
           <motion.img
             className="hero-background"
-            src="/assets/rachel-hero-coast-v2.webp"
-            srcSet="/assets/rachel-hero-coast-v2.webp 1x, /assets/rachel-hero-coast-v2@2x.webp 2x"
+            src="/assets/rachel-hero-golden-gate-clouds.webp"
             alt=""
             aria-hidden="true"
-            width={1535}
-            height={1024}
+            width={1280}
+            height={482}
             loading="eager"
             fetchPriority="high"
+            style={{ y: reducedMotion ? 0 : heroBackgroundY }}
             initial={false}
-            animate={heroMotionReady ? { opacity: 1, scale: 1 } : { opacity: 0.001, scale: 1.025 }}
-            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0, delay: 0.05, duration: 1.1 })}
+            animate={heroMotionReady ? { opacity: 1, scale: 1 } : { opacity: 0.001, scale: reducedMotion ? 1 : 1.018 }}
+            transition={motionTransition(reducedMotion, { duration: 1, ease: LUXURY_EASE, delay: 0.04 })}
           />
-          <motion.img
-            className="hero-phone"
-            src="/assets/rachel-hero-phone-cutout-v4.webp"
-            srcSet="/assets/rachel-hero-phone-cutout-v4.webp 1x, /assets/rachel-hero-phone-cutout-v4@2x.webp 2x"
-            alt="Rachel handling a meeting change and follow-up in iMessage"
-            width={618}
-            height={1274}
-            loading="eager"
-            initial={false}
-            animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: 24, scale: 0.985 }}
-            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.28, duration: 0.9 })}
-          />
-          <div className="hero-inner">
-            <motion.div
-              className="hero-copy"
+          <motion.div className="hero-phone-motion" style={{ y: reducedMotion ? 0 : heroPhoneY }}>
+            <motion.img
+              className="hero-phone"
+              src="/assets/rachel-hero-phone-cutout-v4.webp"
+              srcSet="/assets/rachel-hero-phone-cutout-v4.webp 1x, /assets/rachel-hero-phone-cutout-v4@2x.webp 2x"
+              alt="Rachel handling a meeting change and follow-up in iMessage"
+              width={618}
+              height={1274}
+              loading="eager"
               initial={false}
-              animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: 18 }}
-              transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.18, duration: 0.8 })}
-            >
-              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: -14 }} transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.2, delay: 0.62, duration: 0.5 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong></motion.div>
-              <h1>Meet Rachel,<br /><span>your day already handled.</span></h1>
-              <p>Rachel keeps track of what matters, takes care of the follow-through, and texts you before anything slips.</p>
-              <div className="hero-actions">
+              animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 28, scale: reducedMotion ? 1 : 0.98 }}
+              transition={motionTransition(reducedMotion, { type: "spring", stiffness: 120, damping: 20, mass: 0.9, delay: 0.3 })}
+            />
+            <span className="hero-phone-avatar" aria-hidden="true"><img src="/assets/rachel-mark-v2.png" alt="" /></span>
+          </motion.div>
+          <div className="hero-inner">
+            <div className="hero-copy">
+              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : -8, filter: reducedMotion ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, { duration: 0.45, ease: LUXURY_EASE, delay: 0.12 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong><CaretRight size={15} weight="bold" aria-hidden="true" /></motion.div>
+              <motion.h1 initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : 18, filter: reducedMotion ? "blur(0px)" : "blur(8px)" }} transition={motionTransition(reducedMotion, { duration: 0.68, ease: LUXURY_EASE, delay: 0.18 })}>Meet Rachel,<br /><span>your day already handled.</span></motion.h1>
+              <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
+              <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
                 <BlackButton><ChatCircleDots size={19} weight="regular" />Text Rachel</BlackButton>
                 <motion.a
                   className="hero-secondary"
                   href="#steps"
-                  whileHover={{ y: -1, backgroundColor: "rgba(255, 255, 255, .94)" }}
-                  whileTap={{ y: 0, scale: 0.98 }}
+                  initial="rest"
+                  animate="rest"
+                  whileHover="hover"
+                  whileTap="pressed"
+                  variants={{ rest: { y: 0, scale: 1, backgroundColor: "rgba(255, 255, 255, .86)" }, hover: { y: reducedMotion ? 0 : -1, scale: 1, backgroundColor: "rgba(255, 255, 255, .96)" }, pressed: { y: 0, scale: reducedMotion ? 1 : 0.98 } }}
                   transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
                 >
-                  <span>See how it works</span>
-                  <CaretRight size={17} weight="bold" aria-hidden="true" />
+                  <span>Explore</span>
+                  <motion.span className="hero-secondary-arrow" variants={{ rest: { x: 0 }, hover: { x: reducedMotion ? 0 : 3 }, pressed: { x: 1 } }}><CaretRight size={17} weight="bold" aria-hidden="true" /></motion.span>
                 </motion.a>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
           <motion.div
             className="hero-coda"
-            initial={false}
-            animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: 16 }}
-            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.75, duration: 0.7 })}
+            initial={{ opacity: 0, y: reducedMotion ? 0 : 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.55 }}
+            transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE })}
           >
             <p>She knows what matters. <span>You decide what happens.</span></p>
           </motion.div>
@@ -429,18 +452,18 @@ export function App() {
         <section className="features section" id="features">
           <div className="section-shell">
             <SectionIntro title={<>Everything a great<br />chief of staff remembers</>} copy="Rachel connects the tools you already use, learns what matters, and handles the follow-through." />
-            <div className="primary-feature-grid">
+            <motion.div className="primary-feature-grid" {...groupRevealProps(reducedMotion, 0.06)}>
               {primaryFeatures.map(({ icon: Icon, title, copy }) => (
-                <motion.article className="feature-copy-card" key={title} {...revealProps("feature", reducedMotion)}>
+                <motion.article className="feature-copy-card" key={title} variants={revealVariants(reducedMotion, 14)} whileHover={reducedMotion ? undefined : { y: -3 }} transition={motionTransition(reducedMotion, INTERACTION_SPRING)}>
                   <Icon size={26} weight="fill" />
                   <h4>{title}</h4>
                   <p>{copy}</p>
                 </motion.article>
               ))}
-            </div>
-            <div className="visual-feature-grid">
+            </motion.div>
+            <motion.div className="visual-feature-grid" {...groupRevealProps(reducedMotion, 0.08)}>
               {visualFeatures.map(({ icon: Icon, title, copy, image, key }) => (
-                <motion.article className={`visual-feature visual-${key}`} key={title} {...revealProps("feature", reducedMotion)}>
+                <motion.article className={`visual-feature visual-${key}`} key={title} variants={revealVariants(reducedMotion, 14)}>
                   <div className="visual-feature-art">
                     <img src={image} alt="" />
                     {key === "search" && <><RachelIdentityMark className="asset-mark-thread-top" /><RachelIdentityMark className="asset-mark-thread-bottom" /></>}
@@ -448,11 +471,11 @@ export function App() {
                   <div className="visual-feature-copy"><h4><Icon size={27} weight="fill" />{title}</h4><p>{copy}</p></div>
                 </motion.article>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        <motion.section className="workflow section" animate={workflowSectionHeight === undefined ? undefined : { height: workflowSectionHeight }} transition={interactionTransition}>
+        <motion.section className="workflow section" animate={workflowSectionHeight === undefined ? undefined : { height: workflowSectionHeight }} transition={motionTransition(reducedMotion, LAYOUT_SPRING)}>
           <div className="section-shell">
             <SectionIntro title="From thought to done in seconds." copy="Choose how you want to delegate. Rachel adapts to your day, not the other way around." />
             <motion.div className="workflow-interactive" {...revealProps("feature", reducedMotion)}>
@@ -468,7 +491,7 @@ export function App() {
                       tabIndex={active ? 0 : -1}
                       className={active ? "active" : ""}
                       key={item.label}
-                      onClick={() => setWorkflow(index)}
+                      onClick={() => selectWorkflow(index)}
                       onKeyDown={(event) => {
                         if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
                         event.preventDefault();
@@ -485,9 +508,18 @@ export function App() {
                   );
                 })}
               </motion.div>
-              <motion.div className="workflow-panel" id="workflow-panel" role="tabpanel" aria-labelledby={`workflow-tab-${workflow}`} animate={workflowPanelHeight === undefined ? undefined : { height: workflowPanelHeight }} transition={interactionTransition}>
-                <AnimatePresence initial={false}>
-                  <motion.div className={`workflow-state workflow-state-${workflow}`} key={workflow} initial={{ opacity: 0, filter: "blur(20px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} exit={{ opacity: 0, filter: "blur(20px)" }} transition={interactionTransition}>
+              <motion.div className="workflow-panel" id="workflow-panel" role="tabpanel" aria-labelledby={`workflow-tab-${workflow}`} animate={workflowPanelHeight === undefined ? undefined : { height: workflowPanelHeight }} transition={motionTransition(reducedMotion, LAYOUT_SPRING)}>
+                <AnimatePresence initial={false} mode="wait" custom={{ direction: workflowDirection, mobile: viewportTier === "mobile", reduced: reducedMotion }}>
+                  <motion.div
+                    className={`workflow-state workflow-state-${workflow}`}
+                    key={workflow}
+                    custom={{ direction: workflowDirection, mobile: viewportTier === "mobile", reduced: reducedMotion }}
+                    variants={workflowStateVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={motionTransition(reducedMotion, { duration: 0.32, ease: LUXURY_EASE })}
+                  >
                     <div className="workflow-copy" style={viewportTier === "desktop" ? { paddingRight: workflowCopyRightPaddings[workflow] } : undefined}>
                       <div>
                         <span className="workflow-icon" aria-hidden="true"><WorkflowIcon size={18} weight="fill" /></span>
@@ -514,16 +546,16 @@ export function App() {
             <SectionIntro title={<>Context that keeps<br />up with you</>} copy="Rachel remembers what you decided, who matters, and what still needs a nudge." />
             <motion.div className="solution-visual" {...revealProps("feature", reducedMotion)}>
               <img className="ai-interface" src="/assets/rachel-context.png" alt="Rachel connecting context across work" />
-              <div className="benefit-grid">
+              <motion.div className="benefit-grid" {...groupRevealProps(reducedMotion, 0.055)}>
                 {[
                   ["Brief", "Start every day with the decisions, priorities, and follow-ups that actually need you.", BellRinging],
                   ["Draft", "Turn rough thoughts into polished emails, updates, and agendas in your own voice.", PencilSimpleLine],
                   ["Schedule", "Find the right time, prepare the context, and keep every commitment moving.", CalendarCheck],
                   ["Follow up", "Remember every promise and close the loop with the right person at the right moment.", ArrowBendUpRight],
                 ].map(([title, copy, Icon]) => (
-                  <article key={title}><Icon size={18} weight="fill" /><h4>{title}</h4><p>{copy}</p></article>
+                  <motion.article key={title} variants={revealVariants(reducedMotion, 10)}><Icon size={18} weight="fill" /><h4>{title}</h4><p>{copy}</p></motion.article>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>
@@ -531,16 +563,16 @@ export function App() {
         <section className="steps section" id="steps">
           <div className="section-shell">
             <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Add Rachel to iMessage and get a useful first brief in minutes." />
-            <div className="steps-list">
-              <div className="step-line" />
+            <motion.div className="steps-list" {...groupRevealProps(reducedMotion, 0.09)}>
+              <motion.div className="step-line" variants={{ hidden: { opacity: 0, scaleY: reducedMotion ? 1 : 0 }, visible: { opacity: 1, scaleY: 1, transition: motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE }) } }} />
               {steps.map((step, index) => (
-                <article className="step-row" key={step.number}>
+                <motion.article className="step-row" key={step.number} variants={revealVariants(reducedMotion, 16)}>
                   <div className="step-number"><span />Step {step.number}</div>
                   <div className="step-visual"><img src={step.image} alt="" />{index === 0 && <RachelIdentityMark className="asset-mark-step-contact" />}</div>
                   <div className="step-copy"><h4>{step.title}</h4><p>{step.copy}</p><a href="#features">Know more</a></div>
-                </article>
+                </motion.article>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -553,27 +585,6 @@ export function App() {
               {comparisonRows.map(([feature, free, pro]) => (
                 <div className="comparison-row" key={feature}><h4>{feature}</h4><span>{free}</span><span>{pro === "check" ? <CheckCircle size={16} weight="fill" /> : pro}</span></div>
               ))}
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="testimonials section" id="testimonials">
-          <div className="section-shell">
-            <SectionIntro title="What people say after week one" copy="Founders, operators, and busy teams get the same thing back: attention for the work that matters." />
-            <motion.div
-              className="testimonial-slider"
-              ref={testimonialRef}
-              {...revealProps("flow", reducedMotion)}
-            >
-              <article className="testimonial-card">
-                <div className="testimonial-person"><img src={testimonials[testimonial].avatar} alt="" /><div><h4>{testimonials[testimonial].name}</h4><p>{testimonials[testimonial].role}</p></div></div>
-                <div className="stars" aria-label="5 out of 5 stars">{Array.from({ length: 5 }, (_, index) => <Star key={index} size={24} weight="fill" />)}</div>
-                <blockquote>&quot;{testimonials[testimonial].quote}&quot;</blockquote>
-              </article>
-              <div className="testimonial-navigation">
-                <motion.button aria-label="Previous review" onClick={() => setTestimonial((value) => (value - 1 + testimonials.length) % testimonials.length)} whileHover={{ opacity: 0.8 }} whileTap={{ opacity: 0.6, scale: 0.9 }} transition={interactionTransition}><CaretLeft size={16} weight="bold" /></motion.button>
-                <motion.button aria-label="Next review" onClick={() => setTestimonial((value) => (value + 1) % testimonials.length)} whileHover={{ opacity: 0.8 }} whileTap={{ opacity: 0.6, scale: 0.9 }} transition={interactionTransition}><CaretRight size={16} weight="bold" /></motion.button>
-              </div>
             </motion.div>
           </div>
         </section>
@@ -598,17 +609,100 @@ export function App() {
           </div>
         </section>
 
+        <section className="community-section section" id="community">
+          <SectionIntro title="A calmer way to run the day" copy="Four ways Rachel turns an ordinary text into prepared work, clear decisions, and closed loops." />
+          <motion.div
+            className={`community-rail ${communityPaused ? "is-paused" : ""}`}
+            tabIndex="0"
+            role="region"
+            aria-label="Rachel workflow stories"
+            {...revealProps("flow", reducedMotion)}
+          >
+            <div className="community-track">
+              {[...communityStories, ...communityStories].map(({ title, label, icon: StoryIcon, copy }, index) => (
+                <article className="community-card" key={`${title}-${index}`} aria-hidden={index >= communityStories.length ? "true" : undefined}>
+                  <div className="community-card-head">
+                    <span className="community-icon"><StoryIcon size={20} weight="fill" /></span>
+                    <div><h3>{title}</h3><p>{label}</p></div>
+                    <CheckCircle size={19} weight="fill" aria-hidden="true" />
+                  </div>
+                  <p className="community-copy">{copy}</p>
+                </article>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div className="community-actions" {...revealProps("feature", reducedMotion)}>
+            <a className="community-link" href="#steps">Explore Rachel workflows <CaretRight size={17} weight="bold" /></a>
+            <button
+              className="community-motion-toggle"
+              type="button"
+              aria-pressed={communityPaused}
+              onClick={() => setCommunityPaused((paused) => !paused)}
+            >
+              {communityPaused ? <Play size={14} weight="fill" aria-hidden="true" /> : <Pause size={14} weight="fill" aria-hidden="true" />}
+              {communityPaused ? "Play motion" : "Pause motion"}
+            </button>
+          </motion.div>
+        </section>
+
+        <section className="live-metrics section" aria-labelledby="live-metrics-title">
+          <motion.div className="live-metrics-inner" {...groupRevealProps(reducedMotion, 0.09)}>
+            <motion.div className="live-pill" variants={revealVariants(reducedMotion, 8)}><span aria-hidden="true" />Product principles</motion.div>
+            <motion.h2 id="live-metrics-title" variants={revealVariants(reducedMotion, 16)}>Rachel works by two rules.</motion.h2>
+            <motion.div className="metrics-grid" variants={revealVariants(reducedMotion, 14)}>
+              <article>
+                <strong>Ready</strong>
+                <h3>When your day changes</h3>
+                <p>One private thread keeps the next decision close at hand.</p>
+              </article>
+              <article>
+                <strong>Your call</strong>
+                <h3>Before anything important</h3>
+                <p>Rachel prepares the next move. You decide what happens.</p>
+              </article>
+            </motion.div>
+          </motion.div>
+        </section>
+
         <section className="final-cta">
-          <img src="/assets/cta-background.avif" alt="" />
-          <div><h2>One text closer<br />to done</h2><p>Your calendar, inbox, follow-ups, and loose ends — quietly handled by Rachel.</p><BlackButton>Text Rachel</BlackButton></div>
+          <motion.div className="final-cta-card" {...revealProps("flow", reducedMotion)}>
+            <motion.img
+              src="/assets/rachel-context.png"
+              alt="Rachel organising an afternoon across a meeting, email draft, calendar, and follow-up"
+              initial={{ scale: reducedMotion ? 1 : 1.035 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={motionTransition(reducedMotion, { duration: 1.1, ease: LUXURY_EASE })}
+            />
+            <div className="final-cta-scrim" aria-hidden="true" />
+            <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
+              <motion.span className="final-cta-mark" variants={revealVariants(reducedMotion, 8)}><img src="/assets/rachel-mark-v2.png" alt="" /></motion.span>
+              <motion.h2 variants={revealVariants(reducedMotion, 12)}>Meet your new chief of staff.</motion.h2>
+              <motion.p variants={revealVariants(reducedMotion, 10)}>Rachel lives where your day already happens—and keeps every decision yours.</motion.p>
+              <motion.a
+                className="final-cta-button"
+                href="sms:?body=Hi%20Rachel"
+                variants={revealVariants(reducedMotion, 8)}
+                whileHover={reducedMotion ? undefined : { y: -1, scale: 1.01 }}
+                whileTap={reducedMotion ? undefined : { y: 0, scale: 0.975 }}
+                transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
+              >
+                <span><ChatCircleDots size={18} weight="fill" /></span>Text Rachel
+              </motion.a>
+            </motion.div>
+          </motion.div>
         </section>
 
         <footer>
           <div className="footer-inner">
             <div><Brand /><p>The chief of staff in your texts.</p></div>
             <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#steps">Setup</a></div>
-            <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href="#top">Privacy</a><a href="#top">Terms</a></div>
+            <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href="sms:?body=Hi%20Rachel">Text Rachel</a></div>
           </div>
+          <motion.div className="signature-lockup" initial={{ opacity: 0, y: reducedMotion ? 0 : 28 }} whileInView={{ opacity: 0.13, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE })} aria-hidden="true">
+            <img src="/assets/rachel-mark-v2.png" alt="" />
+            <span>Rachel</span>
+          </motion.div>
         </footer>
       </main>
     </MotionConfig>

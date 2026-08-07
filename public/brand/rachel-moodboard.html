@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Rachel brand mood board — identity, type, palette, imagery, product UI, motion, and usage principles." />
+    <title>Rachel — Brand Mood Board</title>
+    <style>
+      @font-face {
+        font-family: "Google Sans";
+        src: url("/fonts/4Ua_rENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrw2IKlnrSjiEjo5.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("/fonts/GrgcKwrN6d3Uz8EwcLHZxwEfC4.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("/fonts/UjlFhCnUjxhNfep4oYBPqnEssyo.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("/fonts/yDtI2UI8XcEg1W2je9XPN3Noo.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("/fonts/syRNPWzAMIrcJ3wIlPIP43KjQs.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #f7f7f7;
+        --hero: #f7f7f4;
+        --ink: #000000;
+        --white: #ffffff;
+        --muted: #7a7a7a;
+        --hero-copy: #666666;
+        --blue: #0086ff;
+        --blue-deep: #0075fa;
+        --success: #07dc71;
+        --line: rgba(0, 0, 0, 0.08);
+        --line-dark: rgba(255, 255, 255, 0.16);
+        --shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 3px 3px rgba(0, 0, 0, 0.05);
+        --shadow-soft: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.05), 0 1px 2px -0.5px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        background: var(--ink);
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--ink);
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible {
+        outline: 2px solid rgba(0, 134, 255, 0.75);
+        outline-offset: 4px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      p,
+      figure,
+      blockquote {
+        margin: 0;
+      }
+
+      .shell {
+        width: min(1380px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid var(--line-dark);
+        color: var(--white);
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      .topbar-inner {
+        min-height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .mini-lockup,
+      .lockup {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .mini-lockup {
+        gap: 8px;
+        font-size: 15px;
+        line-height: 18px;
+        letter-spacing: -0.2px;
+      }
+
+      .mini-lockup img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+        filter: brightness(0) saturate(100%) invert(45%) sepia(93%) saturate(3847%) hue-rotate(191deg) brightness(103%) contrast(102%);
+      }
+
+      .topbar nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 13px;
+        line-height: 16px;
+        letter-spacing: -0.1px;
+      }
+
+      .topbar nav a {
+        transition: color 0.25s ease;
+      }
+
+      .topbar nav a:hover {
+        color: var(--white);
+      }
+
+      .deck {
+        padding: 24px 0 72px;
+      }
+
+      .board {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 26px;
+        background: var(--paper);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.42);
+      }
+
+      .cover {
+        min-height: 760px;
+        display: grid;
+        grid-template-columns: minmax(0, 0.94fr) minmax(380px, 1.06fr);
+        border-bottom: 1px solid var(--line);
+        background: var(--hero);
+      }
+
+      .cover-copy {
+        min-height: 760px;
+        padding: 72px 64px 58px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 15px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--blue);
+      }
+
+      .cover h1 {
+        width: min(630px, 100%);
+        margin-top: 48px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: clamp(58px, 5.6vw, 86px);
+        font-weight: 500;
+        line-height: 0.98;
+        letter-spacing: -0.055em;
+      }
+
+      .cover-intro {
+        width: min(510px, 100%);
+        margin-top: 30px;
+        color: var(--hero-copy);
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: -0.35px;
+      }
+
+      .cover-meta {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 17px;
+      }
+
+      .cover-meta strong {
+        display: block;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 18px;
+      }
+
+      .cover-visual {
+        position: relative;
+        min-height: 760px;
+        overflow: hidden;
+        background: var(--hero);
+      }
+
+      .cover-coast {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: 64% bottom;
+      }
+
+      .cover-phone {
+        position: absolute;
+        right: clamp(28px, 6vw, 92px);
+        bottom: -278px;
+        width: clamp(310px, 32vw, 448px);
+        filter: drop-shadow(0 24px 34px rgba(37, 47, 59, 0.16));
+      }
+
+      .cover-lockup {
+        position: absolute;
+        top: 48px;
+        right: 48px;
+        padding: 12px 15px 12px 12px;
+        gap: 9px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      .cover-lockup img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        filter: brightness(0) saturate(100%) invert(45%) sepia(93%) saturate(3847%) hue-rotate(191deg) brightness(103%) contrast(102%);
+      }
+
+      .chapter {
+        padding: 92px 64px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .chapter-dark {
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .chapter-heading {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 36px;
+        margin-bottom: 48px;
+      }
+
+      .chapter-index {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 15px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .chapter-title {
+        max-width: 760px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: clamp(38px, 4vw, 56px);
+        font-weight: 500;
+        line-height: 1.04;
+        letter-spacing: -0.04em;
+      }
+
+      .chapter-description {
+        max-width: 620px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 25px;
+      }
+
+      .chapter-dark .chapter-description {
+        color: rgba(255, 255, 255, 0.58);
+      }
+
+      .identity-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+      }
+
+      .panel {
+        position: relative;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--white);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .panel-dark {
+        border-color: var(--line-dark);
+        color: var(--white);
+        background: #000000;
+      }
+
+      .lockup-stage {
+        min-height: 390px;
+        padding: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lockup {
+        gap: 18px;
+        font-size: clamp(48px, 7vw, 86px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+
+      .lockup img {
+        width: clamp(54px, 7vw, 82px);
+        height: clamp(54px, 7vw, 82px);
+        object-fit: contain;
+        filter: brightness(0) saturate(100%) invert(45%) sepia(93%) saturate(3847%) hue-rotate(191deg) brightness(103%) contrast(102%);
+      }
+
+      .panel-caption {
+        padding: 18px 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .panel-dark .panel-caption {
+        border-color: var(--line-dark);
+        color: rgba(255, 255, 255, 0.52);
+      }
+
+      .mark-panel {
+        min-height: 390px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mark-field {
+        display: grid;
+        place-items: center;
+      }
+
+      .mark-field + .mark-field {
+        border-left: 1px solid var(--line);
+      }
+
+      .mark-field img {
+        width: 72px;
+        height: 72px;
+        object-fit: contain;
+        filter: brightness(0) saturate(100%) invert(45%) sepia(93%) saturate(3847%) hue-rotate(191deg) brightness(103%) contrast(102%);
+      }
+
+      .contained-mark {
+        width: 108px;
+        height: 108px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(0, 134, 255, 0.12);
+        border-radius: 50%;
+        background: #eaf3ff;
+        box-shadow: 0 1px 3px rgba(0, 54, 112, 0.08);
+      }
+
+      .contained-mark img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .promise {
+        margin-top: 16px;
+        padding: 72px 64px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
+        gap: 56px;
+        align-items: end;
+        border-radius: 18px;
+        color: var(--white);
+        background: var(--blue);
+      }
+
+      .promise blockquote {
+        max-width: 780px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: clamp(46px, 5.2vw, 76px);
+        font-weight: 500;
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .promise-copy {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .promise-copy strong {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .swatch {
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .swatch-color {
+        min-height: 158px;
+      }
+
+      .swatch-meta {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        border-top: 1px solid var(--line);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .swatch-meta strong {
+        font-weight: 600;
+      }
+
+      .swatch-meta code {
+        color: var(--muted);
+        font-family: "Inter", Arial, sans-serif;
+      }
+
+      .blue { background: var(--blue); }
+      .blue-deep { background: var(--blue-deep); }
+      .ink { background: var(--ink); }
+      .paper { background: var(--paper); }
+      .hero-surface { background: var(--hero); }
+      .white { background: var(--white); }
+      .muted { background: var(--muted); }
+      .success { background: var(--success); }
+
+      .type-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 16px;
+      }
+
+      .type-display {
+        min-height: 640px;
+        padding: 52px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .type-display h3 {
+        max-width: 720px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: clamp(56px, 7vw, 94px);
+        font-weight: 500;
+        line-height: 0.96;
+        letter-spacing: -0.055em;
+      }
+
+      .type-display p {
+        max-width: 500px;
+        color: rgba(255, 255, 255, 0.58);
+      }
+
+      .type-display .spec,
+      .type-spec .spec {
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .type-spec {
+        min-height: 640px;
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .type-row {
+        padding: 28px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .type-row:first-child {
+        padding-top: 0;
+      }
+
+      .type-row:last-child {
+        border-bottom: 0;
+      }
+
+      .type-row small {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .sample-section {
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 40px;
+        font-weight: 500;
+        line-height: 42px;
+        letter-spacing: -0.8px;
+      }
+
+      .sample-title {
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.6px;
+      }
+
+      .sample-body {
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+      }
+
+      .sample-nav {
+        font-size: 14px;
+        line-height: 17px;
+        letter-spacing: -0.14px;
+      }
+
+      .editorial-stage {
+        position: relative;
+        height: 720px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: var(--hero);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .editorial-stage .coast {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: center bottom;
+      }
+
+      .editorial-stage .phone {
+        position: absolute;
+        bottom: -420px;
+        left: 50%;
+        width: 410px;
+        max-width: none;
+        translate: -50% 0;
+        filter: drop-shadow(0 24px 34px rgba(37, 47, 59, 0.16));
+      }
+
+      .editorial-note {
+        position: absolute;
+        top: 36px;
+        left: 36px;
+        width: min(360px, calc(100% - 72px));
+        padding: 22px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      .editorial-note strong {
+        display: block;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.55px;
+      }
+
+      .editorial-note p {
+        margin-top: 8px;
+        color: var(--hero-copy);
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      .art-principles {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .principle {
+        min-height: 190px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--white);
+      }
+
+      .principle span {
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+      }
+
+      .principle h4 {
+        margin-top: 34px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.55px;
+      }
+
+      .principle p {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      .product-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .product-card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--white);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .product-card img {
+        width: 100%;
+        aspect-ratio: 512 / 411;
+        object-fit: cover;
+      }
+
+      .product-card figcaption {
+        min-height: 88px;
+        padding: 16px 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .product-card strong {
+        display: block;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 22px;
+        letter-spacing: -0.4px;
+      }
+
+      .product-card span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 17px;
+      }
+
+      .wide-product {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.34fr) minmax(270px, 0.66fr);
+        gap: 14px;
+      }
+
+      .context-card img {
+        width: 100%;
+        height: 100%;
+        min-height: 440px;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .social-card {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--ink);
+      }
+
+      .social-card img {
+        width: 100%;
+        border: 1px solid var(--line-dark);
+        border-radius: 12px;
+      }
+
+      .social-card p {
+        margin-top: 18px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 13px;
+        line-height: 19px;
+      }
+
+      .motion-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .motion-card {
+        min-height: 260px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--line-dark);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .motion-card .time {
+        color: var(--blue);
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .motion-card h4 {
+        margin-top: 38px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.55px;
+      }
+
+      .motion-card p {
+        margin-top: 8px;
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      .guardrail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .guardrail {
+        padding: 34px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--white);
+      }
+
+      .guardrail h3 {
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 34px;
+        letter-spacing: -0.75px;
+      }
+
+      .guardrail ul {
+        margin: 24px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guardrail li {
+        position: relative;
+        padding: 13px 0 13px 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      .guardrail li::before {
+        content: "";
+        position: absolute;
+        top: 21px;
+        left: 0;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--blue);
+      }
+
+      .guardrail.avoid li::before {
+        background: var(--ink);
+      }
+
+      .application-system {
+        margin-top: 48px;
+        padding-top: 28px;
+        border-top: 1px solid var(--line);
+      }
+
+      .application-system-heading {
+        margin-bottom: 22px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+      }
+
+      .application-system-heading h3 {
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 38px;
+        letter-spacing: -0.9px;
+      }
+
+      .application-system-heading p {
+        max-width: 520px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      .application-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .application-card {
+        min-height: 286px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--hero-surface);
+      }
+
+      .application-index {
+        color: var(--blue);
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 16px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .application-card h4 {
+        margin-top: 34px;
+        font-family: "Google Sans", Arial, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 31px;
+        letter-spacing: -0.65px;
+      }
+
+      .application-card p:not(.application-index) {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      .application-rule {
+        margin-top: 28px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 18px;
+      }
+
+      .context-note {
+        margin-top: 16px;
+        padding: 26px 30px;
+        border: 1px solid rgba(0, 134, 255, 0.16);
+        border-radius: 16px;
+        color: #07599d;
+        background: #eef7ff;
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .board-footer {
+        min-height: 220px;
+        padding: 56px 64px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 32px;
+        color: rgba(255, 255, 255, 0.62);
+        background: var(--ink);
+      }
+
+      .board-footer .lockup {
+        gap: 12px;
+        color: var(--white);
+        font-size: 34px;
+        letter-spacing: -1.1px;
+      }
+
+      .board-footer .lockup img {
+        width: 38px;
+        height: 38px;
+      }
+
+      .board-footer p {
+        max-width: 420px;
+        text-align: right;
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      @media (max-width: 1040px) {
+        .cover {
+          grid-template-columns: 1fr;
+        }
+
+        .cover-copy {
+          min-height: 610px;
+        }
+
+        .cover-visual {
+          min-height: 680px;
+        }
+
+        .cover-phone {
+          right: 50%;
+          bottom: -314px;
+          width: 390px;
+          translate: 50% 0;
+        }
+
+        .chapter-heading {
+          grid-template-columns: 140px minmax(0, 1fr);
+        }
+
+        .identity-grid,
+        .type-layout,
+        .wide-product {
+          grid-template-columns: 1fr;
+        }
+
+        .swatch-grid,
+        .product-gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .type-display,
+        .type-spec {
+          min-height: 520px;
+        }
+
+        .context-card img {
+          min-height: 0;
+          aspect-ratio: 800 / 338;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100% - 20px, 1380px);
+        }
+
+        .topbar nav {
+          display: none;
+        }
+
+        .deck {
+          padding: 10px 0 28px;
+        }
+
+        .board {
+          border-radius: 18px;
+        }
+
+        .cover-copy,
+        .chapter,
+        .board-footer {
+          padding-right: 24px;
+          padding-left: 24px;
+        }
+
+        .cover-copy {
+          min-height: 560px;
+          padding-top: 42px;
+          padding-bottom: 36px;
+        }
+
+        .cover h1 {
+          margin-top: 30px;
+          font-size: 52px;
+        }
+
+        .cover-intro {
+          font-size: 16px;
+          line-height: 24px;
+        }
+
+        .cover-visual {
+          min-height: 620px;
+        }
+
+        .cover-lockup {
+          top: 24px;
+          right: 24px;
+        }
+
+        .cover-phone {
+          bottom: -280px;
+          width: 330px;
+        }
+
+        .chapter {
+          padding-top: 68px;
+          padding-bottom: 68px;
+        }
+
+        .chapter-heading {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-bottom: 32px;
+        }
+
+        .lockup-stage {
+          min-height: 270px;
+          padding: 28px;
+        }
+
+        .mark-panel {
+          min-height: 270px;
+        }
+
+        .promise {
+          padding: 42px 28px;
+          grid-template-columns: 1fr;
+          gap: 34px;
+        }
+
+        .swatch-grid,
+        .product-gallery,
+        .art-principles,
+        .motion-grid,
+        .guardrail-grid,
+        .application-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .application-system-heading {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .swatch {
+          min-height: 210px;
+        }
+
+        .swatch-color {
+          min-height: 132px;
+        }
+
+        .type-display,
+        .type-spec {
+          min-height: auto;
+          padding: 28px;
+        }
+
+        .type-display h3 {
+          font-size: 54px;
+        }
+
+        .type-display p {
+          margin-top: 80px;
+        }
+
+        .sample-section {
+          font-size: 34px;
+          line-height: 38px;
+        }
+
+        .editorial-stage {
+          height: 630px;
+        }
+
+        .editorial-stage .phone {
+          bottom: -350px;
+          width: 330px;
+        }
+
+        .editorial-note {
+          top: 24px;
+          left: 24px;
+          width: calc(100% - 48px);
+        }
+
+        .product-card figcaption {
+          min-height: 0;
+        }
+
+        .board-footer {
+          min-height: 260px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .board-footer p {
+          text-align: left;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+
+      @media print {
+        html,
+        body {
+          background: var(--white);
+        }
+
+        .topbar {
+          display: none;
+        }
+
+        .deck {
+          padding: 0;
+        }
+
+        .shell {
+          width: 100%;
+        }
+
+        .board {
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        .chapter,
+        .cover {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="mini-lockup" href="#top" aria-label="Rachel mood board home">
+          <img src="/assets/rachel-mark-v2.png" alt="" width="22" height="22" />
+          <span>Rachel / Brand board</span>
+        </a>
+        <nav aria-label="Mood board sections">
+          <a href="#identity">Identity</a>
+          <a href="#palette">Palette</a>
+          <a href="#type">Type</a>
+          <a href="#imagery">Imagery</a>
+          <a href="#product">Product</a>
+          <a href="#motion">Motion</a>
+          <a href="#guardrails">Guardrails</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="deck" id="top">
+      <div class="shell board">
+        <section class="cover" aria-labelledby="cover-title">
+          <div class="cover-copy">
+            <div>
+              <p class="eyebrow">Identity system 01</p>
+              <h1 id="cover-title">Calm command, made visible.</h1>
+              <p class="cover-intro">Rachel is the AI chief of staff in iMessage: warm enough to trust, precise enough to delegate to, and quiet enough to keep the focus on your day.</p>
+            </div>
+            <div class="cover-meta">
+              <div><strong>Rachel</strong>Brand mood board</div>
+              <div><strong>System</strong>Google Sans / Inter / Rachel blue</div>
+            </div>
+          </div>
+          <div class="cover-visual" aria-label="Rachel Golden Gate cloudscape and iMessage product scene">
+            <img class="cover-coast" src="/assets/rachel-hero-golden-gate-clouds.webp" alt="Golden Gate Bridge rising through calm morning cloud cover" width="1280" height="482" fetchpriority="high" />
+            <img class="cover-phone" src="/assets/rachel-hero-phone-cutout-v4.webp" alt="Rachel handling a meeting change and follow-up in iMessage" width="618" height="1274" />
+            <div class="lockup cover-lockup"><img src="/assets/rachel-mark-v2.png" alt="" width="24" height="24" /><span>Rachel</span></div>
+          </div>
+        </section>
+
+        <section class="chapter" id="identity" aria-labelledby="identity-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">01 / Identity</p>
+            <div>
+              <h2 class="chapter-title" id="identity-title">One signature, used with intent.</h2>
+              <p class="chapter-description">The tapered eight-ray star signals Rachel's presence. Its subtle lower-right conversational gesture suggests a reply without becoming a literal chat bubble; the mark appears only where Rachel is the actor.</p>
+            </div>
+          </header>
+
+          <div class="identity-grid">
+            <figure class="panel">
+              <div class="lockup-stage">
+                <div class="lockup"><img src="/assets/rachel-mark-v2.png" alt="Rachel tapered eight-ray mark" width="82" height="82" /><span>Rachel</span></div>
+              </div>
+              <figcaption class="panel-caption"><span>Primary lockup</span><span>Inter regular / Rachel blue</span></figcaption>
+            </figure>
+
+            <figure class="panel">
+              <div class="mark-panel">
+                <div class="mark-field"><img src="/assets/rachel-mark-v2.png" alt="Rachel tapered eight-ray mark with a lower-right conversational gesture" width="72" height="72" /></div>
+                <div class="mark-field"><div class="contained-mark"><img src="/assets/rachel-mark-v2.png" alt="Rachel tapered mark in its contained avatar treatment" width="70" height="70" /></div></div>
+              </div>
+              <figcaption class="panel-caption"><span>Signature mark</span><span>Standalone / contained avatar</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="promise">
+            <blockquote>Your day,<br />already handled.</blockquote>
+            <p class="promise-copy"><strong>Brand promise</strong>Rachel remembers what matters, coordinates the follow-through, and asks before anything important happens.</p>
+          </div>
+        </section>
+
+        <section class="chapter" id="palette" aria-labelledby="palette-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">02 / Palette</p>
+            <div>
+              <h2 class="chapter-title" id="palette-title">A restrained digital signal.</h2>
+              <p class="chapter-description">Warmth comes from light and paper. Rachel blue remains the single active accent across identity and product state.</p>
+            </div>
+          </header>
+
+          <div class="swatch-grid" aria-label="Rachel color palette">
+            <article class="swatch"><div class="swatch-color blue"></div><div class="swatch-meta"><strong>Rachel blue</strong><code>#0086FF</code></div></article>
+            <article class="swatch"><div class="swatch-color blue-deep"></div><div class="swatch-meta"><strong>Deep blue</strong><code>#0075FA</code></div></article>
+            <article class="swatch"><div class="swatch-color ink"></div><div class="swatch-meta"><strong>Ink</strong><code>#000000</code></div></article>
+            <article class="swatch"><div class="swatch-color success"></div><div class="swatch-meta"><strong>Success</strong><code>#07DC71</code></div></article>
+            <article class="swatch"><div class="swatch-color paper"></div><div class="swatch-meta"><strong>Paper</strong><code>#F7F7F7</code></div></article>
+            <article class="swatch"><div class="swatch-color hero-surface"></div><div class="swatch-meta"><strong>Warm hero</strong><code>#F7F7F4</code></div></article>
+            <article class="swatch"><div class="swatch-color white"></div><div class="swatch-meta"><strong>White</strong><code>#FFFFFF</code></div></article>
+            <article class="swatch"><div class="swatch-color muted"></div><div class="swatch-meta"><strong>Muted</strong><code>#7A7A7A</code></div></article>
+          </div>
+        </section>
+
+        <section class="chapter chapter-dark" id="type" aria-labelledby="type-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">03 / Typography</p>
+            <div>
+              <h2 class="chapter-title" id="type-title">Human clarity, no theatrics.</h2>
+              <p class="chapter-description">Google Sans gives Rachel calm authority. Inter keeps the product precise and conversational. No additional display face is needed.</p>
+            </div>
+          </header>
+
+          <div class="type-layout">
+            <article class="panel panel-dark type-display">
+              <p class="spec">Google Sans Medium / Display</p>
+              <h3>She knows what matters.</h3>
+              <p>Compact, balanced, and sentence case. The display voice should feel like a composed person delivering a clear decision.</p>
+            </article>
+
+            <article class="panel type-spec">
+              <div class="type-row"><small>Section / Google Sans 500</small><p class="sample-section">From thought to done.</p></div>
+              <div class="type-row"><small>Product title / Google Sans 500</small><p class="sample-title">Compounding memory</p></div>
+              <div class="type-row"><small>Body / Inter 400</small><p class="sample-body">Rachel keeps track of what matters, takes care of the follow-through, and texts you before anything slips.</p></div>
+              <div class="type-row"><small>Navigation / Inter 400</small><p class="sample-nav">Features &nbsp;&nbsp; Pricing &nbsp;&nbsp; FAQ &nbsp;&nbsp; Setup</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="chapter" id="imagery" aria-labelledby="imagery-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">04 / Art direction</p>
+            <div>
+              <h2 class="chapter-title" id="imagery-title">Warm atmosphere. Precise proof.</h2>
+              <p class="chapter-description">The editorial world makes Rachel feel human; the product world makes Rachel believable. Both remain quiet enough for the message to lead.</p>
+            </div>
+          </header>
+
+          <figure class="editorial-stage">
+            <img class="coast" src="/assets/rachel-hero-golden-gate-clouds.webp" alt="Golden Gate Bridge and coastal cloud cover with open negative space" width="1280" height="482" loading="lazy" />
+            <img class="phone" src="/assets/rachel-hero-phone-cutout-v4.webp" alt="Rachel's iMessage conversation on an iPhone" width="618" height="1274" loading="lazy" />
+            <figcaption class="editorial-note"><strong>Golden Gate calm</strong><p>Owned cloudscape, natural warmth, open space, and a centered product silhouette. Never stock, generic, synthetic, or overtly “AI.”</p></figcaption>
+          </figure>
+
+          <div class="art-principles">
+            <article class="principle"><span>01</span><h4>Human atmosphere</h4><p>Morning light and lived-in calm create trust before the product needs to explain itself.</p></article>
+            <article class="principle"><span>02</span><h4>Product legibility</h4><p>Messages, approvals, and outcomes remain readable at the real placement size.</p></article>
+            <article class="principle"><span>03</span><h4>Quiet confidence</h4><p>No chrome for chrome's sake. The composition leaves room for one clear promise.</p></article>
+          </div>
+        </section>
+
+        <section class="chapter" id="product" aria-labelledby="product-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">05 / Product UI</p>
+            <div>
+              <h2 class="chapter-title" id="product-title">Rachel blue connects the system.</h2>
+              <p class="chapter-description">Product visuals prove memory, coordination, and approval. The tapered eight-ray mark identifies Rachel; every other symbol stays semantically honest.</p>
+            </div>
+          </header>
+
+          <div class="product-gallery">
+            <figure class="product-card"><img src="/assets/rachel-feature-memory.png" alt="Rachel remembering people, preferences, promises, and dates" width="512" height="411" loading="lazy" /><figcaption><strong>Rachel remembers</strong><span>People, preferences, promises, and dates in context.</span></figcaption></figure>
+            <figure class="product-card"><img src="/assets/rachel-feature-tools.png" alt="Rachel connected to calendar, email, messages, and documents" width="512" height="411" loading="lazy" /><figcaption><strong>Rachel connects</strong><span>One calm layer across the tools already in use.</span></figcaption></figure>
+            <figure class="product-card"><img src="/assets/rachel-feature-thread.png" alt="A Rachel message thread confirming a calendar change" width="512" height="411" loading="lazy" /><figcaption><strong>Rachel follows through</strong><span>Natural delegation inside one familiar conversation.</span></figcaption></figure>
+            <figure class="product-card"><img src="/assets/rachel-workflow-connect.png" alt="Connected work tools sharing one context" width="512" height="497" loading="lazy" /><figcaption><strong>Shared context</strong><span>Calendar, email, messages, and documents move together.</span></figcaption></figure>
+            <figure class="product-card"><img src="/assets/rachel-workflow-text.png" alt="An iMessage request sent naturally to Rachel" width="512" height="497" loading="lazy" /><figcaption><strong>Natural input</strong><span>Ask with a text, a voice note, or a rough thought.</span></figcaption></figure>
+            <figure class="product-card"><img src="/assets/rachel-workflow-done.png" alt="A follow-up prepared for approval and sent" width="512" height="445" loading="lazy" /><figcaption><strong>Approval first</strong><span>Rachel prepares the action; the user stays in control.</span></figcaption></figure>
+          </div>
+
+          <div class="wide-product">
+            <figure class="panel context-card"><img src="/assets/rachel-context.png" alt="Rachel combining meeting, email, calendar, and follow-up context" width="1024" height="625" loading="lazy" /></figure>
+            <figure class="panel panel-dark social-card"><img src="/assets/rachel-social-card.jpg" alt="Rachel social card with the coastal hero and phone" width="1200" height="630" loading="lazy" /><p>Browser and share surfaces carry the same mark, promise, type, and warm editorial world.</p></figure>
+          </div>
+        </section>
+
+        <section class="chapter chapter-dark" id="motion" aria-labelledby="motion-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">06 / Motion</p>
+            <div>
+              <h2 class="chapter-title" id="motion-title">Motion means readiness.</h2>
+              <p class="chapter-description">Transitions should feel like Rachel quietly completing the next step—not asking the user to watch an animation.</p>
+            </div>
+          </header>
+
+          <div class="motion-grid">
+            <article class="motion-card"><div><p class="time">420</p><h4>Respond</h4><p>High-control interaction spring for taps, switches, and hover states.</p></div><p>Stiffness 420 / damping 34</p></article>
+            <article class="motion-card"><div><p class="time">0.56s</p><h4>Reveal</h4><p>One-time feature entrance with opacity and a short vertical settle.</p></div><p>Ease 0.16, 1, 0.3, 1</p></article>
+            <article class="motion-card"><div><p class="time">0.68s</p><h4>Follow through</h4><p>Flow-level movement with enough energy to show continuity, never spectacle.</p></div><p>Reduced fade 0.15s</p></article>
+          </div>
+        </section>
+
+        <section class="chapter" id="guardrails" aria-labelledby="guardrails-title">
+          <header class="chapter-heading">
+            <p class="chapter-index">07 / Guardrails</p>
+            <div>
+              <h2 class="chapter-title" id="guardrails-title">Consistency is the premium signal.</h2>
+              <p class="chapter-description">The strongest brand move is disciplined repetition: one mark, one lockup, one accent, one voice, and a clear boundary between atmosphere and proof.</p>
+            </div>
+          </header>
+
+          <div class="guardrail-grid">
+            <article class="guardrail">
+              <h3>Use</h3>
+              <ul>
+                <li>The tapered eight-ray mark, with its subtle lower-right conversational gesture, at true Rachel identity moments.</li>
+                <li>Google Sans for calm authority and Inter for precision.</li>
+                <li>Black conversion surfaces and blue product-state signals.</li>
+                <li>Warm editorial images for narrative; clean UI for proof.</li>
+                <li>Short, specific, approval-first language.</li>
+              </ul>
+            </article>
+            <article class="guardrail avoid">
+              <h3>Avoid</h3>
+              <ul>
+                <li>New fonts, alternate marks, or decorative star patterns.</li>
+                <li>Additional primary colors or a warm recolor of product UI.</li>
+                <li>Generic AI imagery, stock photography, stock-style lifestyle scenes, generated people, and unsourced portraits.</li>
+                <li>Replacing user, tool, permission, or action icons with the mark.</li>
+                <li>Changing Slate-derived grids, spacing, shadows, or motion.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="application-system" aria-labelledby="application-system-title">
+            <div class="application-system-heading">
+              <h3 id="application-system-title">The system at the growth edge.</h3>
+              <p>Community workflows, product principles or verified evidence, and the final conversion moment should feel like natural extensions of the same identity—not separate campaign ideas.</p>
+            </div>
+            <div class="application-grid">
+              <article class="application-card">
+                <div>
+                  <p class="application-index">Application 01</p>
+                  <h4>Community proof</h4>
+                  <p>Lead with one real outcome in Google Sans, followed by a compact Inter row for the verified name, role/company, and optional permissioned logo.</p>
+                </div>
+                <p class="application-rule">Never invent names, companies, affiliations, quotes, outcomes, or claims. No stock portraits, generated people, or placeholder logos.</p>
+              </article>
+              <article class="application-card">
+                <div>
+                  <p class="application-index">Application 02</p>
+                  <h4>Principles + metrics</h4>
+                  <p>Use large principle-led typography when operating data is unavailable. For metrics, lead with one verified Google Sans value and place its Inter label, timeframe, and source directly beside or beneath it.</p>
+                </div>
+                <p class="application-rule">Never invent customer names, activity, values, comparisons, or claims. No simulated counters, ornamental dashboards, or invented charts.</p>
+              </article>
+              <article class="application-card">
+                <div>
+                  <p class="application-index">Application 03</p>
+                  <h4>Product-led close</h4>
+                  <p>End on a real Rachel workflow or iMessage outcome, then repeat one primary <strong>Text Rachel</strong> action.</p>
+                </div>
+                <p class="application-rule">The product is the proof. Preserve the black conversion surface and Rachel-blue state signal.</p>
+              </article>
+            </div>
+          </div>
+
+          <p class="context-note"><strong>Identity-process context only:</strong> Shantanu Kumar's Quick Brown Fox work informs the rigor of building and applying a complete identity system. Rachel does not borrow its fox, coffee palette, typography, packaging, layouts, or visual style.</p>
+        </section>
+
+        <footer class="board-footer">
+          <div class="lockup"><img src="/assets/rachel-mark-v2.png" alt="" width="38" height="38" /><span>Rachel</span></div>
+          <p>AI chief of staff in iMessage.<br />Warm enough to trust. Precise enough to delegate to.</p>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
