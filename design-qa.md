@@ -1,73 +1,84 @@
 # Rachel design QA
 
-## Scope and source of truth
+## Scope and visual truth
 
-Rachel was evaluated only against the completed local Slate clone for visual design, layout, responsiveness, and motion. Poke and Pally informed product positioning and copy only. The supplied Rachel concept influenced the restrained brand voice, star cue, and iMessage product context; its serif typography and scenic composition were not used as layout direction.
+The completed Slate clone remains the system source for Rachel's typography, tokens, navigation, later-section geometry, responsive breakpoints, shadows, and motion. The supplied Rachel concept is the selected visual target for the first screen's centered composition, phone placement, coastal atmosphere, paired CTAs, bottom coda, and eight-ray identity mark. Its serif font and black presentation frame are intentionally excluded because the user explicitly asked to retain Rachel's current Google Sans and Inter families. Shantanu Kumar's Quick Brown Fox case study was inspected as brand-process context only: its discipline of using one mark, one lockup, a documented palette, and consistent applications informs Rachel, while none of its coffee palette, fox mark, type, packaging, or layouts are imported.
 
-Source captures:
+Source visual:
 
-- Desktop: `/Users/rivesainc/PKD RACHEL D1/qa/local-desktop-1440-final.png`
-- Tablet: `/Users/rivesainc/PKD RACHEL D1/qa/local-tablet-1024-final.png`
-- Mobile: `/Users/rivesainc/PKD RACHEL D1/qa/local-mobile-390-final.png`
-- Settled, visible focused regions: `https://slate-framer-clone.vercel.app/`
+- `qa/hero-v2-reference-1458x1102.png`
+- Source pixels: 1458 × 1102 RGBA
 
-Implementation captures:
+Rendered implementation:
 
-- `qa/desktop-rachel-1440x900.png`
-- `qa/tablet-rachel-1024x900.png`
-- `qa/mobile-rachel-390x844.png`
+- `qa/hero-v2-rachel-1458x1102.png`
+- Implementation pixels: 1458 × 1102 RGB
+- CSS viewport: 1458 × 1102
+- Device pixel ratio: 1
+- State: desktop header closed, hero entrance settled, no focused control
 
-## Comparison setup
+Responsive implementation evidence:
 
-All screenshots were captured at device-pixel ratio 1 after fonts, images, and reveal motion settled. The compared state used a closed mobile menu, the first workflow tab, monthly pricing, and collapsed FAQ items.
+- `qa/hero-v2-tablet-1024x900.png`
+- `qa/hero-v2-mobile-390x844.png`
+- `qa/hero-v2-mobile-320x844.png`
+- `qa/brand-identity-mobile-390x844.png`
+- `qa/brand-identity-feature-320x844.png`
+- `qa/brand-identity-steps-320x844.png`
 
-| Viewport | Source capture | Rachel capture | Combined comparison |
-| --- | --- | --- | --- |
-| Desktop | 1440 × 900 CSS px | 1440 × 900 CSS px | `qa/desktop-comparison.png` — 1912 × 600 px, equal normalized panels |
-| Tablet | 1024 × 900 CSS px | 1024 × 900 CSS px | `qa/tablet-comparison.png` — 1600 × 698 px, equal normalized panels |
-| Mobile | 390 × 844 CSS px | 390 × 844 CSS px | `qa/mobile-comparison.png` — 792 × 844 px, two exact 390 px panels |
+## Side-by-side evidence
 
-Focused comparisons:
+- Full hero comparison: `qa/hero-v2-comparison.png` — 1600 × 610 px
+- Focused copy, CTA, phone, and crop comparison: `qa/hero-v2-comparison-focused.png` — 1600 × 610 px
 
-- `qa/focus-comparison-features.png`
-- `qa/focus-comparison-workflow.png`
-- `qa/focus-comparison-pricing.png`
-- `qa/focus-comparison-faq.png`
+The full view confirms the same centered hierarchy, phone-first silhouette, coast weighting, and coda transition. The focused view confirms headline wrapping, CTA baseline, phone top/width, message content, and the intentional contemporary font substitution.
 
-## Measured visual parity
+## Required fidelity surfaces
 
-- Typography: Google Sans Medium display headings and Inter body/UI families match the Slate clone's bundled font files. Desktop hero is 56/58 px with -2 px tracking; section display headings are 40/42 px with -0.8 px tracking; body defaults to Inter 16/24 px with -0.2 px tracking.
-- Color: page `#f7f7f7`, text `#000000`, secondary text `#7a7a7a`, and brand/action blue `#0086ff` match the source tokens.
-- Geometry: the 1440, 1024, and 390 layouts use the same container widths, section bounds, padding, grid changes, and 1200/810 responsive breakpoints as Slate. Measured document heights match at 9527 px, 11154 px, and 12501 px respectively.
-- Surfaces: 268 × 168 px feature cards, 12 px radii, source-matched layered shadows, 780 × 449.4 px workflow panel, 454 px FAQ column, and 24 px FAQ padding were confirmed from computed styles.
-- Assets: Rachel product visuals are original, locally bundled, high-resolution iMessage-oriented renders. Slate's exact decorative backgrounds, fonts, and testimonial treatment are preserved locally; there are no placeholders or hotlinks.
-- Copy: all Rachel sections form one coherent product story covering proactive follow-through, memory, tool connections, approvals, security, pricing, and iMessage-native operation.
+- Fonts and typography: Google Sans Medium remains the display face and Inter remains the body/UI face. Desktop hero is 64/64 px with -2.6 px tracking, tablet is 60/60 px with -2.4 px tracking, and mobile is 44/44 px with -1.8 px tracking. This is the requested retained Rachel type system rather than the reference serif.
+- Spacing and layout: at 1458 px, the announcement begins at y=165, headline at y=236, actions at y=464, phone at y=536 with a 396 px width, and coda at y=978. These coordinates match the reference's major-region proportions. Tablet uses a 370 px phone at hero y=454; mobile uses a 300 px phone at hero y=420.
+- Colors and tokens: the existing `#f7f7f7`, black, `#0086ff`, source shadow tokens, and 12 px hero CTA radii remain intact. The hero paragraph uses `#666666` for stronger normal-text contrast over the warm image field.
+- Image quality: the hero uses separately art-directed, locally bundled coast and phone assets with responsive `srcSet` delivery. The 1× WebPs are 1535 × 1024 at 59,360 bytes and 618 × 1274 at 57,784 bytes. The 2× WebPs are 3070 × 2048 at 142,952 bytes and 1236 × 2548 at 160,908 bytes. A DPR-2 load is therefore about 304 KB instead of the former 1.8 MB eager PNG payload. The phone has transparent edges with no visible chroma fringe, all iMessage copy is legible, and only the coast retains high fetch priority.
+- Copy and content: “Meet Rachel, your day already handled.” and the supporting line clearly position Rachel as an iMessage-native chief of staff. The phone conversation demonstrates briefing, calendar coordination, follow-through, and explicit approval.
 
-## Motion and interaction parity
+## Brand identity verification
 
-- Header and mobile menu use the source spring timing, two-bar menu treatment, responsive height animation, and focusable navigation.
-- Scroll reveals use the source blur, opacity, transform, threshold, and reduced-motion handling.
-- Workflow tabs reproduce the source panel-height spring, per-state text/image transition, keyboard arrow navigation, and mobile overflow behavior.
-- Pricing switch animates between monthly and annual states and updates displayed prices.
-- FAQ items reproduce the source layout spring, blur/opacity answer reveal, persistent divider bars, and collapsed/expanded geometry.
-- Testimonials use the source-style three-second progression and visibility-aware queueing without an added hover pause.
-- Primary conversion actions launch an SMS draft containing “Hi Rachel”; navigation anchors and all core controls work.
+- The eight-ray Rachel mark is now the single signature used by the header and footer lockup, favicon, product contact/avatar moments, and social preview. The former six-arm generic asterisk, `R` avatar, gray contact dot, and generic Rachel person avatar are no longer visible in these identity roles.
+- The lockup has an explicit Inter wordmark treatment with fixed sizing, weight, tracking, and spacing; the site continues to use Google Sans for display copy.
+- Existing color values were preserved and given semantic aliases: paper `#F7F7F7`, warm hero surface `#F7F7F4`, ink `#000000`, Rachel blue `#0086FF`, deep product blue `#0075FA`, success `#07DC71`, and focus `rgba(0, 134, 255, .65)`.
+- `BRAND_IDENTITY.md` documents Rachel's promise, personality, mark rules, type, palette, image modes, motion, voice, and cross-surface application boundaries.
+- Browser/share identity is complete: 64 × 64 local favicon/touch mark and 1200 × 630 local social card, with Open Graph and Twitter metadata pointing at the Rachel production domain.
+- Desktop workflow and feature checks, plus `qa/brand-identity-mobile-390x844.png`, confirm that the branded mark overlays cover only Rachel-owned contact indicators. Tool, user, permission, and action icons remain semantically unchanged.
 
-## Iterations resolved
+## Interaction and responsive verification
 
-1. P2 — FAQ wrapping caused breakpoint-specific height drift. Question lengths and source min-heights were tuned until the card wrapping pattern and total document geometry matched at all three viewports.
-2. P2 — Tablet cards had a 3 px overflow caused by the default inline SVG baseline after Tailwind preflight was removed. A global block SVG rule restored the source behavior; every audited card now has equal client and scroll heights.
-3. P2 — Testimonial timing and reveal thresholds had drifted from the measured source. Visibility queueing, the three-second interval, workflow transitions, and the 0.5 reveal threshold were restored to source behavior.
+- Desktop 1458 × 1102: no horizontal overflow, no broken images, document height 9527 px.
+- Tablet 1024 × 900: no horizontal overflow, no broken images, document height 11196 px.
+- Mobile 390 × 844: no horizontal overflow, no broken images, document height 12694 px.
+- Narrow mobile 320 × 844: document width remains 320 px with no page overflow, no broken images, and document height 12822 px. Hero actions stack to a 280 px column and the phone remains fully visible at 280 px. The altered feature and step artwork also retain the source `512 / 411` aspect ratio (measured 1.2457 and 1.2458) instead of cropping their product UI; focused evidence is in `qa/brand-identity-feature-320x844.png` and `qa/brand-identity-steps-320x844.png`.
+- Mobile menu opens to 844 px, remains above the phone scene (`z-index: 99` versus `1`), and closes normally.
+- “Text Rachel” retains the functional `sms:?body=Hi%20Rachel` destination.
+- “See how it works” navigates to `#steps`; tested result placed the section at viewport top with `scrollY=6159`.
+- Exactly one `h1` is present. The decorative coast is hidden from assistive technology, while the phone has meaningful alt text.
+- Global focus-visible treatment is present for links and buttons.
+- No browser console errors were observed. Development mode emitted only Framer Motion's expected notice that the device-level reduced-motion preference was enabled; the UI correctly settled without animation.
+- Feature, workflow, and step identity placements were visually checked on desktop and mobile. Existing pricing, FAQ, testimonial, navigation, and responsive behavior remain covered by the earlier full-site QA.
+
+## Comparison history
+
+1. P2 — A single baked phone/landscape composite rendered a roughly 396 px phone on mobile and clipped both device rails. Fix: generated separate coast and high-resolution phone assets, removed the chroma key, validated alpha coverage, and positioned the phone independently at 396/370/300 px. Post-fix evidence: all three final implementation captures show the full rails with no overlap or overflow.
+2. P2 — The first desktop pass placed the copy cluster about 50–60 px above the selected reference. Fix: tuned hero copy top and internal margins. Post-fix evidence: announcement y=165, headline y=236, actions y=464–512, phone y=536, and coda y=978 align with the source composition.
+3. P2 — The inherited muted hero text and absent global keyboard focus treatment reduced accessibility polish. Fix: darkened only the hero supporting text to `#666666` and added a consistent blue focus-visible outline without changing the visual resting state.
+4. P2 — The first separated hero files were 1× PNGs totaling roughly 1.8 MB, risking soft text and a slow first load on Retina screens. Fix: delivered optimized 1×/2× WebP `srcSet` pairs. Post-fix evidence: 3070 px coast, 1236 px phone, and about 304 KB total at DPR 2.
+5. P2 — Mobile geometry originally retained fixed 350 px rails below 350 px. Fix: viewport-bounded section widths, stacked narrow CTAs, and a 280 px phone. Post-fix evidence: the 320 × 844 capture and computed 320 px document width.
+6. P1 — Identity audit found a generic six-arm header asterisk and inconsistent `R`, person, and dot contact markers across product art. Fix: exported the selected eight-ray Rachel mark from the supplied identity reference, applied it to the formal lockup and Rachel-owned avatar moments, added the favicon/social card, and documented the complete system. Post-fix evidence: desktop feature/workflow/step visual checks and the mobile brand-identity capture.
+7. P2 — Independent review found that the 320 px width clamp could stretch the 512 × 411 feature and step artwork inside inherited fixed-height slots, with possible drift in the percentage-positioned Rachel marks. Fix: preserved the exact source aspect ratio at the narrow breakpoint, made the narrow step image grid track its intrinsic height, and rechecked both altered surfaces. Post-fix evidence: 280 × 224.77 px feature art, 254 × 203.89 px step art, an exact 16 px image-to-copy gap, no broken images, no document overflow, and the two focused 320 px captures listed above.
 
 ## Final verification
 
 - `npm run build`: passed
 - `npm run test:sites`: 4/4 passed
-- Desktop/tablet/mobile horizontal overflow: none
-- Broken image scan: none
-- Desktop/tablet/mobile console warning/error scan: clean
-- Mobile menu, workflow mouse and keyboard controls, pricing switch, FAQ expansion, nav anchors, and SMS CTA: passed
-- Remaining P0/P1/P2 issues: none
-- Intentional difference: Slate's template promotion/edit overlays are omitted, while Rachel branding, product copy, and product imagery are original as required.
+- Remaining P0/P1/P2 findings: none
+- Intentional differences: current Google Sans/Inter typography, existing Slate-derived header treatment, omission of the hero reference's black outer presentation frame, and no import of the Quick Brown Fox visual style.
 
 final result: passed

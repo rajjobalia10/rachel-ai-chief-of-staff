@@ -3,7 +3,6 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "framer-
 import {
   ArrowBendUpRight,
   ArrowsClockwise,
-  Asterisk,
   BellRinging,
   Brain,
   CalendarCheck,
@@ -49,9 +48,17 @@ function revealProps(preset, reduced) {
 function Brand() {
   return (
     <a className="brand" href="#top" aria-label="Rachel home">
-      <span className="brand-mark" aria-hidden="true"><Asterisk size={22} weight="regular" /></span>
+      <span className="brand-mark" aria-hidden="true"><img src="/assets/rachel-mark.png" alt="" width="22" height="22" /></span>
       <span>Rachel</span>
     </a>
+  );
+}
+
+function RachelIdentityMark({ className = "" }) {
+  return (
+    <span className={`asset-mark ${className}`} aria-hidden="true">
+      <img src="/assets/rachel-mark.png" alt="" width="64" height="64" />
+    </span>
   );
 }
 
@@ -107,7 +114,7 @@ function Header() {
           <nav className="desktop-nav" aria-label="Main navigation">
             <a href="#features">Features</a>
             <a href="#pricing">Pricing</a>
-            <a href="#faq">Faq</a>
+            <a href="#faq">FAQ</a>
             <a href="#steps">Setup</a>
           </nav>
           <BlackButton className="header-cta">Text Rachel</BlackButton>
@@ -124,7 +131,7 @@ function Header() {
           <nav id="mobile-navigation" aria-label="Mobile navigation">
             <a href="#features" onClick={() => setOpen(false)}>Features</a>
             <a href="#pricing" onClick={() => setOpen(false)}>Pricing</a>
-            <a href="#faq" onClick={() => setOpen(false)}>Faq</a>
+            <a href="#faq" onClick={() => setOpen(false)}>FAQ</a>
             <a href="#steps" onClick={() => setOpen(false)}>Setup</a>
             <BlackButton onClick={() => setOpen(false)}>Text Rachel</BlackButton>
           </nav>
@@ -351,16 +358,65 @@ export function App() {
         <Header />
 
         <section className="hero">
-          <img className="hero-background" src="/assets/hero-background.avif" alt="" />
+          <motion.img
+            className="hero-background"
+            src="/assets/rachel-hero-coast-v2.webp"
+            srcSet="/assets/rachel-hero-coast-v2.webp 1x, /assets/rachel-hero-coast-v2@2x.webp 2x"
+            alt=""
+            aria-hidden="true"
+            width={1535}
+            height={1024}
+            loading="eager"
+            fetchPriority="high"
+            initial={false}
+            animate={heroMotionReady ? { opacity: 1, scale: 1 } : { opacity: 0.001, scale: 1.025 }}
+            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0, delay: 0.05, duration: 1.1 })}
+          />
+          <motion.img
+            className="hero-phone"
+            src="/assets/rachel-hero-phone-cutout-v4.webp"
+            srcSet="/assets/rachel-hero-phone-cutout-v4.webp 1x, /assets/rachel-hero-phone-cutout-v4@2x.webp 2x"
+            alt="Rachel handling a meeting change and follow-up in iMessage"
+            width={618}
+            height={1274}
+            loading="eager"
+            initial={false}
+            animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: 24, scale: 0.985 }}
+            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.28, duration: 0.9 })}
+          />
           <div className="hero-inner">
-            <div className="hero-copy">
-              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: -20 }} transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.2, delay: 1.3, duration: 0.5 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong></motion.div>
-              <h1>Your day,<br />already handled</h1>
-              <p>Rachel keeps track of the details, follows up, and gets things done — all from one simple iMessage thread.</p>
-              <BlackButton>Text Rachel</BlackButton>
-            </div>
-            <img className="hero-app" src="/assets/rachel-hero-chat.png" alt="A conversation with Rachel in iMessage" />
+            <motion.div
+              className="hero-copy"
+              initial={false}
+              animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: 18 }}
+              transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.18, duration: 0.8 })}
+            >
+              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: -14 }} transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.2, delay: 0.62, duration: 0.5 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong></motion.div>
+              <h1>Meet Rachel,<br /><span>your day already handled.</span></h1>
+              <p>Rachel keeps track of what matters, takes care of the follow-through, and texts you before anything slips.</p>
+              <div className="hero-actions">
+                <BlackButton><ChatCircleDots size={19} weight="regular" />Text Rachel</BlackButton>
+                <motion.a
+                  className="hero-secondary"
+                  href="#steps"
+                  whileHover={{ y: -1, backgroundColor: "rgba(255, 255, 255, .94)" }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
+                >
+                  <span>See how it works</span>
+                  <CaretRight size={17} weight="bold" aria-hidden="true" />
+                </motion.a>
+              </div>
+            </motion.div>
           </div>
+          <motion.div
+            className="hero-coda"
+            initial={false}
+            animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: 16 }}
+            transition={motionTransition(reducedMotion, { type: "spring", bounce: 0.08, delay: 0.75, duration: 0.7 })}
+          >
+            <p>She knows what matters. <span>You decide what happens.</span></p>
+          </motion.div>
         </section>
 
         <section className="challenge" id="challenge">
@@ -385,8 +441,11 @@ export function App() {
             <div className="visual-feature-grid">
               {visualFeatures.map(({ icon: Icon, title, copy, image, key }) => (
                 <motion.article className={`visual-feature visual-${key}`} key={title} {...revealProps("feature", reducedMotion)}>
-                  <img src={image} alt="" />
-                  <div><h4><Icon size={27} weight="fill" />{title}</h4><p>{copy}</p></div>
+                  <div className="visual-feature-art">
+                    <img src={image} alt="" />
+                    {key === "search" && <><RachelIdentityMark className="asset-mark-thread-top" /><RachelIdentityMark className="asset-mark-thread-bottom" /></>}
+                  </div>
+                  <div className="visual-feature-copy"><h4><Icon size={27} weight="fill" />{title}</h4><p>{copy}</p></div>
                 </motion.article>
               ))}
             </div>
@@ -438,7 +497,11 @@ export function App() {
                       </div>
                       <div className="workflow-stat"><h4>{currentWorkflow.stat}</h4><p>{currentWorkflow.statCopy}</p></div>
                     </div>
-                    <img className="workflow-image" src={currentWorkflow.image} alt="Rachel workflow interface" />
+                    <div className={`workflow-art workflow-art-${workflow}`}>
+                      <img className="workflow-image" src={currentWorkflow.image} alt="Rachel workflow interface" />
+                      {workflow === 0 && <RachelIdentityMark className="asset-mark-workflow-hub" />}
+                      {workflow === 1 && <RachelIdentityMark className="asset-mark-workflow-contact" />}
+                    </div>
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
@@ -470,10 +533,10 @@ export function App() {
             <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Add Rachel to iMessage and get a useful first brief in minutes." />
             <div className="steps-list">
               <div className="step-line" />
-              {steps.map((step) => (
+              {steps.map((step, index) => (
                 <article className="step-row" key={step.number}>
                   <div className="step-number"><span />Step {step.number}</div>
-                  <div className="step-visual"><img src={step.image} alt="" /></div>
+                  <div className="step-visual"><img src={step.image} alt="" />{index === 0 && <RachelIdentityMark className="asset-mark-step-contact" />}</div>
                   <div className="step-copy"><h4>{step.title}</h4><p>{step.copy}</p><a href="#features">Know more</a></div>
                 </article>
               ))}
@@ -543,7 +606,7 @@ export function App() {
         <footer>
           <div className="footer-inner">
             <div><Brand /><p>The chief of staff in your texts.</p></div>
-            <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">Faq</a><a href="#steps">Setup</a></div>
+            <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#steps">Setup</a></div>
             <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href="#top">Privacy</a><a href="#top">Terms</a></div>
           </div>
         </footer>
