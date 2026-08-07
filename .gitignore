@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vercel/
+.DS_Store
+*.log
+reference/
+qa/compare-*.html
+qa/focused-comparison.png
