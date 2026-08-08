@@ -136,7 +136,7 @@ function AnimatedMetric({ value, decimals = 2 }) {
 
 function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "", onClick }) {
   const reducedMotion = useReducedMotion();
-  const transition = motionTransition(reducedMotion, INTERACTION_SPRING);
+  const transition = motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] });
 
   return (
     <motion.a
@@ -149,13 +149,13 @@ function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "",
       whileTap="pressed"
       variants={{
         rest: { opacity: 1, y: 0 },
-        hover: { opacity: 1, y: reducedMotion ? 0 : -1 },
+        hover: { opacity: 1, y: 0 },
         pressed: { opacity: 1, y: 0 },
       }}
       transition={transition}
     >
       <motion.span
-        variants={{ rest: { scale: 1 }, hover: { scale: reducedMotion ? 1 : 0.995 }, pressed: { scale: reducedMotion ? 1 : 0.975 } }}
+        variants={{ rest: { scale: 1 }, hover: { scale: 1 }, pressed: { scale: reducedMotion ? 1 : 0.97 } }}
         transition={transition}
       >
         <span className="imessage-tile" aria-hidden="true"><ChatCircle size={18} weight="fill" /></span>
@@ -450,19 +450,6 @@ export function App() {
               <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
               <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
                 <BlackButton>Get Started</BlackButton>
-                <motion.a
-                  className="hero-secondary"
-                  href="#steps"
-                  initial="rest"
-                  animate="rest"
-                  whileHover="hover"
-                  whileTap="pressed"
-                  variants={{ rest: { y: 0, scale: 1, backgroundColor: "rgba(255, 255, 255, .86)" }, hover: { y: reducedMotion ? 0 : -1, scale: 1, backgroundColor: "rgba(255, 255, 255, .96)" }, pressed: { y: 0, scale: reducedMotion ? 1 : 0.98 } }}
-                  transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
-                >
-                  <span>Explore</span>
-                  <motion.span className="hero-secondary-arrow" variants={{ rest: { x: 0 }, hover: { x: reducedMotion ? 0 : 3 }, pressed: { x: 1 } }}><CaretRight size={17} weight="bold" aria-hidden="true" /></motion.span>
-                </motion.a>
               </motion.div>
             </div>
           </div>
@@ -699,7 +686,7 @@ export function App() {
           </motion.div>
         </section>
 
-        <section className="final-cta">
+        <section className="final-cta" id="final-cta">
           <motion.div className="final-cta-card" {...revealProps("flow", reducedMotion)}>
             <motion.img
               src="/assets/rachel-final-journey-v2.png"
@@ -711,16 +698,14 @@ export function App() {
             />
             <div className="final-cta-scrim" aria-hidden="true" />
             <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
-              <motion.span className="final-cta-mark" variants={revealVariants(reducedMotion, 8)}><img src="/assets/rachel-mark-v2.png" alt="" /></motion.span>
               <motion.h2 variants={revealVariants(reducedMotion, 12)}>Meet your new chief of staff.</motion.h2>
-              <motion.p variants={revealVariants(reducedMotion, 10)}>Rachel lives where your day already happens—and keeps every decision yours.</motion.p>
               <motion.a
                 className="final-cta-button"
                 href="sms:?body=Hi%20Rachel"
                 variants={revealVariants(reducedMotion, 8)}
-                whileHover={reducedMotion ? undefined : { y: -1, scale: 1.01 }}
-                whileTap={reducedMotion ? undefined : { y: 0, scale: 0.975 }}
-                transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
+                whileHover={reducedMotion ? undefined : { scale: 1 }}
+                whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+                transition={motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] })}
               >
                 <span className="imessage-tile"><ChatCircle size={18} weight="fill" /></span>Get Started
               </motion.a>

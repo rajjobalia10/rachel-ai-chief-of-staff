@@ -181,47 +181,59 @@ main { position: relative; overflow: clip; }
 .black-button {
   position: relative;
   display: inline-flex;
-  width: max-content;
-  min-height: 40px;
+  width: 134.43px;
+  min-width: 134.43px;
+  height: 50px;
+  min-height: 50px;
   border-radius: 555px;
   align-items: center;
   justify-content: center;
-  color: #101318;
+  color: #08152e;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0;
+  white-space: nowrap;
   opacity: 1;
 }
 
 .black-button > span {
+  position: relative;
   display: inline-flex;
-  min-height: 39px;
+  width: 100%;
+  height: 50px;
+  min-height: 50px;
   padding: 0 16px;
   gap: 8px;
   align-items: center;
   justify-content: center;
   border-radius: 555px;
-  border: 1px solid rgba(16, 24, 40, .12);
-  background: rgba(255, 255, 255, .94);
-  box-shadow: 0 1px 0 rgba(255,255,255,.78) inset, 0 8px 24px rgba(14, 25, 44, .09), 0 1px 2px rgba(14, 25, 44, .08);
-  transition: box-shadow .24s cubic-bezier(.16, 1, .3, 1);
+  border: 1px solid rgba(8, 21, 46, .1);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(8, 21, 46, .06);
+  transition: box-shadow .15s ease-out;
 }
 
 .black-button .imessage-tile {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  border-radius: 7px;
+  border-radius: 5px;
   color: #fff;
-  background: #35e85a;
+  background: #32e85a;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.34);
 }
 
+.black-button .imessage-tile svg { width: 14px; height: 14px; }
+
 .black-button:hover > span {
-  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 12px 30px rgba(14, 25, 44, .13), 0 1px 3px rgba(14, 25, 44, .1);
+  box-shadow: 0 4px 16px rgba(8, 21, 46, .1);
 }
 
-.header-cta { justify-self: end; min-height: 36px; }
-.header-cta > span { min-height: 36px; }
+.header-cta { justify-self: end; }
 .menu-toggle { display: none; }
 .mobile-menu { display: none; }
 
@@ -368,16 +380,17 @@ main { position: relative; overflow: clip; }
 }
 
 .hero-actions .black-button {
-  min-width: 190px;
-  min-height: 48px;
+  width: 134.43px;
+  min-width: 134.43px;
+  min-height: 50px;
   margin-top: 0;
 }
 
 .hero-actions .black-button > span {
   width: 100%;
-  min-height: 48px;
+  min-height: 50px;
   gap: 8px;
-  padding: 0 22px;
+  padding: 0 16px;
   border-radius: 555px;
 }
 
@@ -747,9 +760,9 @@ button.billing { cursor: pointer; }
 .pricing-card li { height: 24px; min-height: 24px; display: flex; align-items: center; gap: 8px; color: #757575; font-feature-settings: "cv05", "cv08", "cv10", "cv11"; font-weight: 500; letter-spacing: -.32px; }
 .pricing-card li svg { flex: 0 0 auto; color: var(--blue); }
 .pricing-card li span { flex: 1 1 auto; }
-.pricing-button { height: 76px; padding: 20px; }
-.pricing-card .black-button { width: 100%; }
-.pricing-card .black-button, .pricing-card .black-button > span { min-height: 36px; }
+.pricing-button { height: 76px; padding: 13px 20px; }
+.pricing-card .black-button { width: 134.43px; margin: 0 auto; }
+.pricing-card .black-button, .pricing-card .black-button > span { min-height: 50px; }
 .pricing-card .black-button > span { width: 100%; font-size: 14px; }
 
 .comparison { margin-top: 24px; border-radius: 12px; background: #fff; box-shadow: var(--shadow-soft); overflow: hidden; }
@@ -915,11 +928,12 @@ button.billing { cursor: pointer; }
 .metrics-grid h3 { margin-top: 8px; color: #121b30; font-family: "Google Sans", Arial, sans-serif; font-size: 20px; font-weight: 500; line-height: 28px; letter-spacing: -.5px; }
 .metrics-grid p { width: 300px; max-width: 100%; margin-top: 12px; color: #737b8d; font-size: 14px; line-height: 21px; text-wrap: balance; }
 
-.final-cta { position: relative; height: 684px; padding-top: 112px; }
+.final-cta { position: relative; height: auto; padding: 80px 0; }
 .final-cta-card {
   position: relative;
-  width: 820px;
-  height: 460px;
+  width: min(1200px, calc(100% - 80px));
+  height: auto;
+  aspect-ratio: 16 / 9;
   margin: 0 auto;
   border-radius: 32px;
   background: #07111f;
@@ -929,31 +943,33 @@ button.billing { cursor: pointer; }
 .final-cta-card > img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; filter: blur(2.5px) brightness(.34) saturate(.72); }
 .final-cta-scrim { position: absolute; inset: 0; background: rgba(2, 11, 25, .28); }
 .final-cta-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
-.final-cta-mark { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.95); box-shadow: 0 8px 30px rgba(0,0,0,.16); }
-.final-cta-mark img { width: 28px; height: 28px; object-fit: contain; }
-.final-cta h2 { margin-top: 24px; font-size: 48px; line-height: 52px; letter-spacing: -1.25px; }
-.final-cta p { width: 450px; max-width: calc(100% - 40px); margin-top: 16px; color: rgba(255,255,255,.74); text-wrap: balance; }
+.final-cta h2 { margin: 0; font-size: 48px; line-height: 52px; letter-spacing: -1.25px; }
 .final-cta-button {
-  width: 102px;
-  min-width: 102px;
-  min-height: 34px;
-  margin-top: 28px;
-  padding: 0 11px;
+  width: 134.43px;
+  min-width: 134.43px;
+  height: 50px;
+  min-height: 50px;
+  margin-top: 40px;
+  padding: 0 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  border: 1px solid rgba(255,255,255,.9);
+  gap: 8px;
+  border: 1px solid rgba(8,21,46,.1);
   border-radius: 999px;
-  color: #101318;
-  background: rgba(255,255,255,.96);
-  box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 12px 30px rgba(0,0,0,.16);
-  font-size: 11px;
+  color: #08152e;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(8,21,46,.06);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
   font-weight: 500;
   line-height: 14px;
+  letter-spacing: 0;
   white-space: nowrap;
 }
-.final-cta-button > .imessage-tile { width: 26px; height: 26px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 7px; color: #fff; background: #35e85a; box-shadow: inset 0 1px 0 rgba(255,255,255,.34); }
+.final-cta-button > .imessage-tile { width: 20px; height: 20px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 5px; color: #fff; background: #32e85a; box-shadow: inset 0 1px 0 rgba(255,255,255,.34); }
+.final-cta-button > .imessage-tile svg { width: 14px; height: 14px; }
+.final-cta-button:hover { box-shadow: 0 4px 16px rgba(8,21,46,.1); }
 
 footer { position: relative; height: 520px; background: var(--hero-surface); overflow: hidden; }
 .footer-inner { position: relative; z-index: 2; width: 820px; height: 220px; margin: 0 auto; display: grid; grid-template-columns: 1fr 112px 112px; gap: 24px; align-items: start; padding-top: 61px; }
@@ -1052,8 +1068,8 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .metrics-grid { margin-top: 60px; }
   .metrics-grid article { padding: 0 28px; }
   .metrics-grid strong { font-size: 88px; line-height: 96px; letter-spacing: -4px; }
-  .final-cta { height: 620px; padding-top: 80px; }
-  .final-cta-card { width: 700px; height: 460px; }
+  .final-cta { height: auto; padding: 80px 0; }
+  .final-cta-card { width: calc(100% - 80px); height: auto; aspect-ratio: 16 / 9; }
   footer { height: 480px; }
   .footer-inner { width: 700px; }
   .signature-lockup { width: 980px; gap: 42px; }
@@ -1077,8 +1093,8 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .mobile-menu nav { width: calc(100% - 40px); margin: 0 auto; padding-top: 118px; display: flex; flex-direction: column; align-items: flex-start; }
   .mobile-menu nav > a:not(.black-button) { margin-bottom: 24px; font-family: "Inter Display"; font-size: 40px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
   .mobile-menu nav > a:not(.black-button):nth-of-type(4) { margin-bottom: 0; }
-  .mobile-menu .black-button { min-height: 36px; margin-top: 60px; }
-  .mobile-menu .black-button > span { min-height: 36px; }
+  .mobile-menu .black-button { min-height: 50px; margin-top: 60px; }
+  .mobile-menu .black-button > span { min-height: 50px; }
 
   .brand { font-size: 20px; }
   .hero { height: 900px; }
@@ -1091,8 +1107,8 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .hero h1 span { white-space: normal; }
   .hero-copy > p { width: min(340px, 100%); margin-top: 18px; font-size: 15px; line-height: 22px; text-align: center; }
   .hero-actions { width: 100%; gap: 8px; margin-top: 18px; }
-  .hero-actions .black-button, .hero-secondary { min-width: 0; min-height: 46px; flex: 1 1 0; }
-  .hero-actions .black-button > span { width: 100%; min-height: 46px; padding: 0 12px; }
+  .hero-actions .black-button { width: 134.43px; min-width: 134.43px; min-height: 50px; flex: 0 0 auto; }
+  .hero-actions .black-button > span { width: 100%; min-height: 50px; padding: 0 16px; }
   .hero-secondary { padding: 0 12px; font-size: 14px; line-height: 17px; }
   .hero-coda { height: 76px; padding: 0 20px; text-align: center; }
   .hero-coda p { width: min(350px, 100%); font-size: 18px; line-height: 23px; letter-spacing: -.45px; }
@@ -1192,11 +1208,11 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .metrics-grid strong { font-size: 84px; line-height: 92px; letter-spacing: -4px; }
   .metrics-grid h3 { margin-top: 4px; }
 
-  .final-cta { height: 620px; padding-top: 60px; }
-  .final-cta-card { width: 350px; height: 500px; border-radius: 28px; }
+  .final-cta { height: auto; padding: 60px 0; }
+  .final-cta-card { width: 350px; height: 500px; aspect-ratio: auto; border-radius: 28px; }
   .final-cta-card > img { object-position: 58% center; }
   .final-cta-copy { padding: 0 24px; }
-  .final-cta h2 { margin-top: 22px; font-size: 40px; line-height: 43px; letter-spacing: -.9px; text-wrap: balance; }
+  .final-cta h2 { margin-top: 0; font-size: 40px; line-height: 43px; letter-spacing: -.9px; text-wrap: balance; }
   .final-cta p { width: 300px; }
 
   footer { height: 430px; }
@@ -1219,7 +1235,7 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .hero h1 { margin-top: 16px; font-size: 40px; line-height: 40px; letter-spacing: -1.6px; }
   .hero-copy > p { margin-top: 16px; font-size: 14px; line-height: 21px; }
   .hero-actions { margin-top: 16px; flex-direction: column; }
-  .hero-actions .black-button, .hero-secondary { width: 100%; flex: 0 0 auto; }
+  .hero-actions .black-button { width: 134.43px; min-width: 134.43px; flex: 0 0 auto; }
   .hero-phone-motion { top: 500px; width: min(280px, calc(100vw - 40px)); }
   .hero-coda p span { display: block; }
 
