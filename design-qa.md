@@ -1,96 +1,57 @@
-# Rachel final design QA
+# Rachel landing page — design QA
 
-## Acceptance target
+## Comparison target
 
-Rachel preserves the completed Slate clone as the visual and motion source of truth: Google Sans/Inter typography, 820 px desktop container, measured section geometry, black and warm-white conversion surfaces, card radii, shadows, breakpoints, sticky navigation, reveal rhythm, and interaction quality. Poke and Pally informed only the product story and copy framing.
+- Source visual truth:
+  - `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/TemporaryItems/NSIRD_screencaptureui_hbFYkO/Screenshot 2026-08-08 at 7.16.35 PM.png` — compact iMessage CTA.
+  - `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/TemporaryItems/NSIRD_screencaptureui_eRV1o6/Screenshot 2026-08-08 at 7.16.56 PM.png` — live metrics composition.
+  - `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/TemporaryItems/NSIRD_screencaptureui_YfMi3w/Screenshot 2026-08-08 at 7.17.34 PM.png` — 820 × 460 CSS-pixel closing panel after 2× density normalization.
+  - `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/codex-clipboard-694357f4-4e1f-43e4-8153-80c12610b257.webp` — supplied moving-team background.
+- Implementation: `https://rachel-ai-chief-of-staff.vercel.app/`.
+- Intended desktop viewport: 1280 × 800 CSS px at device scale factor 1.
+- Intended mobile viewport: 390 × 844 CSS px at device scale factor 1.
+- State: production deployment `dpl_3PNtQqgHyQL5VZg19ViTZLEXbsif`, READY.
 
-The user-supplied references were translated as follows:
+## Implementation evidence available
 
-- Golden Gate panorama and centered phone hierarchy in the hero.
-- Premium paired CTA treatment.
-- Moving community/workflow rail near the close.
-- Large two-column product-principles treatment without invented usage data.
-- Rounded product-led closing panel.
-- Oversized softly fading Rachel signature.
+- Production document: HTTP 200.
+- Generated closing image: HTTP 200, PNG, 1633 × 963 px, 2,002,029 bytes.
+- Local build: passed.
+- Sites worker tests: 4/4 passed.
+- Diff whitespace check: passed.
+- Source implementation preserves the reference 820 × 460 desktop closing-card geometry.
+- Every conversion button renders a green iMessage tile, the label `Get Started`, and the `sms:?body=Hi%20Rachel` destination.
+- Live metrics use `848195 / 10000` and `1775484 / 10000`, rendered to two decimals as `84.82` and `177.55` after the entrance count-up.
+- Vercel error-log scan: no logs found.
 
-Competitor photography, serif typography, fabricated testimonials, fabricated operating metrics, and generic AI/lifestyle imagery were not imported.
+## Full-view comparison evidence
 
-## Brand and asset verification
+Blocked. The in-app browser refused both the localhost preview and the production navigation during this run because the tab was left on its browser-generated connection-error document. The browser safety policy prohibited retrying through another browser surface. No current browser-rendered implementation screenshot could therefore be captured for a normalized side-by-side comparison.
 
-- Primary mark: `public/assets/rachel-mark-v2.png`, a unique tapered eight-ray signal with a conversational lower-right gesture.
-- Hero atmosphere: `public/assets/rachel-hero-golden-gate-clouds.webp`, converted from the user-supplied 1280 × 482 image.
-- Product hero: local transparent iMessage phone art at 1× and 2×.
-- Social card: local 1200 × 630 render at `public/assets/rachel-social-card.jpg`.
-- The favicon, header, product-avatar moments, closing CTA, footer, and visual mood board use the same v2 mark.
-- Unused testimonial portraits, former coastal assets, old marks, and rejected/legacy hero images were removed from `public/`; they cannot ship in the production bundle.
-- `BRAND_IDENTITY.md`, `BRAND_MOODBOARD.md`, and `public/brand/rachel-moodboard.html` document the system and its guardrails.
+## Focused comparison evidence
 
-Image generation was used only for the original Rachel identity mark. The prompt was constrained to a clean, ownable, flat brand symbol with tapered radial awareness and a subtle conversation gesture; it was not used to generate people, stock-style scenes, or editorial filler.
+Blocked for the same reason. The compact CTA, metrics block, and final 820 × 460 panel could not be captured from the current production render. Source assets and computed CSS were inspected, but code inspection is not a substitute for the required visible comparison.
 
-## Visual comparison evidence
+## Findings
 
-The source references and final captures were inspected together, not as isolated screenshots. The browser-readable comparison board is `qa/final-reference-comparison.html`.
+- [P1] Current production render lacks browser-captured visual evidence.
+  - Location: production desktop and mobile layouts.
+  - Evidence: source references are available, but the browser-rendered implementation artifact is unavailable in this run.
+  - Impact: exact crop, typography, CTA fit, responsive wrapping, and visual parity cannot be signed off pixel-perfectly.
+  - Fix: open the production URL in the in-app browser, then recapture desktop and mobile states and compare them with the normalized source references.
 
-- Hero: `qa/reference-hero-layout.png` + `qa/final-hero-1458x1102.jpg`.
-- Golden Gate source: `qa/reference-hero-golden-gate.png`.
-- Community rail: `qa/reference-community.png` + `qa/final-community-1200x630.jpg`.
-- Principles treatment: `qa/reference-live-metrics.png` + `qa/final-principles-1200x630.jpg`.
-- Product close: `qa/reference-product-cta.png` + `qa/final-closing-1200x630.jpg`.
-- Signature: `qa/reference-signature.png` + `qa/final-signature-1200x630.jpg`.
+## Comparison history
 
-The comparisons confirm the intended composition, density, spacing rhythm, section sequencing, rounded surfaces, and fade effects while retaining Rachel's Slate-derived fonts and original product artwork.
+1. Earlier build QA passed against the previous hero, community, metrics-principles, closing-panel, and signature references.
+2. This iteration changed the metrics content and scale, all conversion CTAs, and the closing background image; those changed surfaces require fresh visual evidence.
+3. Build, asset delivery, deployment readiness, and static implementation checks passed, but the fresh browser comparison is blocked as described above.
 
-## Responsive evidence
+## Required fidelity surfaces
 
-- Desktop hero: `qa/final-hero-1458x1102.jpg`.
-- Tablet hero: `qa/final-tablet-hero-1024x900.jpg`.
-- Mobile hero: `qa/final-mobile-hero-390x844.jpg`.
-- Mobile product close: `qa/final-mobile-closing-390x844.jpg`.
-- Existing focused 320 px identity/product captures remain in `qa/` for the narrow breakpoint.
+- Fonts and typography: unchanged Slate-derived Google Sans/Inter system; fresh rendered comparison blocked.
+- Spacing and layout rhythm: 820 × 460 desktop closing geometry and responsive CSS preserved; fresh rendered comparison blocked.
+- Colors and tokens: warm-white CTA, `#35e85a` iMessage tile, existing Rachel navy/cream tokens; fresh rendered comparison blocked.
+- Image quality and fidelity: supplied image edited only to remove its baked headline; output inspected locally at full resolution; rendered crop comparison blocked.
+- Copy and content: all conversion buttons say `Get Started`; metrics and Rachel closing copy are present in source.
 
-At the active 1200 × 630 browser viewport, the current document reported one `h1`, no broken images, a 1200 px document width, a 1200 px client width, and a 10,519 px document height. The final desktop, tablet, 390 px, and 320 px captures show no clipped primary content or page-level horizontal overflow. Narrow rules keep hero actions stacked, the phone viewport-bounded, workflow cards scrollable, the two principle values stacked, and the closing CTA/footer within a 20 px edge gutter.
-
-## Motion and interaction verification
-
-- Hero entrance is staged: background, announcement, headline, copy, actions, and low-bounce phone settle.
-- Desktop/tablet hero uses restrained background/phone scroll depth; mobile and reduced-motion paths remove spatial travel.
-- Section headings and grouped cards reveal once with measured stagger.
-- Workflow tabs move directionally with small translation and blur; arrow-key, Home, and End behavior is implemented.
-- Sticky header changes blur and shadow after 16 px without changing height.
-- Primary and secondary CTAs have restrained lift/press motion and visible focus treatment.
-- Pricing switch updates `aria-checked` and the displayed annual price.
-- FAQ rows update `aria-expanded` and animate content without collapsing focus visibility.
-- Mobile navigation opens as a full-height blurred sheet with staggered links and closes with Escape or navigation.
-- Community rail moves continuously, pauses on hover/focus, and exposes a keyboard/touch-accessible `Pause motion` control. The control was tested: `aria-pressed` changed to `true`, its label changed to `Play motion`, and the track's computed animation state changed to `paused`.
-- The current macOS reduced-motion preference was tested in-browser. Spatial loops and transforms stop while short opacity/color fades remain; the former blanket 0.01 ms animation kill switch is gone.
-
-## Accessibility and truthfulness
-
-- Exactly one page-level `h1` is present.
-- The atmospheric hero image is decorative; the phone and product-proof imagery have meaningful descriptions where needed.
-- Links, buttons, tabs, switches, and FAQ controls have keyboard-visible focus states.
-- Duplicate workflow-rail cards are hidden from assistive technology.
-- No dead Privacy/Terms anchors are presented as legal destinations.
-- Unsupported encryption, data-sale, export, and deletion guarantees were removed. Pre-launch security/data-control wording is explicit rather than presented as shipped capability.
-- The reference metrics structure is reframed as product principles (`Ready` and `Your call`) instead of simulated live activity or unsourced counters.
-- Browser console inspection found no application errors. Development output contained only Vite connection messages, the React DevTools notice, and Framer Motion's expected reduced-motion notice.
-
-## Fix history
-
-1. Separated the phone from the background so device sizing and crop could be art-directed independently at every breakpoint.
-2. Replaced the earlier coast with the exact user-supplied Golden Gate panorama and preserved the Slate-derived font system.
-3. Replaced the generic asterisk and inconsistent avatars with one unique Rachel mark across identity moments.
-4. Removed fake testimonial names, portraits, quotes, and every unused stock-style image from the shipping bundle.
-5. Rebuilt motion around restrained springs, directional transitions, staggered reveals, tactile controls, and a real reduced-motion fallback.
-6. Added the requested closing rail, large principles section, rounded product CTA, and faded signature.
-7. Added an explicit rail pause control after accessibility review.
-8. Replaced unsourced live counters with product principles, removed dead legal links, and softened unsupported privacy/security promises after independent review.
-
-## Automated verification
-
-- `npm run build`: passed after the final source changes.
-- `npm run test:sites`: 4/4 passed after the final source changes.
-- `git diff --check`: passed after the final source changes.
-- Remaining P0/P1 findings after final independent review: none.
-
-final result: passed
+final result: blocked
