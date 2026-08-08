@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
 
@@ -65,4 +65,18 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
+});
+
+test("emits Rachel-branded browser and installed-app icons", async () => {
+  const index = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
+
+  await access(new URL("../dist/client/favicon.ico", import.meta.url));
+  await access(new URL("../dist/client/favicon-32x32.png", import.meta.url));
+  await access(new URL("../dist/client/apple-touch-icon.png", import.meta.url));
+  await access(new URL("../dist/client/site.webmanifest", import.meta.url));
+
+  assert.match(index, /href="\/favicon\.ico\?v=1"/);
+  assert.match(index, /href="\/favicon-32x32\.png\?v=1"/);
+  assert.match(index, /href="\/apple-touch-icon\.png"/);
+  assert.match(index, /href="\/site\.webmanifest"/);
 });
