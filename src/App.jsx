@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, MotionConfig, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, MotionConfig, motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowBendUpRight,
   ArrowsClockwise,
@@ -8,6 +8,7 @@ import {
   CalendarCheck,
   CaretRight,
   ChatCenteredText,
+  ChatCircle,
   ChatCircleDots,
   CheckCircle,
   Crown,
@@ -100,6 +101,39 @@ function RachelIdentityMark({ className = "" }) {
   );
 }
 
+function AnimatedMetric({ value, decimals = 2 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.65 });
+  const reducedMotion = useReducedMotion();
+  const [displayed, setDisplayed] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    if (reducedMotion) {
+      setDisplayed(value);
+      return undefined;
+    }
+
+    const start = performance.now();
+    const duration = 1800;
+    let frame = 0;
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      setDisplayed(value * eased);
+      if (progress < 1) frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [decimals, inView, reducedMotion, value]);
+
+  return (
+    <strong ref={ref}>
+      {displayed.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
+    </strong>
+  );
+}
+
 function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "", onClick }) {
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, INTERACTION_SPRING);
@@ -124,6 +158,7 @@ function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "",
         variants={{ rest: { scale: 1 }, hover: { scale: reducedMotion ? 1 : 0.995 }, pressed: { scale: reducedMotion ? 1 : 0.975 } }}
         transition={transition}
       >
+        <span className="imessage-tile" aria-hidden="true"><ChatCircle size={18} weight="fill" /></span>
         {children}
       </motion.span>
     </motion.a>
@@ -170,7 +205,7 @@ function Header() {
             <a href="#faq">FAQ</a>
             <a href="#steps">Setup</a>
           </nav>
-          <BlackButton className="header-cta">Text Rachel</BlackButton>
+          <BlackButton className="header-cta">Get Started</BlackButton>
           <button className={`menu-toggle ${open ? "is-open" : ""}`} onClick={() => setOpen((value) => !value)} aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>
             <span className="menu-glyph" aria-hidden="true">
               <motion.span className="menu-bar menu-bar-top" initial={false} animate={{ y: open ? 3 : 0, rotate: open ? 45 : 0 }} transition={transition} />
@@ -186,7 +221,7 @@ function Header() {
               {[['#features', 'Features'], ['#pricing', 'Pricing'], ['#faq', 'FAQ'], ['#steps', 'Setup']].map(([href, label], index) => (
                 <motion.a custom={index} variants={menuItemVariants} href={href} onClick={() => setOpen(false)} key={href}>{label}</motion.a>
               ))}
-              <motion.div custom={4} variants={menuItemVariants}><BlackButton onClick={() => setOpen(false)}>Text Rachel</BlackButton></motion.div>
+              <motion.div custom={4} variants={menuItemVariants}><BlackButton onClick={() => setOpen(false)}>Get Started</BlackButton></motion.div>
             </motion.nav>
           )}
         </AnimatePresence>
@@ -322,7 +357,7 @@ function PricingCard({ pro = false }) {
           </div>
         </div>
         <ul>{list.map((item) => <li key={item}><CheckCircle size={16} weight="fill" /><span>{item}</span></li>)}</ul>
-        <div className="pricing-button"><BlackButton>{pro ? "Start with Rachel" : "Text Rachel Free"}</BlackButton></div>
+        <div className="pricing-button"><BlackButton>Get Started</BlackButton></div>
       </div>
     </motion.article>
   );
@@ -414,7 +449,7 @@ export function App() {
               <motion.h1 initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : 18, filter: reducedMotion ? "blur(0px)" : "blur(8px)" }} transition={motionTransition(reducedMotion, { duration: 0.68, ease: LUXURY_EASE, delay: 0.18 })}>Meet Rachel,<br /><span>your day already handled.</span></motion.h1>
               <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
               <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
-                <BlackButton><ChatCircleDots size={19} weight="regular" />Text Rachel</BlackButton>
+                <BlackButton>Get Started</BlackButton>
                 <motion.a
                   className="hero-secondary"
                   href="#steps"
@@ -647,18 +682,18 @@ export function App() {
 
         <section className="live-metrics section" aria-labelledby="live-metrics-title">
           <motion.div className="live-metrics-inner" {...groupRevealProps(reducedMotion, 0.09)}>
-            <motion.div className="live-pill" variants={revealVariants(reducedMotion, 8)}><span aria-hidden="true" />Product principles</motion.div>
-            <motion.h2 id="live-metrics-title" variants={revealVariants(reducedMotion, 16)}>Rachel works by two rules.</motion.h2>
+            <motion.div className="live-pill" variants={revealVariants(reducedMotion, 8)}><span aria-hidden="true" />Live</motion.div>
+            <motion.h2 id="live-metrics-title" variants={revealVariants(reducedMotion, 16)}>Rachel is working right now.</motion.h2>
             <motion.div className="metrics-grid" variants={revealVariants(reducedMotion, 14)}>
               <article>
-                <strong>Ready</strong>
-                <h3>When your day changes</h3>
-                <p>One private thread keeps the next decision close at hand.</p>
+                <AnimatedMetric value={848195 / 10000} />
+                <h3>Emails processed</h3>
+                <p>Triaged, drafted, and handled end to end.</p>
               </article>
               <article>
-                <strong>Your call</strong>
-                <h3>Before anything important</h3>
-                <p>Rachel prepares the next move. You decide what happens.</p>
+                <AnimatedMetric value={1775484 / 10000} />
+                <h3>Actions logged</h3>
+                <p>Every decision Rachel prepared, on the record.</p>
               </article>
             </motion.div>
           </motion.div>
@@ -667,8 +702,8 @@ export function App() {
         <section className="final-cta">
           <motion.div className="final-cta-card" {...revealProps("flow", reducedMotion)}>
             <motion.img
-              src="/assets/rachel-context.png"
-              alt="Rachel organising an afternoon across a meeting, email draft, calendar, and follow-up"
+              src="/assets/rachel-final-journey-v2.png"
+              alt="A fast-moving team preparing equipment beside a fully stocked service van"
               initial={{ scale: reducedMotion ? 1 : 1.035 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true, amount: 0.45 }}
@@ -687,7 +722,7 @@ export function App() {
                 whileTap={reducedMotion ? undefined : { y: 0, scale: 0.975 }}
                 transition={motionTransition(reducedMotion, INTERACTION_SPRING)}
               >
-                <span><ChatCircleDots size={18} weight="fill" /></span>Text Rachel
+                <span className="imessage-tile"><ChatCircle size={18} weight="fill" /></span>Get Started
               </motion.a>
             </motion.div>
           </motion.div>
