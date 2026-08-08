@@ -20,6 +20,7 @@ import {
   SunHorizon,
   UserCircle,
 } from "@phosphor-icons/react";
+import { getRachelSmsHref } from "./sms-link.js";
 
 const LUXURY_EASE = [0.16, 1, 0.3, 1];
 const INTERACTION_SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.75 };
@@ -134,7 +135,7 @@ function AnimatedMetric({ value, decimals = 2 }) {
   );
 }
 
-function BlackButton({ children, href = "sms:?body=Hi%20Rachel", className = "", onClick }) {
+function BlackButton({ children, href = getRachelSmsHref(), className = "", onClick }) {
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] });
 
@@ -701,7 +702,7 @@ export function App() {
               <motion.h2 variants={revealVariants(reducedMotion, 12)}>Meet your new chief of staff.</motion.h2>
               <motion.a
                 className="final-cta-button"
-                href="sms:?body=Hi%20Rachel"
+                href={getRachelSmsHref()}
                 variants={revealVariants(reducedMotion, 8)}
                 whileHover={reducedMotion ? undefined : { scale: 1 }}
                 whileTap={reducedMotion ? undefined : { scale: 0.97 }}
@@ -717,7 +718,7 @@ export function App() {
           <div className="footer-inner">
             <div><Brand /><p>The chief of staff in your texts.</p></div>
             <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#steps">Setup</a></div>
-            <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href="sms:?body=Hi%20Rachel">Text Rachel</a></div>
+            <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href={getRachelSmsHref()}>Text Rachel</a></div>
           </div>
           <motion.div className="signature-lockup" initial={{ opacity: 0, y: reducedMotion ? 0 : 28 }} whileInView={{ opacity: 0.13, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE })} aria-hidden="true">
             <img src="/assets/rachel-mark-v2.png" alt="" />
