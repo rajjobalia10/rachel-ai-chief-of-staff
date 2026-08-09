@@ -7,6 +7,14 @@
 }
 
 @font-face {
+  font-family: "Inter CTA";
+  src: url("/fonts/rivesa-inter-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Inter";
   src: url("/fonts/GrgcKwrN6d3Uz8EwcLHZxwEfC4.woff2") format("woff2");
   font-style: normal;
@@ -178,59 +186,42 @@ main { position: relative; overflow: clip; }
 
 .desktop-nav a { transition: opacity .18s ease; }
 
-.black-button {
+.messages-cta {
   position: relative;
   display: inline-flex;
-  width: 134.43px;
-  min-width: 134.43px;
-  height: 50px;
-  min-height: 50px;
-  border-radius: 555px;
-  align-items: center;
-  justify-content: center;
-  color: #08152e;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 14px;
-  letter-spacing: 0;
-  white-space: nowrap;
-  opacity: 1;
-}
-
-.black-button > span {
-  position: relative;
-  display: inline-flex;
-  width: 100%;
-  height: 50px;
-  min-height: 50px;
-  padding: 0 16px;
+  width: 212px;
+  min-width: 212px;
+  height: 40px;
+  min-height: 40px;
+  padding: 10px 16px;
   gap: 8px;
   align-items: center;
   justify-content: center;
-  border-radius: 555px;
-  border: 1px solid rgba(8, 21, 46, .1);
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(8, 21, 46, .06);
+  border: 0;
+  border-radius: 999px;
+  color: #08152e;
+  background: #f5f6f8;
+  box-shadow: 0 2px 12px rgba(8, 21, 46, .1), inset 0 0 0 1px rgba(8, 21, 46, .07);
+  font-family: "Inter CTA", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  opacity: 1;
+  cursor: pointer;
   transition: box-shadow .15s ease-out;
 }
 
-.black-button .imessage-tile {
+.messages-cta img {
   width: 20px;
   height: 20px;
   flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  border-radius: 5px;
-  color: #fff;
-  background: #32e85a;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.34);
+  object-fit: contain;
 }
 
-.black-button .imessage-tile svg { width: 14px; height: 14px; }
-
-.black-button:hover > span {
-  box-shadow: 0 4px 16px rgba(8, 21, 46, .1);
+.messages-cta:hover {
+  box-shadow: 0 4px 16px rgba(8, 21, 46, .12), inset 0 0 0 1px rgba(8, 21, 46, .08);
 }
 
 .header-cta { justify-self: end; }
@@ -379,20 +370,7 @@ main { position: relative; overflow: clip; }
   margin-top: 29px;
 }
 
-.hero-actions .black-button {
-  width: 134.43px;
-  min-width: 134.43px;
-  min-height: 50px;
-  margin-top: 0;
-}
-
-.hero-actions .black-button > span {
-  width: 100%;
-  min-height: 50px;
-  gap: 8px;
-  padding: 0 16px;
-  border-radius: 555px;
-}
+.hero-actions .messages-cta { margin-top: 0; }
 
 .hero-secondary {
   display: inline-flex;
@@ -761,9 +739,7 @@ button.billing { cursor: pointer; }
 .pricing-card li svg { flex: 0 0 auto; color: var(--blue); }
 .pricing-card li span { flex: 1 1 auto; }
 .pricing-button { height: 76px; padding: 13px 20px; }
-.pricing-card .black-button { width: 134.43px; margin: 0 auto; }
-.pricing-card .black-button, .pricing-card .black-button > span { min-height: 50px; }
-.pricing-card .black-button > span { width: 100%; font-size: 14px; }
+.pricing-card .messages-cta { margin: 0 auto; }
 
 .comparison { margin-top: 24px; border-radius: 12px; background: #fff; box-shadow: var(--shadow-soft); overflow: hidden; }
 .comparison-head, .comparison-row { display: grid; grid-template-columns: 278px 261px 261px; align-items: center; }
@@ -944,38 +920,15 @@ button.billing { cursor: pointer; }
 .final-cta-scrim { position: absolute; inset: 0; background: rgba(2, 11, 25, .28); }
 .final-cta-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
 .final-cta h2 { margin: 0; font-size: 48px; line-height: 52px; letter-spacing: -1.25px; }
-.final-cta-button {
-  width: 134.43px;
-  min-width: 134.43px;
-  height: 50px;
-  min-height: 50px;
-  margin-top: 40px;
-  padding: 0 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: 1px solid rgba(8,21,46,.1);
-  border-radius: 999px;
-  color: #08152e;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(8,21,46,.06);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 14px;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-.final-cta-button > .imessage-tile { width: 20px; height: 20px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 5px; color: #fff; background: #32e85a; box-shadow: inset 0 1px 0 rgba(255,255,255,.34); }
-.final-cta-button > .imessage-tile svg { width: 14px; height: 14px; }
-.final-cta-button:hover { box-shadow: 0 4px 16px rgba(8,21,46,.1); }
+.final-cta-button { margin-top: 40px; }
 
 footer { position: relative; height: 520px; background: var(--hero-surface); overflow: hidden; }
-.footer-inner { position: relative; z-index: 2; width: 820px; height: 220px; margin: 0 auto; display: grid; grid-template-columns: 1fr 112px 112px; gap: 24px; align-items: start; padding-top: 61px; }
+.footer-inner { position: relative; z-index: 2; width: 820px; height: 220px; margin: 0 auto; display: grid; grid-template-columns: 1fr 112px 212px; gap: 24px; align-items: start; padding-top: 61px; }
 .footer-inner > div:first-child > p { margin-top: 8px; font-size: 14px; line-height: 17px; }
 .footer-links { display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 17px; color: #757575; }
 .footer-links strong { margin-bottom: 5px; color: #000; font-weight: 500; }
+.footer-contact { width: 212px; }
+.footer-links .footer-cta { margin-top: 8px; color: #08152e; font-family: "Inter CTA", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; }
 .signature-lockup {
   position: absolute;
   left: 50%;
@@ -1091,10 +1044,9 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .mobile-menu { position: fixed; z-index: 99; top: 0; right: 0; left: 0; display: block; overflow: hidden; pointer-events: none; background: transparent; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .mobile-menu.is-open { pointer-events: auto; }
   .mobile-menu nav { width: calc(100% - 40px); margin: 0 auto; padding-top: 118px; display: flex; flex-direction: column; align-items: flex-start; }
-  .mobile-menu nav > a:not(.black-button) { margin-bottom: 24px; font-family: "Inter Display"; font-size: 40px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
-  .mobile-menu nav > a:not(.black-button):nth-of-type(4) { margin-bottom: 0; }
-  .mobile-menu .black-button { min-height: 50px; margin-top: 60px; }
-  .mobile-menu .black-button > span { min-height: 50px; }
+  .mobile-menu nav > a:not(.messages-cta) { margin-bottom: 24px; font-family: "Inter Display"; font-size: 40px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
+  .mobile-menu nav > a:not(.messages-cta):nth-of-type(4) { margin-bottom: 0; }
+  .mobile-menu .messages-cta { margin-top: 60px; }
 
   .brand { font-size: 20px; }
   .hero { height: 900px; }
@@ -1107,8 +1059,7 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .hero h1 span { white-space: normal; }
   .hero-copy > p { width: min(340px, 100%); margin-top: 18px; font-size: 15px; line-height: 22px; text-align: center; }
   .hero-actions { width: 100%; gap: 8px; margin-top: 18px; }
-  .hero-actions .black-button { width: 134.43px; min-width: 134.43px; min-height: 50px; flex: 0 0 auto; }
-  .hero-actions .black-button > span { width: 100%; min-height: 50px; padding: 0 16px; }
+  .hero-actions .messages-cta { flex: 0 0 auto; }
   .hero-secondary { padding: 0 12px; font-size: 14px; line-height: 17px; }
   .hero-coda { height: 76px; padding: 0 20px; text-align: center; }
   .hero-coda p { width: min(350px, 100%); font-size: 18px; line-height: 23px; letter-spacing: -.45px; }
@@ -1215,8 +1166,13 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .final-cta h2 { margin-top: 0; font-size: 40px; line-height: 43px; letter-spacing: -.9px; text-wrap: balance; }
   .final-cta p { width: 300px; }
 
-  footer { height: 430px; }
-  .footer-inner { width: 350px; height: 190px; padding-top: 34px; grid-template-columns: 1fr 92px 92px; gap: 10px; }
+  footer { height: 500px; }
+  .footer-inner { width: 350px; height: 240px; padding-top: 34px; grid-template-columns: 1fr 92px; grid-template-rows: auto auto; column-gap: 10px; row-gap: 24px; }
+  .footer-inner > div:first-child { grid-column: 1; grid-row: 1; }
+  .footer-inner > .footer-links:not(.footer-contact) { grid-column: 2; grid-row: 1; }
+  .footer-contact { width: 100%; grid-column: 1 / -1; grid-row: 2; flex-direction: row; align-items: center; gap: 12px; }
+  .footer-contact strong { margin: 0; }
+  .footer-links .footer-cta { margin: 0 0 0 auto; }
   .footer-inner .brand-mark { width: 18px; height: 16px; }
   .footer-inner .brand-mark img { width: 12px; height: 12px; }
   .footer-inner .brand { font-size: 14px; line-height: 17px; gap: 4px; }
@@ -1235,7 +1191,7 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .hero h1 { margin-top: 16px; font-size: 40px; line-height: 40px; letter-spacing: -1.6px; }
   .hero-copy > p { margin-top: 16px; font-size: 14px; line-height: 21px; }
   .hero-actions { margin-top: 16px; flex-direction: column; }
-  .hero-actions .black-button { width: 134.43px; min-width: 134.43px; flex: 0 0 auto; }
+  .hero-actions .messages-cta { flex: 0 0 auto; }
   .hero-phone-motion { top: 500px; width: min(280px, calc(100vw - 40px)); }
   .hero-coda p span { display: block; }
 
@@ -1289,7 +1245,10 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .community-actions { flex-direction: column; gap: 10px; }
   .metrics-grid strong { font-size: 68px; line-height: 78px; letter-spacing: -3.2px; }
   .final-cta p { width: calc(100vw - 60px); }
-  .footer-inner { grid-template-columns: minmax(0, 1fr) 76px 76px; }
+  footer { height: 560px; }
+  .footer-inner { grid-template-columns: minmax(0, 1fr) 76px; }
+  .footer-contact { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .footer-links .footer-cta { margin: 4px 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

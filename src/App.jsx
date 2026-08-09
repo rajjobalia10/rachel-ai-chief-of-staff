@@ -8,7 +8,6 @@ import {
   CalendarCheck,
   CaretRight,
   ChatCenteredText,
-  ChatCircle,
   ChatCircleDots,
   CheckCircle,
   Crown,
@@ -30,6 +29,7 @@ const FEATURE_REVEAL_SPRING = { duration: 0.56, ease: LUXURY_EASE, delay: 0.04 }
 const FLOW_REVEAL_SPRING = { duration: 0.68, ease: LUXURY_EASE, delay: 0.05 };
 const FAQ_REVEAL_SPRING = { duration: 0.5, ease: LUXURY_EASE, delay: 0.04 };
 const REDUCED_FADE = { duration: 0.15, ease: "linear" };
+const RACHEL_CTA_LABEL = "Text your chief of staff";
 
 function motionTransition(reduced, transition) {
   return reduced ? REDUCED_FADE : transition;
@@ -135,33 +135,21 @@ function AnimatedMetric({ value, decimals = 2 }) {
   );
 }
 
-function BlackButton({ children, href = getRachelSmsHref(), className = "", onClick }) {
+function MessagesCta({ className = "", onClick, variants }) {
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] });
 
   return (
     <motion.a
-      className={`black-button ${className}`}
-      href={href}
+      className={`messages-cta ${className}`}
+      href={getRachelSmsHref()}
       onClick={onClick}
-      initial="rest"
-      animate="rest"
-      whileHover="hover"
-      whileTap="pressed"
-      variants={{
-        rest: { opacity: 1, y: 0 },
-        hover: { opacity: 1, y: 0 },
-        pressed: { opacity: 1, y: 0 },
-      }}
+      variants={variants}
+      whileTap={reducedMotion ? undefined : { scale: 0.97 }}
       transition={transition}
     >
-      <motion.span
-        variants={{ rest: { scale: 1 }, hover: { scale: 1 }, pressed: { scale: reducedMotion ? 1 : 0.97 } }}
-        transition={transition}
-      >
-        <span className="imessage-tile" aria-hidden="true"><ChatCircle size={18} weight="fill" /></span>
-        {children}
-      </motion.span>
+      <img src="/assets/imessage-icon.png" alt="" width="20" height="20" aria-hidden="true" />
+      <span>{RACHEL_CTA_LABEL}</span>
     </motion.a>
   );
 }
@@ -206,7 +194,7 @@ function Header() {
             <a href="#faq">FAQ</a>
             <a href="#steps">Setup</a>
           </nav>
-          <BlackButton className="header-cta">Get Started</BlackButton>
+          <MessagesCta className="header-cta" />
           <button className={`menu-toggle ${open ? "is-open" : ""}`} onClick={() => setOpen((value) => !value)} aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>
             <span className="menu-glyph" aria-hidden="true">
               <motion.span className="menu-bar menu-bar-top" initial={false} animate={{ y: open ? 3 : 0, rotate: open ? 45 : 0 }} transition={transition} />
@@ -222,7 +210,7 @@ function Header() {
               {[['#features', 'Features'], ['#pricing', 'Pricing'], ['#faq', 'FAQ'], ['#steps', 'Setup']].map(([href, label], index) => (
                 <motion.a custom={index} variants={menuItemVariants} href={href} onClick={() => setOpen(false)} key={href}>{label}</motion.a>
               ))}
-              <motion.div custom={4} variants={menuItemVariants}><BlackButton onClick={() => setOpen(false)}>Get Started</BlackButton></motion.div>
+              <motion.div custom={4} variants={menuItemVariants}><MessagesCta onClick={() => setOpen(false)} /></motion.div>
             </motion.nav>
           )}
         </AnimatePresence>
@@ -358,7 +346,7 @@ function PricingCard({ pro = false }) {
           </div>
         </div>
         <ul>{list.map((item) => <li key={item}><CheckCircle size={16} weight="fill" /><span>{item}</span></li>)}</ul>
-        <div className="pricing-button"><BlackButton>Get Started</BlackButton></div>
+        <div className="pricing-button"><MessagesCta /></div>
       </div>
     </motion.article>
   );
@@ -450,7 +438,7 @@ export function App() {
               <motion.h1 initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : 18, filter: reducedMotion ? "blur(0px)" : "blur(8px)" }} transition={motionTransition(reducedMotion, { duration: 0.68, ease: LUXURY_EASE, delay: 0.18 })}>Meet Rachel,<br /><span>your day already handled.</span></motion.h1>
               <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
               <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
-                <BlackButton>Get Started</BlackButton>
+                <MessagesCta />
               </motion.div>
             </div>
           </div>
@@ -700,16 +688,10 @@ export function App() {
             <div className="final-cta-scrim" aria-hidden="true" />
             <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
               <motion.h2 variants={revealVariants(reducedMotion, 12)}>Meet your new chief of staff.</motion.h2>
-              <motion.a
+              <MessagesCta
                 className="final-cta-button"
-                href={getRachelSmsHref()}
                 variants={revealVariants(reducedMotion, 8)}
-                whileHover={reducedMotion ? undefined : { scale: 1 }}
-                whileTap={reducedMotion ? undefined : { scale: 0.97 }}
-                transition={motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] })}
-              >
-                <span className="imessage-tile"><ChatCircle size={18} weight="fill" /></span>Get Started
-              </motion.a>
+              />
             </motion.div>
           </motion.div>
         </section>
@@ -718,7 +700,7 @@ export function App() {
           <div className="footer-inner">
             <div><Brand /><p>The chief of staff in your texts.</p></div>
             <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#steps">Setup</a></div>
-            <div className="footer-links"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><a href={getRachelSmsHref()}>Text Rachel</a></div>
+            <div className="footer-links footer-contact"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><MessagesCta className="footer-cta" /></div>
           </div>
           <motion.div className="signature-lockup" initial={{ opacity: 0, y: reducedMotion ? 0 : 28 }} whileInView={{ opacity: 0.13, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE })} aria-hidden="true">
             <img src="/assets/rachel-mark-v2.png" alt="" />
