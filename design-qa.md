@@ -70,3 +70,66 @@
 - None required for the selected CTA target.
 
 final result: passed
+
+---
+
+# Rachel website design QA
+
+## Result
+
+PASS — the homepage header, standalone pricing page, and standalone docs page match the selected reference structure while retaining Rachel's typography, blue/black palette, product imagery, and exact iMessage CTA contract.
+
+## Source truth
+
+- User-supplied header crop: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/TemporaryItems/NSIRD_screencaptureui_jSXuJ7/Screenshot 2026-08-25 at 11.38.33 PM.png`
+- Captured Composio pricing top: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/composio-pricing-desktop-top.png`
+- Captured Composio pricing full page: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/composio-pricing-desktop-full.png`
+- Existing Rachel brand and product guidance: `BRAND_IDENTITY.md` and `AGENTS.md`
+
+## Final implementation evidence
+
+- Homepage desktop: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-home-desktop-final.jpg`
+- Homepage product-truth section: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-home-product-truth.jpg`
+- Pricing desktop: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-pricing-desktop-compact.jpg`
+- Pricing mobile: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-pricing-mobile-final.jpg`
+- Pricing section contact sheet: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-pricing-contact-sheet.png`
+- Docs desktop: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-docs-top.jpg`
+- Docs mobile: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-docs-mobile.jpg`
+- Mobile navigation: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/rachel-local-mobile-menu.jpg`
+
+## Same-input visual comparisons
+
+- Header reference over Rachel implementation: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/qa-header-reference-vs-rachel-final.png`
+- Pricing reference over Rachel implementation: `/var/folders/j9/h4zlz2kx5yx2z6dhcf9ntnfc0000gn/T/rachel-site-capture/qa-pricing-reference-vs-rachel-final.png`
+
+The first pass placed the pricing cards too low and let the signal artwork crowd the brand mark. The second pass aligned the hero and card start with the 1440×900 reference and inset the header content. The final pass reduced standalone plan-card height so prices, features, and the CTA remain visible together, matching the reference's first-screen hierarchy.
+
+## Viewports and interactions
+
+- Desktop: 1440×900 at device pixel ratio 1.
+- Mobile: 390×844 at device pixel ratio 1.
+- Verified the mobile menu opens to the full viewport and closes correctly.
+- Verified Docs in-page navigation lands `#approvals` at the sticky-header offset.
+- Verified header navigation reaches `/pricing` and updates the route title and H1.
+- Verified cross-page `/#features` navigation lands the target 72 px below the sticky header.
+- Verified the Pro annual switch changes `$29` to `$24` and sets `aria-checked="true"`.
+- Verified the pricing FAQ expands and exposes its answer.
+- Verified collapsed FAQ answers are absent from the focus order and expanded answers are linked by `aria-controls`.
+- Verified the feature comparison uses semantic table, row-header, and column-header markup.
+- Verified the production SMS link remains `sms:+16282646604&body=Hi%20Rachel` on the Apple test environment.
+
+## Runtime checks
+
+- No browser console errors.
+- The development console reports only the expected React DevTools message and Framer Motion's reduced-motion informational warning.
+- DOM inspection confirms one comparison section, one FAQ section, one final CTA, and one footer. A stitched full-page browser capture duplicated sticky/animated segments, so final visual judgment used stable same-viewport section captures plus DOM counts.
+
+## Product-truth check
+
+- Removed unsourced live usage counters.
+- Preserved the public Free `$0`, Pro `$29` monthly, and Pro `$24` yearly prices.
+- Connected tools are described as early access and account-by-account.
+- Important external actions remain explicitly approval-first.
+- No enterprise tier or broad integration promise was invented.
+
+final result: passed

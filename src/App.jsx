@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, MotionConfig, motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowBendUpRight,
   ArrowsClockwise,
@@ -20,6 +20,7 @@ import {
   UserCircle,
 } from "@phosphor-icons/react";
 import { getRachelSmsHref } from "./sms-link.js";
+import { scrollToRouteLocation } from "./route-scroll.js";
 
 const LUXURY_EASE = [0.16, 1, 0.3, 1];
 const INTERACTION_SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.75 };
@@ -87,7 +88,7 @@ const workflowStateVariants = {
 
 function Brand() {
   return (
-    <a className="brand" href="#top" aria-label="Rachel home">
+    <a className="brand" href="/" aria-label="Rachel home">
       <span className="brand-mark" aria-hidden="true"><img src="/assets/rachel-mark-v2.png" alt="" width="22" height="22" /></span>
       <span>Rachel</span>
     </a>
@@ -99,39 +100,6 @@ function RachelIdentityMark({ className = "" }) {
     <span className={`asset-mark ${className}`} aria-hidden="true">
       <img src="/assets/rachel-mark-v2.png" alt="" width="64" height="64" />
     </span>
-  );
-}
-
-function AnimatedMetric({ value, decimals = 2 }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.65 });
-  const reducedMotion = useReducedMotion();
-  const [displayed, setDisplayed] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return undefined;
-    if (reducedMotion) {
-      setDisplayed(value);
-      return undefined;
-    }
-
-    const start = performance.now();
-    const duration = 1800;
-    let frame = 0;
-    const tick = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      setDisplayed(value * eased);
-      if (progress < 1) frame = window.requestAnimationFrame(tick);
-    };
-    frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
-  }, [decimals, inView, reducedMotion, value]);
-
-  return (
-    <strong ref={ref}>
-      {displayed.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
-    </strong>
   );
 }
 
@@ -189,10 +157,11 @@ function Header() {
         <div className="header-inner">
           <Brand />
           <nav className="desktop-nav" aria-label="Main navigation">
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
-            <a href="#steps">Setup</a>
+            <a href="/#features">Product</a>
+            <a href="/#workflow">Workflows</a>
+            <a href="/#community">Use Cases</a>
+            <a href="/docs">Docs</a>
+            <a href="/pricing">Pricing</a>
           </nav>
           <MessagesCta className="header-cta" />
           <button className={`menu-toggle ${open ? "is-open" : ""}`} onClick={() => setOpen((value) => !value)} aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>
@@ -207,10 +176,10 @@ function Header() {
         <AnimatePresence initial={false}>
           {open && (
             <motion.nav id="mobile-navigation" aria-label="Mobile navigation" initial="hidden" animate="visible" exit="exit">
-              {[['#features', 'Features'], ['#pricing', 'Pricing'], ['#faq', 'FAQ'], ['#steps', 'Setup']].map(([href, label], index) => (
+              {[["/#features", "Product"], ["/#workflow", "Workflows"], ["/#community", "Use Cases"], ["/docs", "Docs"], ["/pricing", "Pricing"]].map(([href, label], index) => (
                 <motion.a custom={index} variants={menuItemVariants} href={href} onClick={() => setOpen(false)} key={href}>{label}</motion.a>
               ))}
-              <motion.div custom={4} variants={menuItemVariants}><MessagesCta onClick={() => setOpen(false)} /></motion.div>
+              <motion.div custom={5} variants={menuItemVariants}><MessagesCta onClick={() => setOpen(false)} /></motion.div>
             </motion.nav>
           )}
         </AnimatePresence>
@@ -220,14 +189,14 @@ function Header() {
 }
 
 const primaryFeatures = [
-  { icon: SunHorizon, title: "Morning Brief", copy: "Wake up knowing what needs you, what changed overnight, and what Rachel already handled." },
-  { icon: ArrowsClockwise, title: "Follow-Through", copy: "Rachel remembers every promise, nudges the right people, and closes the loop before it goes stale." },
+  { icon: SunHorizon, title: "Morning Brief", copy: "Ask for a focused view of the priorities, decisions, and reminders that need you next." },
+  { icon: ArrowsClockwise, title: "Follow-Through", copy: "Turn loose ends into reminders and clear next steps without leaving your conversation." },
   { icon: ShieldCheck, title: "You Stay in Control", copy: "Rachel prepares the work, then asks before anything important is sent, booked, or shared." },
 ];
 
 const visualFeatures = [
   { icon: Brain, title: "Compounding Memory", copy: "People, preferences, plans, and promises — remembered in context.", image: "/assets/rachel-feature-memory.png", key: "folders" },
-  { icon: PlugsConnected, title: "All Your Tools", copy: "Email, calendar, messages, and documents working as one.", image: "/assets/rachel-feature-tools.png", key: "icloud" },
+  { icon: PlugsConnected, title: "Permissioned Connections", copy: "Connected tools are enabled account by account during early access.", image: "/assets/rachel-feature-tools.png", key: "icloud" },
   { icon: ChatCircleDots, title: "One Text Thread", copy: "Delegate naturally in iMessage. No dashboard and no new habit.", image: "/assets/rachel-feature-thread.png", key: "search" },
 ];
 
@@ -235,10 +204,10 @@ const workflowStates = [
   {
     label: "Connect your world",
     title: "Connect What Matters",
-    eyebrow: "Email, calendar, messages, and docs.",
-    copy: "Rachel builds the context behind your day, so every request starts informed and stays personal.",
-    stat: "10+ Integrations",
-    statCopy: "One shared view of your day",
+    eyebrow: "Calendar context first. More connections as enabled.",
+    copy: "Choose what Rachel can understand. Early-access connections are permissioned and activated account by account.",
+    stat: "Permissioned Setup",
+    statCopy: "You choose every connection",
     image: "/assets/rachel-workflow-connect.png",
     icon: PlugsConnected,
   },
@@ -254,11 +223,11 @@ const workflowStates = [
   },
   {
     label: "Approve and done",
-    title: "Rachel Handles It",
-    eyebrow: "Draft, schedule, remind, and follow up.",
-    copy: "Rachel gets the work ready and asks before anything important happens.",
-    stat: "Hours Back",
-    statCopy: <><strong>Every week</strong><br />Without the busywork</>,
+    title: "Prepare the Next Step",
+    eyebrow: "Draft, remind, organize, and follow up.",
+    copy: "Rachel gets the next step ready and asks before an important external action happens.",
+    stat: "Approval First",
+    statCopy: <><strong>You stay in control</strong><br />Before anything external</>,
     image: "/assets/rachel-workflow-done.png",
     icon: CheckCircle,
   },
@@ -274,36 +243,56 @@ const workflowCopyRightPaddings = [55, 80, 55];
 
 const steps = [
   { number: "01", image: "/assets/rachel-step-text.png", title: "Text Rachel", copy: "Start a private iMessage conversation. Tell Rachel what is on your plate in the same words you would use with a great chief of staff." },
-  { number: "02", image: "/assets/rachel-step-connect.png", title: "Connect Your Tools", copy: "Choose the calendar, inbox, and documents Rachel should understand. You stay in control of every permission." },
-  { number: "03", image: "/assets/rachel-step-handoff.png", title: "Hand Off Your First Task", copy: "Ask for a morning brief, a meeting plan, or a follow-up. Rachel prepares it and checks with you before acting." },
+  { number: "02", image: "/assets/rachel-step-connect.png", title: "Choose Your Context", copy: "Share what matters in the conversation. Eligible connected tools are enabled account by account, with permission boundaries you can see." },
+  { number: "03", image: "/assets/rachel-step-handoff.png", title: "Hand Off Your First Task", copy: "Ask a question, set a reminder, or request a draft. Rachel prepares the work and checks with you before an important external action." },
 ];
 
-const freeFeatures = ["One iMessage thread", "Daily morning brief", "Calendar connection", "5 tasks each week", "Approval before actions", "Private personal memory"];
-const proFeatures = ["Unlimited requests", "Email, docs, and calendar", "Proactive follow-ups", "Meeting briefs and drafts", "Custom routines", "Priority support"];
+const freeFeatures = ["Private iMessage conversation", "Questions and reminders", "Personal context", "Approval before important actions", "A simple way to try Rachel", "Standard support"];
+const proFeatures = ["Everything in Free", "Expanded recurring requests", "More proactive follow-through", "Meeting prep and drafts", "Connected tools as enabled", "Priority support"];
 
 const comparisonRows = [
-  ["Rachel requests", "5/week", "Unlimited"],
-  ["Connected tools", "Calendar", "All tools"],
-  ["Proactive follow-ups", "—", "check"],
-  ["Meeting preparation", "—", "check"],
-  ["Custom routines", "—", "check"],
+  ["Rachel requests", "Starter access", "Expanded access"],
+  ["Questions and reminders", "check", "check"],
+  ["Approval before external actions", "check", "check"],
+  ["Proactive follow-through", "Limited", "Expanded"],
+  ["Connected tools", "As enabled", "As enabled"],
   ["Support", "Standard", "Priority"],
 ];
 
 const communityStories = [
-  { title: "Founder workflow", label: "Monday, 8:02 AM", icon: SunHorizon, copy: "A clear morning brief, the three decisions that need you, and every follow-up already lined up." },
-  { title: "Operator workflow", label: "Before the next meeting", icon: CalendarCheck, copy: "The calendar change is held, the attendees are updated, and the context is ready before you join." },
-  { title: "Creative lead workflow", label: "From a half-formed thought", icon: PencilSimpleLine, copy: "A polished client note in your voice, prepared in iMessage and waiting for your approval." },
-  { title: "Consultant workflow", label: "After the call", icon: ArrowBendUpRight, copy: "Commitments are captured, owners are clear, and the next nudge is scheduled before anything slips." },
+  { title: "Founder workflow", label: "Monday, 8:02 AM", icon: SunHorizon, copy: "Ask for a focused brief: the decisions that need you, the reminders you set, and the next step for each." },
+  { title: "Operator workflow", label: "Before the next meeting", icon: CalendarCheck, copy: "Bring the context you have shared into one concise prep note, with the open question made clear." },
+  { title: "Creative lead workflow", label: "From a half-formed thought", icon: PencilSimpleLine, copy: "Turn a rough idea into a polished client note in your voice, ready for your review in iMessage." },
+  { title: "Consultant workflow", label: "After the call", icon: ArrowBendUpRight, copy: "Turn commitments into clear reminders and draft the follow-up without sending anything before approval." },
 ];
 
 const faqs = [
   ["Does Rachel really work inside iMessage?", "Yes. Rachel lives in a private iMessage thread, so asking for help feels as natural as texting a person you trust."],
-  ["Can Rachel connect to my existing work tools?", "Rachel is designed to connect to your calendar, email, messages, documents, and the tools where your work already lives. You choose each connection."],
-  ["Will Rachel ask first?", "Yes. Rachel can prepare drafts, reminders, meetings, and follow-ups, but asks for your approval before any important external action."],
+  ["Can Rachel connect to my existing work tools?", "Connections are in early access and are enabled account by account. Rachel starts with the context available to your account, and you choose every permission."],
+  ["Will Rachel ask first?", "Yes. Rachel can prepare a draft or proposed next step, but asks for your approval before an important external action."],
   ["How is Rachel approaching privacy and security?", "Rachel is being designed around permissioned connections and approval-first actions. Detailed security, retention, and data-handling terms will be published before accounts are activated."],
   ["Will I be able to export or delete my Rachel data?", "Data controls are part of the product plan. The exact export, deletion, and retention controls will be documented before accounts are activated."],
 ];
+
+const pricingFaqs = [
+  ["Can I start without paying?", "Yes. The Free plan is the simplest way to begin a private Rachel conversation and try core questions and reminders."],
+  ["What changes when I choose annual billing?", "Rachel Pro is $29 month to month or $24 per month when billed yearly. Use the switch on the Pro card to compare the two monthly rates."],
+  ["Are connected tools included in every plan?", "Connected tools are still in early access and are enabled account by account. Availability depends on your account and the permissions you choose."],
+  ["Does Rachel take actions without asking?", "Important external actions stay approval-first. Rachel prepares the work and asks you before it is sent, booked, or shared."],
+  ["Can I change plans later?", "Yes. Plan and billing controls will be available with account activation, and you can contact support whenever you need help."],
+  ["Where can I read the product details?", <>The <a href="/docs">Rachel docs</a> explain the current workflow, connected-tool boundaries, and privacy approach.</>],
+];
+
+function RouteMeta({ title, description }) {
+  useEffect(() => {
+    document.title = title;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", description);
+    const frame = window.requestAnimationFrame(() => scrollToRouteLocation());
+    return () => window.cancelAnimationFrame(frame);
+  }, [description, title]);
+  return null;
+}
 
 function SectionIntro({ title, copy, align = "center" }) {
   const reducedMotion = useReducedMotion();
@@ -311,6 +300,41 @@ function SectionIntro({ title, copy, align = "center" }) {
     <motion.div className={`section-intro ${align === "left" ? "is-left" : ""}`} {...groupRevealProps(reducedMotion, 0.08)}>
       <motion.h2 variants={revealVariants(reducedMotion, 16)}>{title}</motion.h2>
       <motion.p variants={revealVariants(reducedMotion, 10)}>{copy}</motion.p>
+    </motion.div>
+  );
+}
+
+function FaqList({ items = faqs, idPrefix = "faq" }) {
+  const [openFaqs, setOpenFaqs] = useState(() => new Set());
+  const reducedMotion = useReducedMotion();
+  const toggleFaq = (index) => {
+    setOpenFaqs((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
+  return (
+    <motion.div className="faq-list" {...revealProps("faq", reducedMotion)}>
+      {items.map(([question, answer], index) => {
+        const open = openFaqs.has(index);
+        const answerId = `${idPrefix}-answer-${index}`;
+        return (
+          <motion.article className={`faq-item ${open ? "open" : ""}`} key={question} layout transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)}>
+            <button onClick={() => toggleFaq(index)} aria-expanded={open} aria-controls={answerId}>
+              <h4>{question}</h4>
+              <span className="faq-icon" aria-hidden="true"><motion.span className="faq-icon-bar" initial={false} animate={{ rotate: open ? 0 : 90 }} transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)} /><span className="faq-icon-bar" /></span>
+            </button>
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div id={answerId} className="faq-answer" initial={{ opacity: 0, filter: "blur(5px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} exit={{ opacity: 0, filter: "blur(5px)" }} transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)}><p>{answer}</p></motion.div>
+              )}
+            </AnimatePresence>
+          </motion.article>
+        );
+      })}
     </motion.div>
   );
 }
@@ -332,7 +356,7 @@ function PricingCard({ pro = false }) {
             <div className="price"><strong>{pro && yearly ? "$24" : pro ? "$29" : "$0"}</strong><span>/per month</span></div>
           </div>
           <div className="price-description">
-            <p>{pro ? "Delegate the details and get meaningful time back every week." : "Meet Rachel, get a daily brief, and hand off your first recurring tasks."}</p>
+            <p>{pro ? "Expand recurring requests, follow-through, prepared work, and support." : "Start a private conversation, ask questions, and set useful reminders."}</p>
             {pro ? (
               <button className={`billing ${yearly ? "on" : ""}`} type="button" role="switch" aria-checked={yearly} onClick={() => setYearly((value) => !value)}>
                 <motion.span className="switch" animate={{ backgroundColor: yearly ? "rgb(7, 220, 113)" : "rgb(224, 224, 224)" }} transition={transition}>
@@ -352,10 +376,55 @@ function PricingCard({ pro = false }) {
   );
 }
 
-export function App() {
+function FinalCta({ standalone = false }) {
+  const reducedMotion = useReducedMotion();
+  return (
+    <section className={`final-cta ${standalone ? "standalone-final-cta" : ""}`} id={standalone ? "start" : "final-cta"}>
+      <motion.div className="final-cta-card" {...revealProps("flow", reducedMotion)}>
+        {!standalone && (
+          <motion.img
+            src="/assets/rachel-final-journey-v2.png"
+            alt="A fast-moving team preparing equipment beside a fully stocked service van"
+            initial={{ scale: reducedMotion ? 1 : 1.035 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={motionTransition(reducedMotion, { duration: 1.1, ease: LUXURY_EASE })}
+          />
+        )}
+        <div className="final-cta-scrim" aria-hidden="true" />
+        <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
+          <motion.h2 variants={revealVariants(reducedMotion, 12)}>{standalone ? "Start with one text." : "Meet your new chief of staff."}</motion.h2>
+          {standalone && <motion.p variants={revealVariants(reducedMotion, 10)}>Tell Rachel what is on your plate. You stay in control of what happens next.</motion.p>}
+          <MessagesCta
+            className="final-cta-button"
+            variants={revealVariants(reducedMotion, 8)}
+          />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
+function Footer() {
+  const reducedMotion = useReducedMotion();
+  return (
+    <footer>
+      <div className="footer-inner">
+        <div><Brand /><p>The chief of staff in your texts.</p></div>
+        <div className="footer-links"><strong>Explore</strong><a href="/#features">Product</a><a href="/#workflow">Workflows</a><a href="/#community">Use Cases</a><a href="/docs">Docs</a><a href="/pricing">Pricing</a></div>
+        <div className="footer-links footer-contact"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><MessagesCta className="footer-cta" /></div>
+      </div>
+      <motion.div className="signature-lockup" initial={{ opacity: 0, y: reducedMotion ? 0 : 28 }} whileInView={{ opacity: 0.13, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE })} aria-hidden="true">
+        <img src="/assets/rachel-mark-v2.png" alt="" />
+        <span>Rachel</span>
+      </motion.div>
+    </footer>
+  );
+}
+
+function HomePage() {
   const [workflow, setWorkflow] = useState(0);
   const [workflowDirection, setWorkflowDirection] = useState(1);
-  const [openFaqs, setOpenFaqs] = useState(() => new Set());
   const [communityPaused, setCommunityPaused] = useState(false);
   const [viewportTier, setViewportTier] = useState(null);
   const [heroMotionReady, setHeroMotionReady] = useState(false);
@@ -379,14 +448,6 @@ export function App() {
   const interactionTransition = motionTransition(reducedMotion, INTERACTION_SPRING);
   const workflowSectionHeight = viewportTier === "desktop" ? workflowSectionHeights[workflow] : viewportTier === "tablet" ? workflowTabletSectionHeights[workflow] : viewportTier === "mobile" ? workflowMobileSectionHeights[workflow] : undefined;
   const workflowPanelHeight = viewportTier === "desktop" ? workflowPanelHeights[workflow] : viewportTier === "tablet" ? workflowTabletPanelHeights[workflow] : viewportTier === "mobile" ? workflowMobilePanelHeights[workflow] : undefined;
-  const toggleFaq = (index) => {
-    setOpenFaqs((current) => {
-      const next = new Set(current);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
-  };
   const selectWorkflow = (index) => {
     if (index === workflow) return;
     setWorkflowDirection(index > workflow ? 1 : -1);
@@ -400,6 +461,7 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <main id="top">
+        <RouteMeta title="Rachel — Your AI chief of staff in iMessage" description="Ask questions, set reminders, prepare work, and stay in control with Rachel in iMessage." />
         <Header />
 
         <section className="hero" ref={heroRef}>
@@ -455,14 +517,14 @@ export function App() {
 
         <section className="challenge" id="challenge">
           <motion.h3 {...revealProps("flow", reducedMotion)}>
-            <span>Plans, promises, and loose ends live across your inbox, calendar, messages, and memory.</span>
-            <strong>Rachel brings them together and quietly moves everything forward.</strong>
+            <span>Plans, promises, and loose ends compete for the same limited attention.</span>
+            <strong>Rachel gives them one place to become questions, reminders, and clear next steps.</strong>
           </motion.h3>
         </section>
 
         <section className="features section" id="features">
           <div className="section-shell">
-            <SectionIntro title={<>Everything a great<br />chief of staff remembers</>} copy="Rachel connects the tools you already use, learns what matters, and handles the follow-through." />
+            <SectionIntro title={<>Everything a great<br />chief of staff remembers</>} copy="Rachel keeps the context you share close, turns requests into clear next steps, and helps you follow through." />
             <motion.div className="primary-feature-grid" {...groupRevealProps(reducedMotion, 0.06)}>
               {primaryFeatures.map(({ icon: Icon, title, copy }) => (
                 <motion.article className="feature-copy-card" key={title} variants={revealVariants(reducedMotion, 14)} whileHover={reducedMotion ? undefined : { y: -3 }} transition={motionTransition(reducedMotion, INTERACTION_SPRING)}>
@@ -486,7 +548,7 @@ export function App() {
           </div>
         </section>
 
-        <motion.section className="workflow section" animate={workflowSectionHeight === undefined ? undefined : { height: workflowSectionHeight }} transition={motionTransition(reducedMotion, LAYOUT_SPRING)}>
+        <motion.section className="workflow section" id="workflow" animate={workflowSectionHeight === undefined ? undefined : { height: workflowSectionHeight }} transition={motionTransition(reducedMotion, LAYOUT_SPRING)}>
           <div className="section-shell">
             <SectionIntro title="From thought to done in seconds." copy="Choose how you want to delegate. Rachel adapts to your day, not the other way around." />
             <motion.div className="workflow-interactive" {...revealProps("feature", reducedMotion)}>
@@ -560,8 +622,8 @@ export function App() {
               <motion.div className="benefit-grid" {...groupRevealProps(reducedMotion, 0.055)}>
                 {[
                   ["Brief", "Start every day with the decisions, priorities, and follow-ups that actually need you.", BellRinging],
-                  ["Draft", "Turn rough thoughts into polished emails, updates, and agendas in your own voice.", PencilSimpleLine],
-                  ["Schedule", "Find the right time, prepare the context, and keep every commitment moving.", CalendarCheck],
+                  ["Draft", "Turn rough thoughts into polished messages, updates, and agendas in your own voice.", PencilSimpleLine],
+                  ["Schedule", "Review the timing, prepare the context, and turn a commitment into a clear next step.", CalendarCheck],
                   ["Follow up", "Remember every promise and close the loop with the right person at the right moment.", ArrowBendUpRight],
                 ].map(([title, copy, Icon]) => (
                   <motion.article key={title} variants={revealVariants(reducedMotion, 10)}><Icon size={18} weight="fill" /><h4>{title}</h4><p>{copy}</p></motion.article>
@@ -573,7 +635,7 @@ export function App() {
 
         <section className="steps section" id="steps">
           <div className="section-shell">
-            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Add Rachel to iMessage and get a useful first brief in minutes." />
+            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Open Rachel in iMessage and start with one useful request." />
             <motion.div className="steps-list" {...groupRevealProps(reducedMotion, 0.09)}>
               <motion.div className="step-line" variants={{ hidden: { opacity: 0, scaleY: reducedMotion ? 1 : 0 }, visible: { opacity: 1, scaleY: 1, transition: motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE }) } }} />
               {steps.map((step, index) => (
@@ -594,7 +656,7 @@ export function App() {
             <motion.div className="comparison" {...revealProps("feature", reducedMotion)}>
               <div className="comparison-head"><h4>Feature Comparison</h4><h4>Free</h4><h4>Pro</h4></div>
               {comparisonRows.map(([feature, free, pro]) => (
-                <div className="comparison-row" key={feature}><h4>{feature}</h4><span>{free}</span><span>{pro === "check" ? <CheckCircle size={16} weight="fill" /> : pro}</span></div>
+                <div className="comparison-row" key={feature}><h4>{feature}</h4><span>{free === "check" ? <CheckCircle size={16} weight="fill" /> : free}</span><span>{pro === "check" ? <CheckCircle size={16} weight="fill" /> : pro}</span></div>
               ))}
             </motion.div>
           </div>
@@ -603,20 +665,7 @@ export function App() {
         <section className="faq section" id="faq">
           <div className="section-shell faq-shell">
             <div className="faq-heading"><SectionIntro align="left" title={<>Frequently asked<br />questions</>} copy="Still have questions? Write to us at hello@rachel.im" /></div>
-            <motion.div className="faq-list" {...revealProps("faq", reducedMotion)}>
-              {faqs.map(([question, answer], index) => {
-                const open = openFaqs.has(index);
-                return (
-                  <motion.article className={`faq-item ${open ? "open" : ""}`} key={question} layout transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)}>
-                    <button onClick={() => toggleFaq(index)} aria-expanded={open}>
-                      <h4>{question}</h4>
-                      <span className="faq-icon" aria-hidden="true"><motion.span className="faq-icon-bar" initial={false} animate={{ rotate: open ? 0 : 90 }} transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)} /><span className="faq-icon-bar" /></span>
-                    </button>
-                    <motion.div className="faq-answer" initial={false} animate={{ opacity: open ? 1 : 0, filter: open ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, FAQ_ITEM_SPRING)} aria-hidden={!open}><p>{answer}</p></motion.div>
-                  </motion.article>
-                );
-              })}
-            </motion.div>
+            <FaqList />
           </div>
         </section>
 
@@ -658,58 +707,224 @@ export function App() {
 
         <section className="live-metrics section" aria-labelledby="live-metrics-title">
           <motion.div className="live-metrics-inner" {...groupRevealProps(reducedMotion, 0.09)}>
-            <motion.div className="live-pill" variants={revealVariants(reducedMotion, 8)}><span aria-hidden="true" />Live</motion.div>
-            <motion.h2 id="live-metrics-title" variants={revealVariants(reducedMotion, 16)}>Rachel is working right now.</motion.h2>
+            <motion.div className="live-pill" variants={revealVariants(reducedMotion, 8)}><span aria-hidden="true" />How Rachel works</motion.div>
+            <motion.h2 id="live-metrics-title" variants={revealVariants(reducedMotion, 16)}>Familiar by design.<br />Clear at every step.</motion.h2>
             <motion.div className="metrics-grid" variants={revealVariants(reducedMotion, 14)}>
               <article>
-                <AnimatedMetric value={848195 / 10000} />
-                <h3>Emails processed</h3>
-                <p>Triaged, drafted, and handled end to end.</p>
+                <strong className="metrics-word">One thread</strong>
+                <h3>Ask naturally</h3>
+                <p>Questions, reminders, and prepared work stay in a private iMessage conversation.</p>
               </article>
               <article>
-                <AnimatedMetric value={1775484 / 10000} />
-                <h3>Actions logged</h3>
-                <p>Every decision Rachel prepared, on the record.</p>
+                <strong className="metrics-word">Your approval</strong>
+                <h3>Stay in control</h3>
+                <p>Rachel checks with you before an important external action is sent, booked, or shared.</p>
               </article>
             </motion.div>
           </motion.div>
         </section>
 
-        <section className="final-cta" id="final-cta">
-          <motion.div className="final-cta-card" {...revealProps("flow", reducedMotion)}>
-            <motion.img
-              src="/assets/rachel-final-journey-v2.png"
-              alt="A fast-moving team preparing equipment beside a fully stocked service van"
-              initial={{ scale: reducedMotion ? 1 : 1.035 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true, amount: 0.45 }}
-              transition={motionTransition(reducedMotion, { duration: 1.1, ease: LUXURY_EASE })}
-            />
-            <div className="final-cta-scrim" aria-hidden="true" />
-            <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
-              <motion.h2 variants={revealVariants(reducedMotion, 12)}>Meet your new chief of staff.</motion.h2>
-              <MessagesCta
-                className="final-cta-button"
-                variants={revealVariants(reducedMotion, 8)}
-              />
-            </motion.div>
-          </motion.div>
-        </section>
-
-        <footer>
-          <div className="footer-inner">
-            <div><Brand /><p>The chief of staff in your texts.</p></div>
-            <div className="footer-links"><strong>Sections</strong><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#steps">Setup</a></div>
-            <div className="footer-links footer-contact"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><MessagesCta className="footer-cta" /></div>
-          </div>
-          <motion.div className="signature-lockup" initial={{ opacity: 0, y: reducedMotion ? 0 : 28 }} whileInView={{ opacity: 0.13, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE })} aria-hidden="true">
-            <img src="/assets/rachel-mark-v2.png" alt="" />
-            <span>Rachel</span>
-          </motion.div>
-        </footer>
+        <FinalCta />
+        <Footer />
       </main>
     </MotionConfig>
   );
+}
+
+const pricingFeatureGroups = [
+  {
+    title: "Conversation",
+    rows: [
+      ["Private iMessage conversation", "check", "check"],
+      ["Questions and reminders", "check", "check"],
+      ["Personal context", "check", "check"],
+      ["Approval before important actions", "check", "check"],
+    ],
+  },
+  {
+    title: "Ways Rachel helps",
+    rows: [
+      ["Recurring requests", "Starter access", "Expanded access"],
+      ["Meeting prep and drafts", "Basic", "Expanded"],
+      ["Proactive follow-through", "Limited", "Expanded"],
+      ["Connected tools", "Early access", "As enabled"],
+    ],
+  },
+  {
+    title: "Account",
+    rows: [
+      ["Billing", "No charge", "$29 monthly or $24 yearly"],
+      ["Support", "Standard", "Priority"],
+    ],
+  },
+];
+
+function ComparisonValue({ value }) {
+  return value === "check" ? <CheckCircle size={18} weight="fill" aria-label="Included" /> : value;
+}
+
+function PricingPage() {
+  const reducedMotion = useReducedMotion();
+  return (
+    <MotionConfig reducedMotion="user">
+      <main className="standalone-page pricing-page" id="top">
+        <RouteMeta title="Rachel Pricing — Free and Pro" description="Start with Rachel Free, or choose Pro for expanded requests, follow-through, drafts, and support." />
+        <Header />
+
+        <section className="page-hero pricing-page-hero">
+          <motion.div className="page-hero-inner" {...groupRevealProps(reducedMotion, 0.08)}>
+            <motion.span className="page-kicker" variants={revealVariants(reducedMotion, 8)}>Rachel pricing</motion.span>
+            <motion.h1 variants={revealVariants(reducedMotion, 18)}>Predictable pricing<br />for a calmer day.</motion.h1>
+            <motion.p variants={revealVariants(reducedMotion, 12)}>Start free. Choose Pro when you want more recurring requests, proactive follow-through, and prepared work.</motion.p>
+          </motion.div>
+        </section>
+
+        <section className="standalone-plans" aria-labelledby="plans-title">
+          <h2 className="sr-only" id="plans-title">Rachel plans</h2>
+          <div className="standalone-plan-grid"><PricingCard /><PricingCard pro /></div>
+          <motion.p className="early-access-note" {...revealProps("feature", reducedMotion)}><ShieldCheck size={18} weight="fill" aria-hidden="true" />Rachel is in early access. Connected tools are enabled account by account, and important external actions always require your approval.</motion.p>
+        </section>
+
+        <section className="pricing-compare" aria-labelledby="compare-title">
+          <motion.div className="standalone-section-heading" {...groupRevealProps(reducedMotion, 0.07)}>
+            <motion.span className="page-kicker" variants={revealVariants(reducedMotion, 8)}>Compare all features</motion.span>
+            <motion.h2 id="compare-title" variants={revealVariants(reducedMotion, 14)}>Choose the room you need.</motion.h2>
+            <motion.p variants={revealVariants(reducedMotion, 10)}>Both plans keep Rachel in iMessage and keep you in control. Pro expands how much ongoing work you can delegate.</motion.p>
+          </motion.div>
+          <motion.div className="feature-table" {...revealProps("feature", reducedMotion)}>
+            <table>
+              <caption className="sr-only">Rachel Free and Pro feature comparison</caption>
+              <colgroup><col className="feature-name-column" /><col /><col /></colgroup>
+              <thead><tr className="feature-table-head"><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Pro</th></tr></thead>
+              {pricingFeatureGroups.map((group, groupIndex) => (
+                <tbody className="feature-table-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
+                  <tr className="feature-table-group-heading"><th colSpan="3"><h3 id={`feature-group-${groupIndex}`}>{group.title}</h3></th></tr>
+                  {group.rows.map(([feature, free, pro]) => (
+                    <tr className="feature-table-row" key={feature}>
+                      <th scope="row">{feature}</th><td><ComparisonValue value={free} /></td><td><ComparisonValue value={pro} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
+            </table>
+          </motion.div>
+        </section>
+
+        <section className="faq standalone-faq" id="faq">
+          <div className="section-shell faq-shell">
+            <div className="faq-heading"><SectionIntro align="left" title={<>Pricing,<br />made clear</>} copy="Read the essentials here, then explore the docs for the current product boundaries." /></div>
+            <FaqList items={pricingFaqs} idPrefix="pricing-faq" />
+          </div>
+        </section>
+
+        <FinalCta standalone />
+        <Footer />
+      </main>
+    </MotionConfig>
+  );
+}
+
+const docsNavigation = [
+  ["overview", "Overview"],
+  ["start", "Start in iMessage"],
+  ["ask", "Ask naturally"],
+  ["approvals", "Approvals"],
+  ["connections", "Connected tools"],
+  ["memory", "Memory and privacy"],
+  ["plans", "Plans and support"],
+];
+
+function DocsPage() {
+  const reducedMotion = useReducedMotion();
+  return (
+    <MotionConfig reducedMotion="user">
+      <main className="standalone-page docs-page" id="top">
+        <RouteMeta title="Rachel Docs — Delegate from iMessage" description="Learn how to start with Rachel, ask naturally, review approvals, and understand connected-tool and privacy boundaries." />
+        <Header />
+
+        <section className="page-hero docs-page-hero">
+          <motion.div className="page-hero-inner" {...groupRevealProps(reducedMotion, 0.08)}>
+            <motion.span className="page-kicker" variants={revealVariants(reducedMotion, 8)}>Rachel documentation</motion.span>
+            <motion.h1 variants={revealVariants(reducedMotion, 18)}>Delegate from iMessage.<br />Stay in control.</motion.h1>
+            <motion.p variants={revealVariants(reducedMotion, 12)}>The practical guide to starting a conversation, asking for help, and deciding what Rachel can do next.</motion.p>
+          </motion.div>
+        </section>
+
+        <div className="docs-layout">
+          <aside className="docs-sidebar" aria-label="Documentation navigation">
+            <span>On this page</span>
+            <nav>{docsNavigation.map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}</nav>
+            <a className="docs-support-link" href="mailto:hello@rachel.im">Need help? Email us</a>
+          </aside>
+
+          <article className="docs-content">
+            <motion.section className="docs-section" id="overview" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">01 / Overview</span>
+              <h2>Rachel is your AI chief of staff in iMessage.</h2>
+              <p>Rachel gives you one private conversation for questions, reminders, context, and prepared work. You write naturally. Rachel replies with what she knows, what she needs, and the next step you can approve.</p>
+              <div className="docs-callout"><RachelIdentityMark /><div><strong>Current product boundary</strong><p>Core conversation and reminders are available first. Connected tools and broader actions are early access, permissioned, and enabled account by account.</p></div></div>
+            </motion.section>
+
+            <motion.section className="docs-section" id="start" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">02 / Start in iMessage</span>
+              <h2>Start with one real thing.</h2>
+              <p>Open Rachel from any “Text your chief of staff” button. Messages opens with “Hi Rachel” filled in; you review it and press Send yourself.</p>
+              <ol className="docs-steps">
+                <li><span>1</span><div><strong>Open the conversation</strong><p>Use Rachel on iPhone, iPad, or Mac with Messages available.</p></div></li>
+                <li><span>2</span><div><strong>Say what is on your plate</strong><p>Share a task, a reminder, or a question in your own words.</p></div></li>
+                <li><span>3</span><div><strong>Confirm important details</strong><p>Rachel may ask for timing, context, or permission before moving forward.</p></div></li>
+              </ol>
+            </motion.section>
+
+            <motion.section className="docs-section" id="ask" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">03 / Ask naturally</span>
+              <h2>No commands to memorize.</h2>
+              <p>A useful request says what you need, when it matters, and any boundary Rachel should respect.</p>
+              <div className="docs-examples">
+                <blockquote>“Remind me Friday morning to follow up on the proposal.”</blockquote>
+                <blockquote>“Turn these notes into a concise update. Keep it warm and do not send it.”</blockquote>
+                <blockquote>“What should I prepare before my next meeting?”</blockquote>
+              </div>
+            </motion.section>
+
+            <motion.section className="docs-section" id="approvals" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">04 / Approvals</span>
+              <h2>Prepared by Rachel. Decided by you.</h2>
+              <p>Rachel can draft a response or propose a next step. Before an important external action—such as sending, booking, or sharing—Rachel asks for your approval. Read the details, request a change, or approve when it is right.</p>
+            </motion.section>
+
+            <motion.section className="docs-section" id="connections" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">05 / Connected tools</span>
+              <h2>Connections are explicit, not assumed.</h2>
+              <p>Connected tools are early-access capabilities enabled for eligible accounts. Availability can differ by account. When a connection is offered, Rachel should explain what it can access and ask you to authorize that permission.</p>
+              <ul className="docs-checklist"><li><CheckCircle size={18} weight="fill" />You choose each connection.</li><li><CheckCircle size={18} weight="fill" />A connection does not remove approval gates.</li><li><CheckCircle size={18} weight="fill" />Rachel tells you when requested context is unavailable.</li></ul>
+            </motion.section>
+
+            <motion.section className="docs-section" id="memory" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">06 / Memory and privacy</span>
+              <h2>Context should make Rachel useful—not mysterious.</h2>
+              <p>Rachel can use the context shared in your conversation to make future replies more relevant. Permission, retention, export, and deletion controls will be documented as accounts are activated. Do not share credentials or highly sensitive information in a message.</p>
+            </motion.section>
+
+            <motion.section className="docs-section" id="plans" {...revealProps("feature", reducedMotion)}>
+              <span className="docs-section-label">07 / Plans and support</span>
+              <h2>Start free, then expand when you need to.</h2>
+              <p>Free is for trying the core Rachel conversation. Pro is $29 per month, or $24 per month when billed yearly, for expanded requests, follow-through, prepared work, and priority support.</p>
+              <div className="docs-inline-links"><a href="/pricing">Compare plans <CaretRight size={16} weight="bold" /></a><a href="mailto:hello@rachel.im">Contact support <CaretRight size={16} weight="bold" /></a></div>
+            </motion.section>
+          </article>
+        </div>
+        <Footer />
+      </main>
+    </MotionConfig>
+  );
+}
+
+export function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  if (pathname === "/pricing") return <PricingPage />;
+  if (pathname === "/docs") return <DocsPage />;
+  return <HomePage />;
 }
 
 export default App;
