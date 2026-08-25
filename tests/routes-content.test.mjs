@@ -23,7 +23,14 @@ test("global navigation exposes the requested Rachel routes", async () => {
     assert.match(source, new RegExp(`>${label}<`));
   }
   assert.match(styles, /rachel-header-signal-v1\.png/);
-  assert.match(styles, /text-transform:\s*uppercase/);
+
+  const headerStyles = styles.match(/\.site-header \{[\s\S]*?\n\}/)?.[0] ?? "";
+  const navigationStyles = styles.match(/\.desktop-nav \{[\s\S]*?\n\}/)?.[0] ?? "";
+
+  assert.match(headerStyles, /background:\s*rgba\(247, 247, 247, \.86\)/);
+  assert.doesNotMatch(headerStyles, /background-image/);
+  assert.match(navigationStyles, /font-family:\s*"Google Sans"/);
+  assert.doesNotMatch(navigationStyles, /text-transform:\s*uppercase/);
 });
 
 test("pricing preserves public prices and early-access boundaries", async () => {
