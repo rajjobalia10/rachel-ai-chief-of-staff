@@ -1,4 +1,4 @@
-export const RACHEL_PHONE_E164 = "+16282646604";
+export const RACHEL_PHONE_E164 = "+16283099286";
 export const RACHEL_START_MESSAGE = "Hi Rachel";
 
 const APPLE_MESSAGING_PLATFORM = /Macintosh|MacIntel|MacPPC|Mac68K|iPhone|iPad|iPod/i;
