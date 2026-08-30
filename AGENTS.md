@@ -27,3 +27,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Browser tabs, bookmarks, installed web apps, and link surfaces must use the blue Rachel star mark. Keep real root favicon fallbacks (`/favicon.ico` and PNG/touch variants) so no client displays a generic globe or platform/Vercel logo.
 - Keep this prototype independent from the Slate clone. Publish it to a new GitHub repository and a new Vercel project.
 - Rachel's global header stays on the original light, translucent Slate-derived surface. Do not restore the dark signal-image treatment or uppercase tracked navigation; the wordmark and navigation use the bundled Google Sans face that drives the hero headline.
+- Rachel's website is light-only. Preserve the clean light palette in every browser and device appearance setting, including when the phone or browser prefers dark mode; do not add system-driven dark-theme overrides or allow automatic browser darkening.

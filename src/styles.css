@@ -71,6 +71,7 @@
 }
 
 :root {
+  color-scheme: only light;
   --page: #f7f7f7;
   --hero-surface: #f7f7f4;
   --ink: #000;
