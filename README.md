@@ -37,7 +37,7 @@ The visual QA record and source-to-implementation comparisons are documented in 
 
 ## Invite requests (Vercel + Resend)
 
-All conversion CTAs open `/invite`. The small form submits to `/api/invite`, a Vercel Node function that emails `raj@rivesa.ai` through Resend and sets the applicant as Reply-To. It does not activate accounts or start subscriptions.
+Hero, header, footer, and the home closing button open Messages with `Hi Rachel`. Pricing-card and pricing-page buttons open `/invite`. The invite form submits to `/api/invite`, a Vercel Node function that emails `raj@rivesa.ai` through Resend and sets the applicant as Reply-To. It does not activate accounts or start subscriptions.
 
 Configure these **server-side Production environment variables** on the linked `heyrachel` Vercel project before enabling email delivery:
 
