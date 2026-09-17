@@ -5,11 +5,12 @@ import { scrollToRouteLocation } from "../src/route-scroll.js";
 
 const projectFile = (path) => new URL(`../${path}`, import.meta.url);
 
-test("homepage, pricing, and docs are rendered from real pathname routes", async () => {
+test("homepage, pricing, docs, and invite are rendered from real pathname routes", async () => {
   const source = await readFile(projectFile("src/App.jsx"), "utf8");
 
   assert.match(source, /pathname === "\/pricing"/);
   assert.match(source, /pathname === "\/docs"/);
+  assert.match(source, /pathname === "\/invite"/);
   assert.match(source, /return <HomePage \/>/);
   assert.match(source, /Predictable pricing<br \/>for a calmer day\./);
   assert.match(source, /Delegate from iMessage\.<br \/>Stay in control\./);
@@ -36,7 +37,10 @@ test("global navigation exposes the requested Rachel routes", async () => {
 test("pricing preserves public prices and early-access boundaries", async () => {
   const source = await readFile(projectFile("src/App.jsx"), "utf8");
 
-  assert.match(source, /pro && yearly \? "\$24" : pro \? "\$29" : "\$0"/);
+  assert.match(source, /pro \? \(yearly \? "\$1,000" : "\$1,250"\) : \(yearly \? "\$200" : "\$250"\)/);
+  assert.match(source, /Rachel is invite-only/);
+  assert.match(source, /Talk to your agent by phone call/);
+  assert.doesNotMatch(source, /Start free|Free Plan|\$29|\$24(?![0-9])/);
   assert.match(source, /Connected tools are enabled account by account/);
   assert.match(source, /important external actions always require your approval/);
   assert.doesNotMatch(source, /10\+ Integrations/);

@@ -5,13 +5,14 @@ import test from "node:test";
 
 const projectFile = (path) => new URL(`../${path}`, import.meta.url);
 
-test("every SMS conversion surface uses the shared Rivesa CTA", async () => {
+test("every invite conversion surface uses the shared Rivesa CTA", async () => {
   const source = await readFile(projectFile("src/App.jsx"), "utf8");
 
-  assert.match(source, /const RACHEL_CTA_LABEL = "Text your chief of staff";/);
+  assert.match(source, /const RACHEL_CTA_LABEL = "Request an invite";/);
   assert.match(source, /src="\/assets\/imessage-icon\.png"/);
   assert.equal(source.match(/<MessagesCta(?:\s|\/|>)/g)?.length, 6);
-  assert.equal(source.match(/getRachelSmsHref\(\)/g)?.length, 1);
+  assert.equal(source.match(/href="\/invite"/g)?.length, 1);
+  assert.doesNotMatch(source, /getRachelSmsHref/);
   assert.doesNotMatch(source, /Get Started/);
   assert.doesNotMatch(source, />Text Rachel<\/a>/);
 });

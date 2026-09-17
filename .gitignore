@@ -6,3 +6,6 @@ dist/
 reference/
 qa/compare-*.html
 qa/focused-comparison.png
+
+.env*
+!.env.example

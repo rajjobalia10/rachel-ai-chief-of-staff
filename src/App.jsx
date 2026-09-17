@@ -19,7 +19,7 @@ import {
   SunHorizon,
   UserCircle,
 } from "@phosphor-icons/react";
-import { getRachelSmsHref } from "./sms-link.js";
+import { InviteForm } from "./InviteForm.jsx";
 import { scrollToRouteLocation } from "./route-scroll.js";
 
 const LUXURY_EASE = [0.16, 1, 0.3, 1];
@@ -30,7 +30,7 @@ const FEATURE_REVEAL_SPRING = { duration: 0.56, ease: LUXURY_EASE, delay: 0.04 }
 const FLOW_REVEAL_SPRING = { duration: 0.68, ease: LUXURY_EASE, delay: 0.05 };
 const FAQ_REVEAL_SPRING = { duration: 0.5, ease: LUXURY_EASE, delay: 0.04 };
 const REDUCED_FADE = { duration: 0.15, ease: "linear" };
-const RACHEL_CTA_LABEL = "Text your chief of staff";
+const RACHEL_CTA_LABEL = "Request an invite";
 
 function motionTransition(reduced, transition) {
   return reduced ? REDUCED_FADE : transition;
@@ -110,7 +110,7 @@ function MessagesCta({ className = "", onClick, variants }) {
   return (
     <motion.a
       className={`messages-cta ${className}`}
-      href={getRachelSmsHref()}
+      href="/invite"
       onClick={onClick}
       variants={variants}
       whileTap={reducedMotion ? undefined : { scale: 0.97 }}
@@ -242,16 +242,16 @@ const workflowMobilePanelHeights = [832.8984375, 865.296875, 852.8984375];
 const workflowCopyRightPaddings = [55, 80, 55];
 
 const steps = [
-  { number: "01", image: "/assets/rachel-step-text.png", title: "Text Rachel", copy: "Start a private iMessage conversation. Tell Rachel what is on your plate in the same words you would use with a great chief of staff." },
+  { number: "01", image: "/assets/rachel-step-text.png", title: "Text Rachel", copy: "Once invited, start a private iMessage conversation. Tell Rachel what is on your plate in the same words you would use with a great chief of staff." },
   { number: "02", image: "/assets/rachel-step-connect.png", title: "Choose Your Context", copy: "Share what matters in the conversation. Eligible connected tools are enabled account by account, with permission boundaries you can see." },
   { number: "03", image: "/assets/rachel-step-handoff.png", title: "Hand Off Your First Task", copy: "Ask a question, set a reminder, or request a draft. Rachel prepares the work and checks with you before an important external action." },
 ];
 
-const freeFeatures = ["Private iMessage conversation", "Questions and reminders", "Personal context", "Approval before important actions", "A simple way to try Rachel", "Standard support"];
-const proFeatures = ["Everything in Free", "Expanded recurring requests", "More proactive follow-through", "Meeting prep and drafts", "Connected tools as enabled", "Priority support"];
+const personalFeatures = ["Talk to your agent in iMessage", "Talk to your agent by phone call", "Questions and reminders", "Personal context", "Approval before important actions", "Standard support"];
+const proFeatures = ["Talk to your agent in iMessage", "Talk to your agent by phone call", "Everything in Personal", "Expanded recurring requests", "Meeting prep and follow-through", "Priority support"];
 
 const comparisonRows = [
-  ["Rachel requests", "Starter access", "Expanded access"],
+  ["iMessage and phone calls", "check", "check"],
   ["Questions and reminders", "check", "check"],
   ["Approval before external actions", "check", "check"],
   ["Proactive follow-through", "Limited", "Expanded"],
@@ -275,8 +275,9 @@ const faqs = [
 ];
 
 const pricingFaqs = [
-  ["Can I start without paying?", "Yes. The Free plan is the simplest way to begin a private Rachel conversation and try core questions and reminders."],
-  ["What changes when I choose annual billing?", "Rachel Pro is $29 month to month or $24 per month when billed yearly. Use the switch on the Pro card to compare the two monthly rates."],
+  ["How do I get access?", "Rachel is invite-only. Select Request an invite and complete the short form. We will contact you by email about access. Requesting an invite does not activate an account or start a subscription."],
+  ["What changes when I choose annual billing?", "All prices are in USD. Personal is $250 per month, or $200 per month billed yearly ($2,400 per year). Pro is $1,250 per month, or $1,000 per month billed yearly ($12,000 per year). Yearly billing saves 20% on either plan."],
+  ["Can I talk to my agent by message and call?", "Yes. Both plans include talking to your agent through iMessage and phone calls, once your invitation and account access are confirmed."],
   ["Are connected tools included in every plan?", "Connected tools are still in early access and are enabled account by account. Availability depends on your account and the permissions you choose."],
   ["Does Rachel take actions without asking?", "Important external actions stay approval-first. Rachel prepares the work and asks you before it is sent, booked, or shared."],
   ["Can I change plans later?", "Yes. Plan and billing controls will be available with account activation, and you can contact support whenever you need help."],
@@ -340,7 +341,7 @@ function FaqList({ items = faqs, idPrefix = "faq" }) {
 }
 
 function PricingCard({ pro = false }) {
-  const list = pro ? proFeatures : freeFeatures;
+  const list = pro ? proFeatures : personalFeatures;
   const [yearly, setYearly] = useState(false);
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, INTERACTION_SPRING);
@@ -351,22 +352,18 @@ function PricingCard({ pro = false }) {
       <div className="pricing-card-inner">
         <div className="pricing-main">
           <div className="price-top">
-            <div className="plan-name"><PlanIcon size={24} weight="fill" /><h4>{pro ? "Pro Plan" : "Free Plan"}</h4></div>
+            <div className="plan-name"><PlanIcon size={24} weight="fill" /><h4>{pro ? "Pro Plan" : "Personal Plan"}</h4></div>
             {pro && <span className="popular">Most Popular</span>}
-            <div className="price"><strong>{pro && yearly ? "$24" : pro ? "$29" : "$0"}</strong><span>/per month</span></div>
+            <div className="price" aria-live="polite"><strong>{pro ? (yearly ? "$1,000" : "$1,250") : (yearly ? "$200" : "$250")}</strong><span>/month USD</span></div>
           </div>
           <div className="price-description">
-            <p>{pro ? "Expand recurring requests, follow-through, prepared work, and support." : "Start a private conversation, ask questions, and set useful reminders."}</p>
-            {pro ? (
-              <button className={`billing ${yearly ? "on" : ""}`} type="button" role="switch" aria-checked={yearly} onClick={() => setYearly((value) => !value)}>
+            <p>{pro ? "Expand recurring requests, follow-through, prepared work, and support." : "Your personal agent for conversations, questions, and reminders."}</p>
+            <button className={`billing ${yearly ? "on" : ""}`} type="button" role="switch" aria-checked={yearly} aria-label={`Yearly billing for ${pro ? "Pro" : "Personal"}`} onClick={() => setYearly((value) => !value)}>
                 <motion.span className="switch" animate={{ backgroundColor: yearly ? "rgb(7, 220, 113)" : "rgb(224, 224, 224)" }} transition={transition}>
                   <motion.span className="switch-knob" layout transition={transition} />
                 </motion.span>
-                Billed yearly
+                <span>{yearly ? `Billed yearly · ${pro ? "$12,000" : "$2,400"}/year` : "Yearly billing · save 20%"}</span>
               </button>
-            ) : (
-              <div className="billing off"><span className="switch"><span className="switch-knob" /></span>Billed yearly</div>
-            )}
           </div>
         </div>
         <ul>{list.map((item) => <li key={item}><CheckCircle size={16} weight="fill" /><span>{item}</span></li>)}</ul>
@@ -393,8 +390,8 @@ function FinalCta({ standalone = false }) {
         )}
         <div className="final-cta-scrim" aria-hidden="true" />
         <motion.div className="final-cta-copy" {...groupRevealProps(reducedMotion, 0.08)}>
-          <motion.h2 variants={revealVariants(reducedMotion, 12)}>{standalone ? "Start with one text." : "Meet your new chief of staff."}</motion.h2>
-          {standalone && <motion.p variants={revealVariants(reducedMotion, 10)}>Tell Rachel what is on your plate. You stay in control of what happens next.</motion.p>}
+          <motion.h2 variants={revealVariants(reducedMotion, 12)}>{standalone ? "Your invitation starts here." : "Meet your new chief of staff."}</motion.h2>
+          {standalone && <motion.p variants={revealVariants(reducedMotion, 10)}>Invite-only access. Talk to your agent through iMessage and phone calls.</motion.p>}
           <MessagesCta
             className="final-cta-button"
             variants={revealVariants(reducedMotion, 8)}
@@ -410,7 +407,7 @@ function Footer() {
   return (
     <footer>
       <div className="footer-inner">
-        <div><Brand /><p>The chief of staff in your texts.</p></div>
+        <div><Brand /><p>Your chief of staff in iMessage and on calls. Invite-only.</p></div>
         <div className="footer-links"><strong>Explore</strong><a href="/#features">Product</a><a href="/#workflow">Workflows</a><a href="/#community">Use Cases</a><a href="/docs">Docs</a><a href="/pricing">Pricing</a></div>
         <div className="footer-links footer-contact"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><MessagesCta className="footer-cta" /></div>
       </div>
@@ -461,7 +458,7 @@ function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
       <main id="top">
-        <RouteMeta title="Rachel — Your AI chief of staff in iMessage" description="Ask questions, set reminders, prepare work, and stay in control with Rachel in iMessage." />
+        <RouteMeta title="Rachel — Your AI chief of staff in iMessage" description="Your invite-only personal agent. Talk to Rachel through iMessage and phone calls to ask questions, set reminders, and prepare work." />
         <Header />
 
         <section className="hero" ref={heroRef}>
@@ -496,9 +493,9 @@ function HomePage() {
           </motion.div>
           <div className="hero-inner">
             <div className="hero-copy">
-              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : -8, filter: reducedMotion ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, { duration: 0.45, ease: LUXURY_EASE, delay: 0.12 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong><CaretRight size={15} weight="bold" aria-hidden="true" /></motion.div>
+              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : -8, filter: reducedMotion ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, { duration: 0.45, ease: LUXURY_EASE, delay: 0.12 })}><span>Invite-only</span><strong>Your AI chief of staff</strong><CaretRight size={15} weight="bold" aria-hidden="true" /></motion.div>
               <motion.h1 initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : 18, filter: reducedMotion ? "blur(0px)" : "blur(8px)" }} transition={motionTransition(reducedMotion, { duration: 0.68, ease: LUXURY_EASE, delay: 0.18 })}>Meet Rachel,<br /><span>your day already handled.</span></motion.h1>
-              <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
+              <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Talk to your personal agent through iMessage and phone calls.</motion.p>
               <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
                 <MessagesCta />
               </motion.div>
@@ -635,7 +632,7 @@ function HomePage() {
 
         <section className="steps section" id="steps">
           <div className="section-shell">
-            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Open Rachel in iMessage and start with one useful request." />
+            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Request an invite. Once your access is confirmed, start with one useful request." />
             <motion.div className="steps-list" {...groupRevealProps(reducedMotion, 0.09)}>
               <motion.div className="step-line" variants={{ hidden: { opacity: 0, scaleY: reducedMotion ? 1 : 0 }, visible: { opacity: 1, scaleY: 1, transition: motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE }) } }} />
               {steps.map((step, index) => (
@@ -651,10 +648,10 @@ function HomePage() {
 
         <section className="pricing section" id="pricing">
           <div className="section-shell">
-            <SectionIntro title={<>Simple pricing,<br />serious leverage</>} copy="Start free. Upgrade when Rachel becomes the first person you text." />
+            <SectionIntro title={<>Simple pricing,<br />serious leverage</>} copy="Invite-only access to your personal agent. Talk through iMessage and phone calls. All prices in USD." />
             <div className="pricing-grid"><PricingCard /><PricingCard pro /></div>
             <motion.div className="comparison" {...revealProps("feature", reducedMotion)}>
-              <div className="comparison-head"><h4>Feature Comparison</h4><h4>Free</h4><h4>Pro</h4></div>
+              <div className="comparison-head"><h4>Feature Comparison</h4><h4>Personal</h4><h4>Pro</h4></div>
               {comparisonRows.map(([feature, free, pro]) => (
                 <div className="comparison-row" key={feature}><h4>{feature}</h4><span>{free === "check" ? <CheckCircle size={16} weight="fill" /> : free}</span><span>{pro === "check" ? <CheckCircle size={16} weight="fill" /> : pro}</span></div>
               ))}
@@ -735,7 +732,8 @@ const pricingFeatureGroups = [
   {
     title: "Conversation",
     rows: [
-      ["Private iMessage conversation", "check", "check"],
+      ["Talk to your agent in iMessage", "check", "check"],
+      ["Talk to your agent by phone call", "check", "check"],
       ["Questions and reminders", "check", "check"],
       ["Personal context", "check", "check"],
       ["Approval before important actions", "check", "check"],
@@ -753,7 +751,9 @@ const pricingFeatureGroups = [
   {
     title: "Account",
     rows: [
-      ["Billing", "No charge", "$29 monthly or $24 yearly"],
+      ["Monthly billing (USD)", "$250/month", "$1,250/month"],
+      ["Yearly billing (USD)", "$200/month · $2,400/year", "$1,000/month · $12,000/year"],
+      ["Access", "Invite-only", "Invite-only"],
       ["Support", "Standard", "Priority"],
     ],
   },
@@ -768,34 +768,34 @@ function PricingPage() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="standalone-page pricing-page" id="top">
-        <RouteMeta title="Rachel Pricing — Free and Pro" description="Start with Rachel Free, or choose Pro for expanded requests, follow-through, drafts, and support." />
+        <RouteMeta title="Rachel Pricing — Personal and Pro" description="Invite-only personal agents through iMessage and calls. Personal from $200/month and Pro from $1,000/month in USD when billed yearly." />
         <Header />
 
         <section className="page-hero pricing-page-hero">
           <motion.div className="page-hero-inner" {...groupRevealProps(reducedMotion, 0.08)}>
             <motion.span className="page-kicker" variants={revealVariants(reducedMotion, 8)}>Rachel pricing</motion.span>
             <motion.h1 variants={revealVariants(reducedMotion, 18)}>Predictable pricing<br />for a calmer day.</motion.h1>
-            <motion.p variants={revealVariants(reducedMotion, 12)}>Start free. Choose Pro when you want more recurring requests, proactive follow-through, and prepared work.</motion.p>
+            <motion.p variants={revealVariants(reducedMotion, 12)}>Your personal agent, in iMessage and on calls. Choose Personal or Pro with invite-only access. All prices in USD.</motion.p>
           </motion.div>
         </section>
 
         <section className="standalone-plans" aria-labelledby="plans-title">
           <h2 className="sr-only" id="plans-title">Rachel plans</h2>
           <div className="standalone-plan-grid"><PricingCard /><PricingCard pro /></div>
-          <motion.p className="early-access-note" {...revealProps("feature", reducedMotion)}><ShieldCheck size={18} weight="fill" aria-hidden="true" />Rachel is in early access. Connected tools are enabled account by account, and important external actions always require your approval.</motion.p>
+          <motion.p className="early-access-note" {...revealProps("feature", reducedMotion)}><ShieldCheck size={18} weight="fill" aria-hidden="true" />Rachel is invite-only. Request an invitation before account activation. Connected tools are enabled account by account, and important external actions always require your approval.</motion.p>
         </section>
 
         <section className="pricing-compare" aria-labelledby="compare-title">
           <motion.div className="standalone-section-heading" {...groupRevealProps(reducedMotion, 0.07)}>
             <motion.span className="page-kicker" variants={revealVariants(reducedMotion, 8)}>Compare all features</motion.span>
             <motion.h2 id="compare-title" variants={revealVariants(reducedMotion, 14)}>Choose the room you need.</motion.h2>
-            <motion.p variants={revealVariants(reducedMotion, 10)}>Both plans keep Rachel in iMessage and keep you in control. Pro expands how much ongoing work you can delegate.</motion.p>
+            <motion.p variants={revealVariants(reducedMotion, 10)}>Both plans let you talk to your agent through iMessage and phone calls, and keep you in control. Pro expands how much ongoing work you can delegate.</motion.p>
           </motion.div>
           <motion.div className="feature-table" {...revealProps("feature", reducedMotion)}>
             <table>
-              <caption className="sr-only">Rachel Free and Pro feature comparison</caption>
+              <caption className="sr-only">Rachel Personal and Pro feature comparison</caption>
               <colgroup><col className="feature-name-column" /><col /><col /></colgroup>
-              <thead><tr className="feature-table-head"><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Pro</th></tr></thead>
+              <thead><tr className="feature-table-head"><th scope="col">Feature</th><th scope="col">Personal</th><th scope="col">Pro</th></tr></thead>
               {pricingFeatureGroups.map((group, groupIndex) => (
                 <tbody className="feature-table-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
                   <tr className="feature-table-group-heading"><th colSpan="3"><h3 id={`feature-group-${groupIndex}`}>{group.title}</h3></th></tr>
@@ -868,10 +868,10 @@ function DocsPage() {
             <motion.section className="docs-section" id="start" {...revealProps("feature", reducedMotion)}>
               <span className="docs-section-label">02 / Start in iMessage</span>
               <h2>Start with one real thing.</h2>
-              <p>Open Rachel from any “Text your chief of staff” button. Messages opens with “Hi Rachel” filled in; you review it and press Send yourself.</p>
+              <p>Rachel is invite-only. Select any “Request an invite” button and share your name, email, and optionally what you would like Rachel to help with. We will contact you by email about access. An invitation request does not activate an account or start billing.</p>
               <ol className="docs-steps">
-                <li><span>1</span><div><strong>Open the conversation</strong><p>Use Rachel on iPhone, iPad, or Mac with Messages available.</p></div></li>
-                <li><span>2</span><div><strong>Say what is on your plate</strong><p>Share a task, a reminder, or a question in your own words.</p></div></li>
+                <li><span>1</span><div><strong>Request your invitation</strong><p>Complete the short invitation form with your name and email.</p></div></li>
+                <li><span>2</span><div><strong>Wait for access confirmation</strong><p>Once your invitation and account access are confirmed, talk to your agent through iMessage or phone calls.</p></div></li>
                 <li><span>3</span><div><strong>Confirm important details</strong><p>Rachel may ask for timing, context, or permission before moving forward.</p></div></li>
               </ol>
             </motion.section>
@@ -908,8 +908,8 @@ function DocsPage() {
 
             <motion.section className="docs-section" id="plans" {...revealProps("feature", reducedMotion)}>
               <span className="docs-section-label">07 / Plans and support</span>
-              <h2>Start free, then expand when you need to.</h2>
-              <p>Free is for trying the core Rachel conversation. Pro is $29 per month, or $24 per month when billed yearly, for expanded requests, follow-through, prepared work, and priority support.</p>
+              <h2>Choose your plan. Request an invite.</h2>
+              <p>Both plans are invite-only and include talking to your agent through iMessage and phone calls. Personal is $250 per month or $200 per month billed yearly ($2,400 per year). Pro is $1,250 per month or $1,000 per month billed yearly ($12,000 per year). All prices are in USD.</p>
               <div className="docs-inline-links"><a href="/pricing">Compare plans <CaretRight size={16} weight="bold" /></a><a href="mailto:hello@rachel.im">Contact support <CaretRight size={16} weight="bold" /></a></div>
             </motion.section>
           </article>
@@ -920,8 +920,27 @@ function DocsPage() {
   );
 }
 
+function InvitePage() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <main className="standalone-page invite-page" id="top">
+        <RouteMeta title="Request an invite — Rachel" description="Request invite-only access to your personal agent on iMessage and phone calls." />
+        <Header />
+        <section className="invite-section">
+          <span className="page-kicker">Invite-only access</span>
+          <h1>Meet your personal agent.</h1>
+          <p>Talk to Rachel through iMessage and phone calls. Leave your details and we’ll be in touch about your invitation.</p>
+          <InviteForm />
+        </section>
+        <Footer />
+      </main>
+    </MotionConfig>
+  );
+}
+
 export function App() {
   const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  if (pathname === "/invite") return <InvitePage />;
   if (pathname === "/pricing") return <PricingPage />;
   if (pathname === "/docs") return <DocsPage />;
   return <HomePage />;

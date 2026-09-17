@@ -1444,3 +1444,23 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
   .docs-examples blockquote { padding: 20px; }
   .footer-inner > .footer-links:not(.footer-contact) { width: 92px; }
 }
+
+/* Invite-only access uses the existing light Rachel identity. */
+.invite-section { width: min(520px, calc(100% - 40px)); margin: 0 auto; padding: 64px 0 100px; }
+.invite-section h1 { margin: 16px 0; font-family: "Google Sans", Arial, sans-serif; font-size: clamp(32px, 6vw, 44px); line-height: 1.12; letter-spacing: -1.4px; }
+.invite-section > p { color: #666; line-height: 1.6; }
+.invite-form { display: flex; flex-direction: column; margin-top: 32px; }
+.invite-form label { margin: 18px 0 8px; font-size: 14px; font-weight: 500; }
+.invite-form label span { color: #757575; font-weight: 400; }
+.invite-form input, .invite-form textarea { width: 100%; padding: 13px 14px; border: 1px solid #d8dce1; border-radius: 12px; background: #fff; color: #1a1a1a; font: inherit; font-size: 16px; }
+.invite-form textarea { resize: vertical; }
+.invite-form input:focus, .invite-form textarea:focus { outline: 2px solid var(--blue); outline-offset: 2px; }
+.invite-note { margin: 18px 0; color: #666; font-size: 13px; line-height: 1.5; }
+.invite-submit { min-height: 48px; padding: 12px 20px; border: 0; border-radius: 12px; background: #111; color: #fff; font: inherit; cursor: pointer; }
+.invite-submit:disabled { opacity: .6; cursor: wait; }
+.invite-error { margin-bottom: 18px; color: #b42318; font-size: 14px; }
+.invite-success { margin-top: 32px; padding: 28px; border: 1px solid #d8dce1; border-radius: 16px; background: #fff; }
+.invite-success h2 { margin-bottom: 12px; font-family: "Google Sans", Arial, sans-serif; }
+.invite-success p { line-height: 1.6; color: #666; }
+.invite-success a { display: inline-block; margin-top: 20px; color: var(--blue-deep); }
+.invite-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
