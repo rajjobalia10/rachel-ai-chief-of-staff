@@ -47,3 +47,5 @@ Configure these **server-side Production environment variables** on the linked `
 Redeploy after configuring the variables. Plain `npm run dev` previews the frontend; use `npx vercel dev` for the real local API. Run `npm test` for the API validation, recipient/reply-to, retry, and provider-failure checks. Tests mock Resend and never send mail.
 
 The endpoint includes input limits, a honeypot, provider idempotency, and best-effort per-instance throttling. The UI reports success only after Resend returns an email ID. Verify a clearly labeled test submission in Resend for delivered status before claiming mailbox delivery. Missing credentials return 503 without pretending a request was saved.
+
+Pricing typography was inspected at `https://www.clay.com/pricing` on 2026-09-17: `.pricing_card-price` uses `Roobertvf`, weight 500, 28px/42px, -0.84px tracking. The matching public WOFF2 is bundled as `public/fonts/roobert-variable.woff2` and applied only to pricing amounts, suffixes, billing totals, and comparison values.

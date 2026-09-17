@@ -30,3 +30,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Rachel's website is light-only. Preserve the clean light palette in every browser and device appearance setting, including when the phone or browser prefers dark mode; do not add system-driven dark-theme overrides or allow automatic browser darkening.
 
 - 2026-09-17 owner direction: Rachel is invite-only. All conversion CTAs say “Request an invite” and open the short invitation form; they do not imply immediate activation. Both Personal and Pro include talking to your agent through iMessage and phone calls. USD monthly billing is $250 / $1,250; yearly billing is $200 / $1,000 per month ($2,400 / $12,000 per year). Keep pricing, comparisons, FAQs, and docs consistent.
+
+- 2026-09-17 pricing typography: match the live Clay pricing reference inspected that day. All card amounts and `/mo` suffixes use the locally bundled Roobert variable face, weight 500, 28px size, 42px line-height, and -0.84px tracking. Keep USD explicit beside the amount; use the same face for annual totals and pricing comparison values.

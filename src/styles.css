@@ -1,4 +1,12 @@
 @font-face {
+  font-family: "Roobert Pricing";
+  src: url("/fonts/roobert-variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Google Sans";
   src: url("/fonts/4Ua_rENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrw2IKlnrSjiEjo5.woff2") format("woff2");
   font-style: normal;
@@ -725,9 +733,9 @@ main { position: relative; overflow: clip; }
 .plan-name { display: flex; align-items: center; gap: 7px; }
 .plan-name svg { width: 24px; height: 24px; flex: 0 0 auto; color: var(--blue); }
 .popular { position: absolute; top: 10px; right: 10px; padding: 2px 6px; border: 0; border-radius: 55px; background: #fff; }
-.price { display: flex; align-items: baseline; gap: 4px; margin-top: 20px; }
-.price strong { color: #1a1a1a; font-family: "Inter Display", Arial, sans-serif; font-size: 30px; line-height: 45px; font-weight: 600; letter-spacing: -.6px; }
-.price span { margin-bottom: 8px; font-size: 16px; }
+.price { display: flex; align-items: baseline; gap: 0; margin-top: 20px; color: #1a1a1a; font-family: "Roobert Pricing", Arial, sans-serif; font-size: 28px; line-height: 42px; font-weight: 500; letter-spacing: -.84px; }
+.price strong, .price span { font: inherit; letter-spacing: inherit; }
+.price small { margin-left: 8px; font-family: "Inter", Arial, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0; }
 
 .price-description { height: 122px; padding: 16px 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; }
 .price-description p { width: 100%; min-height: 48px; font-feature-settings: "cv05", "cv08", "cv10", "cv11"; font-weight: 500; letter-spacing: -.32px; }
@@ -984,7 +992,7 @@ footer { position: relative; height: 520px; background: var(--hero-surface); ove
 .standalone-plan-grid .pricing-card ul { height: 142px; gap: 4px; }
 .standalone-plan-grid .pricing-card li { height: 20px; min-height: 20px; font-size: 14px; line-height: 20px; }
 .standalone-plan-grid .pricing-button { height: 65px; padding-top: 10px; padding-bottom: 10px; }
-.standalone-plan-grid .price strong { font-size: 38px; line-height: 48px; }
+.pricing-card .billing, .feature-table-row td { font-family: "Roobert Pricing", Arial, sans-serif; }
 .early-access-note { width: min(760px, 100%); margin: 24px auto 0; display: flex; align-items: flex-start; justify-content: center; gap: 9px; color: #6a6a6a; font-size: 13px; line-height: 19px; text-align: center; }
 .early-access-note svg { margin-top: 1px; flex: 0 0 auto; color: var(--blue); }
 

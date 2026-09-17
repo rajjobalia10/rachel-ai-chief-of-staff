@@ -354,7 +354,7 @@ function PricingCard({ pro = false }) {
           <div className="price-top">
             <div className="plan-name"><PlanIcon size={24} weight="fill" /><h4>{pro ? "Pro Plan" : "Personal Plan"}</h4></div>
             {pro && <span className="popular">Most Popular</span>}
-            <div className="price" aria-live="polite"><strong>{pro ? (yearly ? "$1,000" : "$1,250") : (yearly ? "$200" : "$250")}</strong><span>/month USD</span></div>
+            <div className="price" aria-live="polite"><strong>{pro ? (yearly ? "$1,000" : "$1,250") : (yearly ? "$200" : "$250")}</strong><span>/mo</span><small>USD</small></div>
           </div>
           <div className="price-description">
             <p>{pro ? "Expand recurring requests, follow-through, prepared work, and support." : "Your personal agent for conversations, questions, and reminders."}</p>
