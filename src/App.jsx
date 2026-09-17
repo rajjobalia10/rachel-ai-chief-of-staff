@@ -20,6 +20,7 @@ import {
   UserCircle,
 } from "@phosphor-icons/react";
 import { InviteForm } from "./InviteForm.jsx";
+import { getRachelSmsHref } from "./sms-link.js";
 import { scrollToRouteLocation } from "./route-scroll.js";
 
 const LUXURY_EASE = [0.16, 1, 0.3, 1];
@@ -30,7 +31,8 @@ const FEATURE_REVEAL_SPRING = { duration: 0.56, ease: LUXURY_EASE, delay: 0.04 }
 const FLOW_REVEAL_SPRING = { duration: 0.68, ease: LUXURY_EASE, delay: 0.05 };
 const FAQ_REVEAL_SPRING = { duration: 0.5, ease: LUXURY_EASE, delay: 0.04 };
 const REDUCED_FADE = { duration: 0.15, ease: "linear" };
-const RACHEL_CTA_LABEL = "Request an invite";
+const RACHEL_CTA_LABEL = "Text your chief of staff";
+const RACHEL_INVITE_CTA_LABEL = "Request an invite";
 
 function motionTransition(reduced, transition) {
   return reduced ? REDUCED_FADE : transition;
@@ -103,21 +105,21 @@ function RachelIdentityMark({ className = "" }) {
   );
 }
 
-function MessagesCta({ className = "", onClick, variants }) {
+function MessagesCta({ className = "", onClick, variants, invite = false }) {
   const reducedMotion = useReducedMotion();
   const transition = motionTransition(reducedMotion, { duration: 0.15, ease: [0.2, 0, 0, 1] });
 
   return (
     <motion.a
       className={`messages-cta ${className}`}
-      href="/invite"
+      href={invite ? "/invite" : getRachelSmsHref()}
       onClick={onClick}
       variants={variants}
       whileTap={reducedMotion ? undefined : { scale: 0.97 }}
       transition={transition}
     >
       <img src="/assets/imessage-icon.png" alt="" width="20" height="20" aria-hidden="true" />
-      <span>{RACHEL_CTA_LABEL}</span>
+      <span>{invite ? RACHEL_INVITE_CTA_LABEL : RACHEL_CTA_LABEL}</span>
     </motion.a>
   );
 }
@@ -242,7 +244,7 @@ const workflowMobilePanelHeights = [832.8984375, 865.296875, 852.8984375];
 const workflowCopyRightPaddings = [55, 80, 55];
 
 const steps = [
-  { number: "01", image: "/assets/rachel-step-text.png", title: "Text Rachel", copy: "Once invited, start a private iMessage conversation. Tell Rachel what is on your plate in the same words you would use with a great chief of staff." },
+  { number: "01", image: "/assets/rachel-step-text.png", title: "Text Rachel", copy: "Start a private iMessage conversation. Tell Rachel what is on your plate in the same words you would use with a great chief of staff." },
   { number: "02", image: "/assets/rachel-step-connect.png", title: "Choose Your Context", copy: "Share what matters in the conversation. Eligible connected tools are enabled account by account, with permission boundaries you can see." },
   { number: "03", image: "/assets/rachel-step-handoff.png", title: "Hand Off Your First Task", copy: "Ask a question, set a reminder, or request a draft. Rachel prepares the work and checks with you before an important external action." },
 ];
@@ -367,7 +369,7 @@ function PricingCard({ pro = false }) {
           </div>
         </div>
         <ul>{list.map((item) => <li key={item}><CheckCircle size={16} weight="fill" /><span>{item}</span></li>)}</ul>
-        <div className="pricing-button"><MessagesCta /></div>
+        <div className="pricing-button"><MessagesCta invite /></div>
       </div>
     </motion.article>
   );
@@ -395,6 +397,7 @@ function FinalCta({ standalone = false }) {
           <MessagesCta
             className="final-cta-button"
             variants={revealVariants(reducedMotion, 8)}
+            invite={standalone}
           />
         </motion.div>
       </motion.div>
@@ -407,7 +410,7 @@ function Footer() {
   return (
     <footer>
       <div className="footer-inner">
-        <div><Brand /><p>Your chief of staff in iMessage and on calls. Invite-only.</p></div>
+        <div><Brand /><p>The chief of staff in your texts.</p></div>
         <div className="footer-links"><strong>Explore</strong><a href="/#features">Product</a><a href="/#workflow">Workflows</a><a href="/#community">Use Cases</a><a href="/docs">Docs</a><a href="/pricing">Pricing</a></div>
         <div className="footer-links footer-contact"><strong>Contact</strong><a href="mailto:hello@rachel.im">Email</a><MessagesCta className="footer-cta" /></div>
       </div>
@@ -458,7 +461,7 @@ function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
       <main id="top">
-        <RouteMeta title="Rachel — Your AI chief of staff in iMessage" description="Your invite-only personal agent. Talk to Rachel through iMessage and phone calls to ask questions, set reminders, and prepare work." />
+        <RouteMeta title="Rachel — Your AI chief of staff in iMessage" description="Ask questions, set reminders, prepare work, and stay in control with Rachel in iMessage." />
         <Header />
 
         <section className="hero" ref={heroRef}>
@@ -493,9 +496,9 @@ function HomePage() {
           </motion.div>
           <div className="hero-inner">
             <div className="hero-copy">
-              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : -8, filter: reducedMotion ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, { duration: 0.45, ease: LUXURY_EASE, delay: 0.12 })}><span>Invite-only</span><strong>Your AI chief of staff</strong><CaretRight size={15} weight="bold" aria-hidden="true" /></motion.div>
+              <motion.div className="announcement" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : -8, filter: reducedMotion ? "blur(0px)" : "blur(5px)" }} transition={motionTransition(reducedMotion, { duration: 0.45, ease: LUXURY_EASE, delay: 0.12 })}><span>New</span><strong>Your AI chief of staff in iMessage</strong><CaretRight size={15} weight="bold" aria-hidden="true" /></motion.div>
               <motion.h1 initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0.001, y: reducedMotion ? 0 : 18, filter: reducedMotion ? "blur(0px)" : "blur(8px)" }} transition={motionTransition(reducedMotion, { duration: 0.68, ease: LUXURY_EASE, delay: 0.18 })}>Meet Rachel,<br /><span>your day already handled.</span></motion.h1>
-              <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Talk to your personal agent through iMessage and phone calls.</motion.p>
+              <motion.p initial={false} animate={heroMotionReady ? { opacity: 1, y: 0 } : { opacity: 0.001, y: reducedMotion ? 0 : 12 }} transition={motionTransition(reducedMotion, { duration: 0.56, ease: LUXURY_EASE, delay: 0.28 })}>Proactive, private, personal, and right in your texts.</motion.p>
               <motion.div className="hero-actions" initial={false} animate={heroMotionReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.001, y: reducedMotion ? 0 : 10, scale: reducedMotion ? 1 : 0.985 }} transition={motionTransition(reducedMotion, { duration: 0.5, ease: LUXURY_EASE, delay: 0.36 })}>
                 <MessagesCta />
               </motion.div>
@@ -632,7 +635,7 @@ function HomePage() {
 
         <section className="steps section" id="steps">
           <div className="section-shell">
-            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Request an invite. Once your access is confirmed, start with one useful request." />
+            <SectionIntro title={<>From hello to help<br />in three steps</>} copy="Open Rachel in iMessage and start with one useful request." />
             <motion.div className="steps-list" {...groupRevealProps(reducedMotion, 0.09)}>
               <motion.div className="step-line" variants={{ hidden: { opacity: 0, scaleY: reducedMotion ? 1 : 0 }, visible: { opacity: 1, scaleY: 1, transition: motionTransition(reducedMotion, { duration: 0.9, ease: LUXURY_EASE }) } }} />
               {steps.map((step, index) => (
@@ -868,10 +871,10 @@ function DocsPage() {
             <motion.section className="docs-section" id="start" {...revealProps("feature", reducedMotion)}>
               <span className="docs-section-label">02 / Start in iMessage</span>
               <h2>Start with one real thing.</h2>
-              <p>Rachel is invite-only. Select any “Request an invite” button and share your name, email, and optionally what you would like Rachel to help with. We will contact you by email about access. An invitation request does not activate an account or start billing.</p>
+              <p>Open Rachel from any “Text your chief of staff” button. Messages opens with “Hi Rachel” filled in; you review it and press Send yourself. Paid plans stay invite-only from the pricing page.</p>
               <ol className="docs-steps">
-                <li><span>1</span><div><strong>Request your invitation</strong><p>Complete the short invitation form with your name and email.</p></div></li>
-                <li><span>2</span><div><strong>Wait for access confirmation</strong><p>Once your invitation and account access are confirmed, talk to your agent through iMessage or phone calls.</p></div></li>
+                <li><span>1</span><div><strong>Open the conversation</strong><p>Use Rachel on iPhone, iPad, or Mac with Messages available.</p></div></li>
+                <li><span>2</span><div><strong>Say what is on your plate</strong><p>Share a task, a reminder, or a question in your own words.</p></div></li>
                 <li><span>3</span><div><strong>Confirm important details</strong><p>Rachel may ask for timing, context, or permission before moving forward.</p></div></li>
               </ol>
             </motion.section>
